@@ -37,7 +37,7 @@
   <nz-row>
     <nz-col nzMd="8" nzSm="24">
       <nz-form-item>
-        <nz-form-label nzFor="no">送样时间：</nz-form-label>
+        <nz-form-label nzFor="no">签到时间</nz-form-label>
         <nz-form-control>
           <nz-range-picker nzFormat="yyyy-MM-dd" name="timeArray" [(ngModel)]="timeArray" nzLocal='zh'></nz-range-picker>
         </nz-form-control>
@@ -73,7 +73,6 @@
       <th>采样时间</th>
       <th>样品类型</th>
       <th>当前状态</th>
-      <th>时间</th>
       <th>操作</th>
     </tr>
   </thead>
@@ -89,8 +88,6 @@
       <td>{{item.samplingdate}}</td>
       <td>{{item.lx}}</td>
       <td>{{item.flag}}</td>
-      <td>
-        {{ item.signDate|date:'MM/dd/yyyy HH:mm:ss A'}}</td>
       <td>
         <a (click)="edit(item)">录入数据</a>
       </td>
