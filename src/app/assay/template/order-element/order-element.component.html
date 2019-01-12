@@ -1,0 +1,36 @@
+<div class="padding-bottom-45">
+
+  <h3>
+    <span>调整顺序</span>
+  </h3>
+
+  <nz-card [nzTitle]="title">
+    <nz-list [nzDataSource]="list" [nzBordered]="true" [nzItemLayout]="'horizontal'" [nzRenderItem]="item" nzSize="small">
+      <ng-template #item let-item>
+        <nz-list-item>
+          <div>
+            <p style='display: inline-block;width:200px;'>{{item.elementName}}</p>
+            <button nz-button (click)="down(item)" nzShape="circle">
+              <i class="anticon anticon-down"></i>
+            </button>
+            <button nz-button (click)="up(item)" nzShape="circle">
+              <i class="anticon anticon-up"></i>
+            </button>
+          </div>
+        </nz-list-item>
+      </ng-template>
+    </nz-list>
+  </nz-card>
+
+  <!-- 功能按钮 -->
+  <div class="custom-modal-footer">
+    <div class="custom-modal-footter-group">
+      <button nz-button type="button" [disabled]="saving" (click)="close()">
+        取消
+      </button>
+      <button nz-button [nzType]="'primary'" type="button" (click)="save()">
+        保存
+      </button>
+    </div>
+  </div>
+</div>

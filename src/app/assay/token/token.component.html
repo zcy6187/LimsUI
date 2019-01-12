@@ -1,0 +1,60 @@
+<page-header title="令牌管理"></page-header>
+<form nz-form [nzLayout]="'inline'" class="search__form">
+  <nz-row [nzGutter]="{ md: 8, lg: 24, xl: 48 }">
+    <nz-col nzMd="10" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzFor="no">组织结构</nz-form-label>
+        <nz-form-control>
+          <nz-tree-select [nzNodes]="listOfOrg" nzShowSearch nzPlaceHolder="请选择" name='orgCode' [(ngModel)]='orgCode'>
+          </nz-tree-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="8" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzFor="no">令牌</nz-form-label>
+        <nz-form-control>
+          <input nz-input [(ngModel)]="tokenName" id="name" name="tokenName" placeholder="">
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="6" nzSm="24">
+      <nz-form-item>
+        <button nz-button type="submit" [nzType]="'primary'" (click)="btnSearch()">查询</button>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+</form>
+
+<nz-card [nzExtra]="extraTemplate" nzTitle="令牌信息">
+  <ng-template #extraTemplate>
+    <button nz-button (click)="refresh()" nzShape="circle">
+      <i class="anticon anticon-reload"></i>
+    </button>
+    <button nz-button (click)="create()" nzShape="circle" nzType="primary">
+      <i class="anticon anticon-plus"></i>
+    </button>
+  </ng-template>
+  <nz-table #tplTk nzShowSizeChanger [nzData]="listOfToken" [nzShowPagination]=true nzPageSize='200'>
+    <thead>
+      <tr>
+        <th>令牌名称</th>
+        <th>组织</th>
+        <th>化验模板</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of tplTk.data">
+        <td><a (click)='tplClick(item)'>{{item.cmdToken}}</a></td>
+        <td>{{item.orgName}}</td>
+        <td>{{item.tplNames}}</td>
+        <td>
+          <a (click)="edit(item)">编辑</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a (click)="delete(item)">删除</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>

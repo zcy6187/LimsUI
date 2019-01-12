@@ -1,0 +1,44 @@
+<div class="padding-bottom-45">
+
+  <h3>
+    <span>{{l('specimen.edit')}}</span>
+  </h3>
+
+  <form nz-form #validateForm="ngForm" (ngSubmit)="save()">
+
+    <!-- 样品名称 -->
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>样品名称</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <input nz-input name="name" #name="ngModel" [(ngModel)]="instanceItem.name" [placeholder]="l('specimen.name')"
+          required>
+        <nz-form-explain *ngIf="name.control.dirty&&name.control.errors">
+          <ng-container *ngIf="name.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>样品类型</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <nz-select nzPlaceHolder="选择类型" [(ngModel)]="instanceItem.lx" nzSize="default" name="lx">
+          <nz-option nzValue="固体" nzLabel="固体"></nz-option>
+          <nz-option nzValue="液体" nzLabel="液体"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- 功能按钮 -->
+    <div class="custom-modal-footer">
+      <div class="custom-modal-footter-group">
+        <button nz-button type="button" [disabled]="saving" (click)="close()">
+          {{l("Cancel")}}
+        </button>
+        <button nz-button [nzType]="'primary'" type="submit" [disabled]="!validateForm.valid||saving">
+          {{l("Save")}}
+        </button>
+      </div>
+    </div>
+
+  </form>
+</div>

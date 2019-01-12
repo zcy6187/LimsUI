@@ -1,0 +1,139 @@
+<page-header title="签到录入"></page-header>
+<form nz-form [nzLayout]="'inline'" class="search__form">
+  <nz-row [nzGutter]="{ md: 8, lg: 24, xl: 48 }">
+    <nz-col nzMd="8" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzFor="no">组织结构</nz-form-label>
+        <nz-form-control>
+          <nz-tree-select [nzNodes]="orgTree" nzShowSearch nzPlaceHolder="请选择" name='orgCode' [(ngModel)]='orgCode'
+            (ngModelChange)='orgChange($event)'>
+          </nz-tree-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="4" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzFor="no">化验模板</nz-form-label>
+        <nz-form-control>
+          <nz-select style="width: 180px;" [(ngModel)]="templateId" nzAllowClear nzPlaceHolder="选择" name='templateId'>
+            <nz-option *ngFor="let option of listOfTemplate" [nzLabel]="option.value" [nzValue]="option.key">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="10" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzFor="no">样品</nz-form-label>
+        <nz-form-control>
+          <nz-select style="width: 180px;" [(ngModel)]="specId" nzAllowClear nzPlaceHolder="选择" name='specId' nzMode="tags">
+            <nz-option *ngFor="let option of listOfSpec" [nzLabel]="option.value" [nzValue]="option.key">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+  <nz-row>
+    <nz-col nzMd="8" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzFor="no">送样时间：</nz-form-label>
+        <nz-form-control>
+          <nz-range-picker nzFormat="yyyy-MM-dd" name="timeArray" [(ngModel)]="timeArray" nzLocal='zh'></nz-range-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="6" nzSm="24">
+      <nz-radio-group [(ngModel)]="flagValue" nzName="radiogroup" name="flag">
+        <label nz-radio nzValue="0">未录入</label>
+        <label nz-radio nzValue="1">部分录入</label>
+        <label nz-radio nzValue="2">全部录入</label>
+        <label nz-radio nzValue="3">全部</label>
+      </nz-radio-group>
+    </nz-col>
+    <nz-col nzMd="4" nzSm="24">
+      <nz-form-item>
+        <button nz-button type="submit" [nzType]="'primary'" (click)="btnSearch()">查询</button>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+</form>
+<nz-table #ajaxTable nzShowSizeChanger [nzData]="dataList" [nzTotal]="totalItems" [(nzPageIndex)]="pageNumber"
+  [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading" (nzPageIndexChange)="refresh()" (nzPageSizeChange)="refresh()"
+  [nzFrontPagination]="false" nzBordered>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>机构名称</th>
+      <th>化验模板</th>
+      <th>化验样品</th>
+      <th>需要化验元素</th>
+      <th>已经化验元素</th>
+      <th>送样时间</th>
+      <th>采样时间</th>
+      <th>样品类型</th>
+      <th>当前状态</th>
+      <th>时间</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of ajaxTable.data">
+      <td>{{item.id}}</td>
+      <td>{{item.orgName}}</td>
+      <td>{{item.tplName}}</td>
+      <td>{{item.tplSpecName}}</td>
+      <td>{{item.tplElementNames}}</td>
+      <td>{{item.eleNames}}</td>
+      <td>{{item.signTime}}</td>
+      <td>{{item.samplingdate}}</td>
+      <td>{{item.lx}}</td>
+      <td>{{item.flag}}</td>
+      <td>
+        {{ item.signDate|date:'MM/dd/yyyy HH:mm:ss A'}}</td>
+      <td>
+        <a (click)="edit(item)">录入数据</a>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="数据录入" nzCancelText="关闭" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+  <ng-container *ngIf="schema">
+    <form nz-form [formGroup]="profileForm" (ngSubmit)="_submitForm($event, profileForm.value)">
+      <div nz-row>
+        <div nz-col nzSpan="24" *ngFor='let item of schema.specList' style="overflow: auto" [formGroupName]='item.formName'>
+          <nz-card [nzTitle]="item.specName">
+            <div *ngFor='let ele of item.eleList'>
+              <input type='text' formControlName="signId" style="display:none" />
+              <input type='text' formControlName="typeSpecId" style="display:none" />
+              <div [formGroupName]="ele.formName">
+                <input type='text' formControlName="typeEleId" style="display:none" />
+                <input type='text' formControlName="eleName" style="display:none" />
+                <nz-form-item>
+                  <nz-form-label [nzXs]="{span:24,offset:0}" [nzSm]="{span:6,offset:0}">{{ele.eleName}}({{ele.unitName}})</nz-form-label>
+                  <nz-form-control [nzXs]="{span:24,offset:0}" [nzSm]="{span:10,offset:0}">
+                    <input nz-input type="text" formControlName="eleValue">
+                  </nz-form-control>
+                  <nz-form-control [nzXs]="{span:24,offset:0}" [nzSm]="{span:8,offset:0}">
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="选择操作员" formControlName="operId">
+                      <nz-option *ngFor="let option of listOfOper" [nzLabel]="option.value" [nzValue]="option.key">
+                      </nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+          </nz-card>
+        </div>
+      </div>
+      <div nz-row>
+        <nz-form-item>
+          <nz-form-control [nzXs]="{span:24,offset:8}" [nzSm]="{span:20,offset:8}">
+            <button nz-button type="submit" nzType="primary">全部保存</button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </form>
+  </ng-container>
+</nz-modal>

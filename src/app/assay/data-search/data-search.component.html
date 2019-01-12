@@ -1,0 +1,83 @@
+<page-header title="化验数据查询"></page-header>
+<form nz-form [nzLayout]="'inline'" class="search__form">
+  <nz-row [nzGutter]="{ md: 8, lg: 24, xl: 48 }">
+    <nz-col nzMd="8" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzFor="no">组织结构</nz-form-label>
+        <nz-form-control>
+          <nz-tree-select [nzNodes]="orgTree" nzShowSearch nzPlaceHolder="请选择" name='orgCode' [(ngModel)]='orgCode'
+            (ngModelChange)='orgChange($event)'>
+          </nz-tree-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="4" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzFor="no">化验模板</nz-form-label>
+        <nz-form-control>
+          <nz-select style="width: 180px;" [(ngModel)]="templateId" nzAllowClear nzPlaceHolder="选择" name='templateId'>
+            <nz-option *ngFor="let option of listOfTemplate" [nzLabel]="option.value" [nzValue]="option.key">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="10" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzFor="no">样品</nz-form-label>
+        <nz-form-control>
+          <nz-select style="width: 180px;" [(ngModel)]="specId" nzAllowClear nzPlaceHolder="选择" name='specId' nzMode="tags">
+            <nz-option *ngFor="let option of listOfSpec" [nzLabel]="option.value" [nzValue]="option.key">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+  <nz-row>
+    <nz-col nzMd="8" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzFor="no">送样时间段</nz-form-label>
+        <nz-form-control>
+          <nz-range-picker nzFormat="yyyy-MM-dd" [(ngModel)]='timeArray' name='timeArray' nz-local='zh'></nz-range-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="6" nzSm="24">
+      <nz-form-item>
+        <button nz-button type="submit" [nzType]="'primary'" (click)="btnSearch()">查询</button>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+</form>
+
+<nz-card>
+  <ng-container *ngIf='tbHead'>
+    <nz-table #tplTk nzShowSizeChanger [nzData]="tbBody" [nzLoading]="isTableLoading" [nzShowPagination]=false
+      [nzScroll]="{x:'1300px'}" nzBordered [nzSize]='default'>
+      <thead>
+        <tr>
+          <th nzWidth="100px" nzLeft="0px" rowspan="2">采样日期</th>
+          <th nzWidth="100px" nzLeft="100px" rowspan="2">采样时间</th>
+          <ng-container *ngFor='let item of tbHead.specimens'>
+            <th [attr.colspan]='item.count'>{{item.name}}</th>
+          </ng-container>
+        </tr>
+        <tr>
+          <th *ngFor='let item of tbHead.elements'>{{item.name}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor='let row of tbBody'>
+          <ng-container *ngFor='let tdVal of row;let i=index'>
+            <ng-container [ngSwitch]="i">
+              <td *ngSwitchCase='0' nzWidth="100px" nzLeft="0px">{{tdVal}}</td>
+              <td *ngSwitchCase='1' nzWidth="100px" nzLeft="100px">{{tdVal}}</td>
+              <td *ngSwitchDefault>{{tdVal}}</td>
+            </ng-container>
+          </ng-container>
+        </tr>
+      </tbody>
+    </nz-table>
+  </ng-container>
+</nz-card>

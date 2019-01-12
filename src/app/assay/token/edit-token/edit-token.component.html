@@ -1,0 +1,138 @@
+<div class="padding-bottom-45">
+
+  <h3>
+    <span>{{l('tplToken.edit')}}</span>
+  </h3>
+
+  <div nz-row nzGutter="16">
+    <div nz-col nzSpan="8" nzBordered="true">
+      <div nz-row>
+        <form nz-form #validateForm="ngForm" (ngSubmit)="save()">
+
+          <!-- 令牌名称 -->
+          <nz-form-item>
+            <nz-form-control nzHasFeedback>
+              <input nz-input name="cmdToken" #name="ngModel" [(ngModel)]="item.cmdToken" placeholder="令牌名称" required>
+              <nz-form-explain *ngIf="name.control.dirty&&name.control.errors">
+                <ng-container *ngIf="name.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+              </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+
+          <!-- 所属机构 -->
+          <nz-form-item>
+            <nz-form-control nzHasFeedback>
+              <nz-form-control>
+                <nz-tree-select [nzNodes]="listOfOrg" nzShowSearch nzPlaceHolder="选择机构" name='orgCodeNode' [(ngModel)]='item.orgCode'
+                  nzSpan="20">
+                </nz-tree-select>
+              </nz-form-control>
+            </nz-form-control>
+          </nz-form-item>
+
+          <!-- 联系人 -->
+          <nz-form-item>
+            <nz-form-control nzHasFeedback>
+              <input nz-input name="contracter" #name="ngModel" [(ngModel)]="item.contracter" placeholder="联系人"
+                required>
+              <nz-form-explain *ngIf="name.control.dirty&&name.control.errors">
+                <ng-container *ngIf="name.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+              </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+
+          <!-- 联系方式 -->
+          <nz-form-item>
+            <nz-form-control nzHasFeedback>
+              <input nz-input name="phoneNumber" #name="ngModel" [(ngModel)]="item.phoneNumber" placeholder="联系方式"
+                required>
+              <nz-form-explain *ngIf="name.control.dirty&&name.control.errors">
+                <ng-container *ngIf="name.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+              </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+      </div>
+
+      <div nz-row>
+        <nz-table #tokenTb nzShowSizeChanger [nzData]="tokenTplList" [nzShowPagination]=true nzPageSize=8>
+          <thead>
+            <tr>
+              <th>模板名称</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of tokenTb.data">
+              <td>{{data.tplName}}</td>
+              <td>
+                <a (click)="deleteTpl(data)">移除</a>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+    <div nz-col nzSpan="16" nzBordered="true">
+      <nz-card nzTitle="在此处选择化验模板">
+        <form nz-form [nzLayout]="'inline'" class="search__form">
+          <nz-row [nzGutter]="{ md: 8, lg: 24, xl: 48 }">
+            <nz-col nzMd="14" nzSm="24">
+              <nz-form-item>
+                <nz-form-label nzFor="no">机构</nz-form-label>
+                <nz-form-control>
+                  <nz-tree-select [nzNodes]="listOfOrg" nzShowSearch nzPlaceHolder="选择机构" name='orgCode' [(ngModel)]='orgCode'>
+                  </nz-tree-select>
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+            <nz-col nzMd="8" nzSm="24">
+              <nz-form-item>
+                <nz-form-label nzFor="no">模板</nz-form-label>
+                <nz-form-control>
+                  <input nz-input [(ngModel)]="searchTplName" id="name" name="tplName" placeholder="">
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+            <nz-col nzMd="2" nzSm="24">
+              <nz-form-item>
+                <button nz-button type="submit" [nzType]="'primary'" (click)="btnSearch()">查询</button>
+              </nz-form-item>
+            </nz-col>
+          </nz-row>
+          <nz-row>
+            <nz-table #tplTb nzShowSizeChanger [nzData]="templateList">
+              <thead>
+                <tr>
+                  <th>模板名称</th>
+                  <th>组织</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of tplTb.data">
+                  <td>{{item.tplName}}</td>
+                  <td>{{item.orgName}}</td>
+                  <td>
+                    <a (click)="addTpl(item)">添加</a>
+                  </td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </nz-row>
+        </form>
+      </nz-card>
+    </div>
+  </div>
+  <!-- 功能按钮 -->
+  <div class="custom-modal-footer">
+    <div class="custom-modal-footter-group">
+      <button nz-button type="button" [disabled]="saving" (click)="close()">
+        {{l("Cancel")}}
+      </button>
+      <button nz-button [nzType]="'primary'" type="button" (click)="save()" [disabled]="!validateForm.valid||saving">
+        {{l("Save")}}
+      </button>
+    </div>
+  </div>
+</div>

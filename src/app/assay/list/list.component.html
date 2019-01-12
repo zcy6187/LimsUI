@@ -1,0 +1,23 @@
+<p>
+  list works!
+</p>
+<p>app-list</p>
+<nz-card nzTitle="调整顺序">
+  <nz-card nzTitle="Title">
+    <nz-list [nzDataSource]="list" [nzBordered]="true" [nzItemLayout]="'horizontal'" [nzRenderItem]="item">
+      <ng-template #item let-item>
+        <nz-list-item>
+          <div>
+            <p style='display: inline-block;width:200px;'>{{item}}</p>
+            <button nz-button (click)="tt()" nzShape="circle">
+              <i class="anticon anticon-down"></i>
+            </button>
+            <button nz-button (click)="tt()" nzShape="circle">
+              <i class="anticon anticon-up"></i>
+            </button>
+          </div>
+        </nz-list-item>
+      </ng-template>
+    </nz-list>
+  </nz-card>
+</nz-card>

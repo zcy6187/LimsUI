@@ -1,0 +1,48 @@
+<page-header title="用户模板管理"></page-header>
+<form nz-form [nzLayout]="'inline'" class="search__form">
+  <nz-row [nzGutter]="{ md: 8, lg: 24, xl: 48 }">
+    <nz-col nzMd="8" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzFor="no">用户名</nz-form-label>
+        <nz-form-control>
+          <input nz-input [(ngModel)]="name" id="name" name="name" placeholder="">
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="6" nzSm="24">
+      <nz-form-item>
+        <button nz-button type="submit" [nzType]="'primary'" (click)="btnSearch()">查询</button>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+</form>
+
+<nz-card [nzExtra]="extraTemplate" nzTitle="用户信息">
+  <ng-template #extraTemplate>
+    <button nz-button (click)="refresh()" nzShape="circle">
+      <i class="anticon anticon-reload"></i>
+    </button>
+  </ng-template>
+  <nz-table #tplTk nzShowSizeChanger [nzData]="listOfUserTpl" [nzShowPagination]=false>
+    <thead>
+      <tr>
+        <th>编号</th>
+        <th>用户名</th>
+        <th>真实姓名</th>
+        <th>模板</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of tplTk.data">
+        <td>{{item.id}}</td>
+        <td>{{item.userName}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.tplNames}}</td>
+        <td>
+          <a (click)="edit(item)">编辑</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>

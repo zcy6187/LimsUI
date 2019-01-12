@@ -1,0 +1,31 @@
+<div class="container">
+
+  <div class="top">
+
+    <div class="head">
+      <a [routerLink]="['/']">
+        <img class="logo" src="/assets/images/logos/LIMS.svg">
+      </a>
+    </div>
+
+    <p class="desc">欢迎使用豫光化验系统！
+    </p>
+
+    <!-- <div *ngIf="showTenantChange()">
+      <tenant-change></tenant-change>
+    </div> -->
+
+  </div>
+
+  <router-outlet></router-outlet>
+
+  <br>
+  <account-languages></account-languages>
+
+  <global-footer [links]="links">
+    Copyright
+    <i class="anticon anticon-copyright"></i> {{currentYear}}
+    张承宇 出品
+  </global-footer>
+
+</div>

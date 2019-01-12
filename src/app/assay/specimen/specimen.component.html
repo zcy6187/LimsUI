@@ -1,0 +1,47 @@
+<page-header [title]="l('SpecimenManager')"></page-header>
+
+
+<nz-card [nzExtra]="extraTpl">
+
+  <ng-template #extraTpl>
+    <nz-input-group [nzAddOnAfter]="addOnAfterTemplate">
+      <input type="text" nz-input placeholder="样品名称" name="searchTxt" [(ngModel)]="searchTxt">
+      <ng-template #addOnAfterTemplate>
+        <button nz-button nzType="primary" nzSearch (click)="loadData()"><i nz-icon type="search"></i></button>
+        <button nz-button (click)="refresh()" nzShape="circle">
+          <i class="anticon anticon-reload"></i>
+        </button>
+        <button nz-button (click)="create()" nzShape="circle" nzType="primary">
+          <i class="anticon anticon-plus"></i>
+        </button>
+      </ng-template>
+    </nz-input-group>
+  </ng-template>
+
+
+  <nz-table #ajaxTable nzShowSizeChanger [nzData]="dataList" [nzTotal]="totalItems" [(nzPageIndex)]="pageNumber"
+    [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading" (nzPageIndexChange)="refresh()" (nzPageSizeChange)="refresh()"
+    [nzFrontPagination]="false">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>名称</th>
+        <th>类型</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of ajaxTable.data">
+        <td>{{item.id}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.lx}}</td>
+        <td>
+          <a (click)="edit(item)">编辑</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a (click)="delete(item)">删除</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+</nz-card>

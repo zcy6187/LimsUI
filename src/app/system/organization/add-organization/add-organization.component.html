@@ -1,0 +1,42 @@
+<div class="padding-bottom-45">
+
+  <h3>
+    <span>{{l('organization.add')}}</span>
+  </h3>
+
+
+  <form nz-form #validateForm="ngForm" (ngSubmit)="save()">
+
+    <!-- 组织名称 -->
+    <nz-form-item>
+      <nz-form-control nzHasFeedback>
+        <input nz-input name="name" #name="ngModel" [(ngModel)]="item.orgName" [placeholder]="l('organization.name')"
+          required>
+        <nz-form-explain *ngIf="name.control.dirty&&name.control.errors">
+          <ng-container *ngIf="name.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- 组织别名 -->
+    <nz-form-item>
+      <nz-form-control nzHasFeedback>
+        <input nz-input name="displayName" #displayName="ngModel" [(ngModel)]="item.aliasName" [placeholder]="l('organization.aliasName')">
+      </nz-form-control>
+    </nz-form-item>
+
+
+    <!-- 功能按钮 -->
+    <div class="custom-modal-footer">
+      <div class="custom-modal-footter-group">
+        <button nz-button type="button" [disabled]="saving" (click)="close()">
+          {{l("Cancel")}}
+        </button>
+        <button nz-button [nzType]="'primary'" type="submit" [disabled]="!validateForm.valid||saving">
+          {{l("Save")}}
+        </button>
+      </div>
+    </div>
+
+  </form>
+</div>

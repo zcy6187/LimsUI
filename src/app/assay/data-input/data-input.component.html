@@ -1,0 +1,140 @@
+<page-header title="化验数据录入"></page-header>
+<form nz-form [nzLayout]="'inline'" class="search__form">
+  <nz-row [nzGutter]="{ md: 8, lg: 24, xl: 48 }">
+    <nz-col nzMd="8" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzSpan="4">机构</nz-form-label>
+        <nz-form-control nzSpan="20">
+          <nz-tree-select [nzNodes]="orgTree" nzShowSearch nzPlaceHolder="请选择" name='orgCode' [(ngModel)]='orgCode'
+            (ngModelChange)='orgChange($event)'>
+          </nz-tree-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="4" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzSpan="4">模板</nz-form-label>
+        <nz-form-control nzSpan="20">
+          <nz-select [(ngModel)]="templateId" nzAllowClear nzPlaceHolder="选择" name='templateId' (ngModelChange)='tplChange($event)'>
+            <nz-option *ngFor="let option of listOfTemplate" [nzLabel]="option.value" [nzValue]="option.key">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="10" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzSpan="4">样品</nz-form-label>
+        <nz-form-control nzSpan="20">
+          <nz-select [(ngModel)]="specId" nzAllowClear nzPlaceHolder="选择" name='specId' nzMode="tags">
+            <nz-option *ngFor="let option of listOfSpec" [nzLabel]="option.value" [nzValue]="option.key">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="2" nzSm="24">
+      <nz-form-item>
+        <button nz-button type="submit" [nzType]="'primary'" (click)="btnSearch()">查询</button>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+  <nz-row [nzGutter]="{ md: 8, lg: 24, xl: 48 }">
+    <nz-col nzMd="8" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzFor="no">采样日期</nz-form-label>
+        <nz-form-control>
+          <nz-date-picker nzFormat="yyyy-MM-dd" name="samplingDate" [(ngModel)]="samplingDate"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="6" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzFor="no">采样时间</nz-form-label>
+        <nz-form-control>
+          <nz-select style="width: 180px;" [(ngModel)]="samplingTime" nzAllowClear nzPlaceHolder="选择" name='samplingTime'
+            nzShowSearch>
+            <nz-option *ngFor="let option of listOfTime" [nzLabel]="option.value" [nzValue]="option.key">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="4" nzSm="24">
+      <nz-form-item>
+        <nz-form-control [nzXs]="{span:24,offset:0}" [nzSm]="{span:20,offset:4}">
+          <button nz-button type="button" nzType="primary" (click)='isVisible=true'>显示历史信息</button>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+</form>
+<ng-container *ngIf="schema">
+  <form nz-form [formGroup]="profileForm" (ngSubmit)="_submitForm($event, profileForm.value)">
+    <div nz-row>
+      <div nz-col nzSpan="8" *ngFor='let item of schema.specList' style="overflow: auto" [formGroupName]='item.formName'>
+        <nz-card [nzTitle]="item.specName">
+          <div *ngFor='let ele of item.eleList'>
+            <input type='text' formControlName="signId" style="display:none" />
+            <input type='text' formControlName="typeSpecId" style="display:none" />
+            <div [formGroupName]="ele.formName">
+              <input type='text' formControlName="typeEleId" style="display:none" />
+              <input type='text' formControlName="eleName" style="display:none" />
+              <nz-form-item>
+                <nz-form-label [nzXs]="{span:24,offset:0}" [nzSm]="{span:6,offset:0}">{{ele.eleName}}({{ele.unitName}})</nz-form-label>
+                <nz-form-control [nzXs]="{span:24,offset:0}" [nzSm]="{span:10,offset:0}">
+                  <input nz-input type="text" formControlName="eleValue">
+                </nz-form-control>
+                <nz-form-control [nzXs]="{span:24,offset:0}" [nzSm]="{span:8,offset:0}">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="选择操作员" formControlName="operId">
+                    <nz-option *ngFor="let option of listOfOper" [nzLabel]="option.value" [nzValue]="option.key">
+                    </nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+        </nz-card>
+      </div>
+    </div>
+    <div nz-row>
+      <nz-form-item>
+        <nz-form-control [nzXs]="{span:24,offset:8}" [nzSm]="{span:20,offset:8}">
+          <button nz-button type="submit" nzType="primary">全部保存</button>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </form>
+</ng-container>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="已输入信息" nzCancelText="关闭" (nzOnOk)="handleOk()" (nzOnCancel)="handleCancel()"
+  nzWidth="1080">
+  <nz-table #tplTk [nzData]="listOfData" [nzShowPagination]=true [nzScroll]="tableSize" nzBordered [nzSize]='small'
+    *ngIf='schema' nzPageSize=50>
+    <thead>
+      <tr>
+        <th nzWidth="120px" nzLeft="0px" rowspan="2">采样日期</th>
+        <th nzWidth="100px" nzLeft="120px" rowspan="2">采样时间</th>
+        <ng-container *ngFor='let item of schema.specList'>
+          <th [attr.colspan]='item.eleList.length'>{{item.specName}}</th>
+        </ng-container>
+      </tr>
+      <tr *ngFor='let specItem of schema.specList'>
+        <ng-container *ngFor='let eleItem of specItem.eleList;'>
+          <th>{{eleItem.eleName}}</th>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor='let itemArray of historyInfo'>
+        <ng-container *ngFor='let eleVal of itemArray;let i = index;'>
+          <ng-container [ngSwitch]="i">
+            <td *ngSwitchCase="0" nzLeft="0px">{{eleVal}}</td>
+            <td *ngSwitchCase="1" nzLeft="120px">{{eleVal}}</td>
+            <td *ngSwitchDefault>{{eleVal}}</td>
+          </ng-container>
+        </ng-container>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-modal>

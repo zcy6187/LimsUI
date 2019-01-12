@@ -1,0 +1,134 @@
+<page-header title="化验模板管理"></page-header>
+<form nz-form [nzLayout]="'inline'" class="search__form">
+  <nz-row [nzGutter]="{ md: 8, lg: 24, xl: 48 }">
+    <nz-col nzMd="10" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzFor="no">组织结构</nz-form-label>
+        <nz-form-control>
+          <nz-tree-select [nzNodes]="orgTree" nzShowSearch nzPlaceHolder="请选择" name='orgCode' [(ngModel)]='orgCode'>
+          </nz-tree-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="8" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzFor="no">模板名称</nz-form-label>
+        <nz-form-control>
+          <input nz-input [(ngModel)]="searchTplName" id="name" name="tplName" placeholder="">
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="6" nzSm="24">
+      <nz-form-item>
+        <button nz-button type="submit" [nzType]="'primary'" (click)="btnSearch()">查询</button>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+</form>
+
+<div nz-row nzType="flex" nzJustify="center" nzAlign="top">
+  <div nz-col nzSpan="8">
+    <nz-card [nzExtra]="extraTemplate" [nzTitle]="templateTitle">
+      <ng-template #extraTemplate>
+        <button nz-button (click)="refreshTpl()" nzShape="circle">
+          <i class="anticon anticon-reload"></i>
+        </button>
+        <button nz-button (click)="createTpl()" nzShape="circle" nzType="primary">
+          <i class="anticon anticon-plus"></i>
+        </button>
+      </ng-template>
+      <nz-table #tplTb nzShowSizeChanger [nzData]="templateList" [nzShowPagination]=true>
+        <thead>
+          <tr>
+            <th>模板名称</th>
+            <th>组织</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of tplTb.data">
+            <td><a (click)='tplClick(item)'>{{item.tplName}}</a></td>
+            <td>{{item.orgName}}</td>
+            <td>
+              <a (click)="editTpl(item)">编辑</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a (click)="deleteTpl(item)">删除</a>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-card>
+  </div>
+
+  <div nz-col nzSpan="8">
+    <nz-card [nzExtra]="extraSpecimen" [nzTitle]="specimenTitle">
+      <ng-template #extraSpecimen>
+        <button nz-button (click)="refreshSpecimen()" nzShape="circle">
+          <i class="anticon anticon-reload"></i>
+        </button>
+        <button nz-button (click)="createSpecimen()" nzShape="circle" nzType="primary">
+          <i class="anticon anticon-plus"></i>
+        </button>
+        <button nz-button (click)="reorder('specimen')" nzShape="circle" nzType="info">
+          <i class="anticon anticon-swap"></i>
+        </button>
+      </ng-template>
+      <nz-table #specTb nzShowSizeChanger [nzData]="specimenList" [nzShowPagination]=true>
+        <thead>
+          <tr>
+            <th>样品名称</th>
+            <th>主单位</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of specTb.data">
+            <td><a (click)='specClick(item)'>{{item.specName}}</a></td>
+            <td>{{item.unitName}}</td>
+            <td>
+              <a (click)="editTplSpecimen(item)">编辑</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a (click)="deleteTplSpecimen(item)">删除</a>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-card>
+  </div>
+
+  <div nz-col nzSpan="8">
+    <nz-card [nzExtra]="extraElement" [nzTitle]="elementTitle">
+      <ng-template #extraElement>
+        <button nz-button (click)="refreshElement()" nzShape="circle">
+          <i class="anticon anticon-reload"></i>
+        </button>
+        <button nz-button (click)="createElement()" nzShape="circle" nzType="primary">
+          <i class="anticon anticon-plus"></i>
+        </button>
+        <button nz-button (click)="reorder('element')" nzShape="circle" nzType="info">
+          <i class="anticon anticon-swap"></i>
+        </button>
+      </ng-template>
+      <nz-table #eleTb nzShowSizeChanger [nzData]="elementList" [nzShowPagination]=true>
+        <thead>
+          <tr>
+            <th>元素名称</th>
+            <th>单位</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of eleTb.data">
+            <td>{{item.elementName}}</td>
+            <td>{{item.unitName}}</td>
+            <td>
+              <a (click)="editTplElement(item)">编辑</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a (click)="deleteTplElement(item)">删除</a>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-card>
+  </div>
+</div>

@@ -1,0 +1,65 @@
+<page-header title="帐套管理"></page-header>
+
+
+<nz-card [nzExtra]="extraTpl">
+
+  <ng-template #extraTpl>
+    <nz-input-group [nzAddOnAfter]="addOnAfterTemplate">
+      <ng-template #addOnAfterTemplate>
+        <button nz-button (click)="refresh()" nzShape="circle">
+          <i class="anticon anticon-reload"></i>
+        </button>
+        <button nz-button (click)="create()" nzShape="circle" nzType="primary">
+          <i class="anticon anticon-plus"></i>
+        </button>
+      </ng-template>
+    </nz-input-group>
+  </ng-template>
+
+
+  <nz-table #ajaxTable [nzData]="dataList" (nzPageSizeChange)="refresh()" nzBordered nzShowPageSize=false>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>名称</th>
+        <th>编码</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of ajaxTable.data">
+        <td>{{item.id}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.code}}</td>
+        <td>
+          <a (click)="edit(item)">编辑</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a (click)="delete(item)">删除</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+</nz-card>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="帐套信息" nzCancelText="关闭" (nzOnOk)="handleOk()" (nzOnCancel)="handleCancel()">
+  <form nz-form (ngSubmit)="submitForm()">
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">帐套名称</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <input nz-input name="name" id="name" [(ngModel)]='formObj.name'>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="code">帐套编码</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <input nz-input name="code" id="code" [(ngModel)]='formObj.code'>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row style="margin-bottom:8px;">
+      <nz-form-control [nzSpan]="14" [nzOffset]="6">
+        <button nz-button nzType="primary">提交</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>
