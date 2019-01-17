@@ -12,8 +12,6 @@ import { Observable, throwError as _observableThrow, of as _observableOf } from 
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
 
-import * as moment from 'moment';
-
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 @Injectable()
@@ -162,7 +160,7 @@ export class Assay_AttendanceServiceProxy {
      * @param endTime (optional) 
      * @return Success
      */
-    getAttendances(skipCount: number | null | undefined, maxResultCount: number | null | undefined, orgCode: string | null | undefined, tplId: number | null | undefined, specId: number | null | undefined, flag: number | null | undefined, beginTime: moment.Moment | null | undefined, endTime: moment.Moment | null | undefined): Observable<PagedResultDtoOfAttendanceDto> {
+    getAttendances(skipCount: number | null | undefined, maxResultCount: number | null | undefined, orgCode: string | null | undefined, tplId: number | null | undefined, specId: string | null | undefined, flag: number | null | undefined, beginTime: Date | null | undefined, endTime: Date | null | undefined): Observable<PagedResultDtoOfAttendanceDto> {
         let url_ = this.baseUrl + "/api/services/app/Assay_Attendance/GetAttendances?";
         if (skipCount !== undefined)
             url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
@@ -651,7 +649,7 @@ export class Assay_DataSearchServiceProxy {
      * @param endTime (optional) 
      * @return Success
      */
-    getDataInfoByTemplateIdAndSpecId(input: number | null | undefined, specId: number[] | null | undefined, begin: moment.Moment | null | undefined, endTime: moment.Moment | null | undefined): Observable<DataSearchTableDto> {
+    getDataInfoByTemplateIdAndSpecId(input: number | null | undefined, specId: number[] | null | undefined, begin: Date | null | undefined, endTime: Date | null | undefined): Observable<DataSearchTableDto> {
         let url_ = this.baseUrl + "/api/services/app/Assay_DataSearch/GetDataInfoByTemplateIdAndSpecId?";
         if (input !== undefined)
             url_ += "input=" + encodeURIComponent("" + input) + "&"; 
@@ -5891,11 +5889,14 @@ export class AttendanceDto implements IAttendanceDto {
     man_banci: string | undefined;
     man_luci: string | undefined;
     signTime: string | undefined;
-    signDate: moment.Moment | undefined;
+    signDate: Date | undefined;
     samplingdate: string | undefined;
     lx: string | undefined;
     eleNames: string | undefined;
     flag: string | undefined;
+    samplingTime: string | undefined;
+    selfCode: string | undefined;
+    description: string | undefined;
 
     constructor(data?: IAttendanceDto) {
         if (data) {
@@ -5919,11 +5920,14 @@ export class AttendanceDto implements IAttendanceDto {
             this.man_banci = data["man_banci"];
             this.man_luci = data["man_luci"];
             this.signTime = data["signTime"];
-            this.signDate = data["signDate"] ? moment(data["signDate"].toString()) : <any>undefined;
+            this.signDate = data["signDate"] ? new Date(data["signDate"].toString()) : <any>undefined;
             this.samplingdate = data["samplingdate"];
             this.lx = data["lx"];
             this.eleNames = data["eleNames"];
             this.flag = data["flag"];
+            this.samplingTime = data["samplingTime"];
+            this.selfCode = data["selfCode"];
+            this.description = data["description"];
         }
     }
 
@@ -5952,6 +5956,9 @@ export class AttendanceDto implements IAttendanceDto {
         data["lx"] = this.lx;
         data["eleNames"] = this.eleNames;
         data["flag"] = this.flag;
+        data["samplingTime"] = this.samplingTime;
+        data["selfCode"] = this.selfCode;
+        data["description"] = this.description;
         return data; 
     }
 
@@ -5975,11 +5982,14 @@ export interface IAttendanceDto {
     man_banci: string | undefined;
     man_luci: string | undefined;
     signTime: string | undefined;
-    signDate: moment.Moment | undefined;
+    signDate: Date | undefined;
     samplingdate: string | undefined;
     lx: string | undefined;
     eleNames: string | undefined;
     flag: string | undefined;
+    samplingTime: string | undefined;
+    selfCode: string | undefined;
+    description: string | undefined;
 }
 
 export class TemplateSchemaInputDto implements ITemplateSchemaInputDto {
@@ -6177,8 +6187,8 @@ export interface IElementInputDto {
 
 export class CreateDataInputDto implements ICreateDataInputDto {
     tplId: number | undefined;
-    samplingDate: moment.Moment | undefined;
-    signDate: moment.Moment | undefined;
+    samplingDate: Date | undefined;
+    signDate: Date | undefined;
     samplingTime: string | undefined;
     formValue: string | undefined;
 
@@ -6194,8 +6204,8 @@ export class CreateDataInputDto implements ICreateDataInputDto {
     init(data?: any) {
         if (data) {
             this.tplId = data["tplId"];
-            this.samplingDate = data["samplingDate"] ? moment(data["samplingDate"].toString()) : <any>undefined;
-            this.signDate = data["signDate"] ? moment(data["signDate"].toString()) : <any>undefined;
+            this.samplingDate = data["samplingDate"] ? new Date(data["samplingDate"].toString()) : <any>undefined;
+            this.signDate = data["signDate"] ? new Date(data["signDate"].toString()) : <any>undefined;
             this.samplingTime = data["samplingTime"];
             this.formValue = data["formValue"];
         }
@@ -6228,8 +6238,8 @@ export class CreateDataInputDto implements ICreateDataInputDto {
 
 export interface ICreateDataInputDto {
     tplId: number | undefined;
-    samplingDate: moment.Moment | undefined;
-    signDate: moment.Moment | undefined;
+    samplingDate: Date | undefined;
+    signDate: Date | undefined;
     samplingTime: string | undefined;
     formValue: string | undefined;
 }
@@ -6509,7 +6519,7 @@ export class TypeIn implements ITypeIn {
     tplId: number | undefined;
     specId: number | undefined;
     signId: string | undefined;
-    createTime: moment.Moment | undefined;
+    createTime: Date | undefined;
     creatorId: number | undefined;
     operator: string | undefined;
     samplingTime: string | undefined;
@@ -6537,7 +6547,7 @@ export class TypeIn implements ITypeIn {
             this.tplId = data["tplId"];
             this.specId = data["specId"];
             this.signId = data["signId"];
-            this.createTime = data["createTime"] ? moment(data["createTime"].toString()) : <any>undefined;
+            this.createTime = data["createTime"] ? new Date(data["createTime"].toString()) : <any>undefined;
             this.creatorId = data["creatorId"];
             this.operator = data["operator"];
             this.samplingTime = data["samplingTime"];
@@ -6593,7 +6603,7 @@ export interface ITypeIn {
     tplId: number | undefined;
     specId: number | undefined;
     signId: string | undefined;
-    createTime: moment.Moment | undefined;
+    createTime: Date | undefined;
     creatorId: number | undefined;
     operator: string | undefined;
     samplingTime: string | undefined;
@@ -6618,7 +6628,7 @@ export class TypeInItem implements ITypeInItem {
     isDeleted: boolean | undefined;
     operator: string | undefined;
     operatorId: string | undefined;
-    createTime: moment.Moment | undefined;
+    createTime: Date | undefined;
     eleName: string | undefined;
     id: number | undefined;
 
@@ -6642,7 +6652,7 @@ export class TypeInItem implements ITypeInItem {
             this.isDeleted = data["isDeleted"];
             this.operator = data["operator"];
             this.operatorId = data["operatorId"];
-            this.createTime = data["createTime"] ? moment(data["createTime"].toString()) : <any>undefined;
+            this.createTime = data["createTime"] ? new Date(data["createTime"].toString()) : <any>undefined;
             this.eleName = data["eleName"];
             this.id = data["id"];
         }
@@ -6690,7 +6700,7 @@ export interface ITypeInItem {
     isDeleted: boolean | undefined;
     operator: string | undefined;
     operatorId: string | undefined;
-    createTime: moment.Moment | undefined;
+    createTime: Date | undefined;
     eleName: string | undefined;
     id: number | undefined;
 }
@@ -8132,7 +8142,7 @@ export class OrgDto implements IOrgDto {
     aliasName: string | undefined;
     fullName: string | undefined;
     isUse: boolean | undefined;
-    createTime: moment.Moment | undefined;
+    createTime: Date | undefined;
     oldId: string | undefined;
     id: number | undefined;
 
@@ -8156,7 +8166,7 @@ export class OrgDto implements IOrgDto {
             this.aliasName = data["aliasName"];
             this.fullName = data["fullName"];
             this.isUse = data["isUse"];
-            this.createTime = data["createTime"] ? moment(data["createTime"].toString()) : <any>undefined;
+            this.createTime = data["createTime"] ? new Date(data["createTime"].toString()) : <any>undefined;
             this.oldId = data["oldId"];
             this.id = data["id"];
         }
@@ -8204,7 +8214,7 @@ export interface IOrgDto {
     aliasName: string | undefined;
     fullName: string | undefined;
     isUse: boolean | undefined;
-    createTime: moment.Moment | undefined;
+    createTime: Date | undefined;
     oldId: string | undefined;
     id: number | undefined;
 }
@@ -8746,7 +8756,7 @@ export interface IGetCurrentLoginInformationsOutput {
 
 export class ApplicationInfoDto implements IApplicationInfoDto {
     version: string | undefined;
-    releaseDate: moment.Moment | undefined;
+    releaseDate: Date | undefined;
     features: { [key: string] : boolean; } | undefined;
 
     constructor(data?: IApplicationInfoDto) {
@@ -8761,7 +8771,7 @@ export class ApplicationInfoDto implements IApplicationInfoDto {
     init(data?: any) {
         if (data) {
             this.version = data["version"];
-            this.releaseDate = data["releaseDate"] ? moment(data["releaseDate"].toString()) : <any>undefined;
+            this.releaseDate = data["releaseDate"] ? new Date(data["releaseDate"].toString()) : <any>undefined;
             if (data["features"]) {
                 this.features = {};
                 for (let key in data["features"]) {
@@ -8803,7 +8813,7 @@ export class ApplicationInfoDto implements IApplicationInfoDto {
 
 export interface IApplicationInfoDto {
     version: string | undefined;
-    releaseDate: moment.Moment | undefined;
+    releaseDate: Date | undefined;
     features: { [key: string] : boolean; } | undefined;
 }
 
@@ -9490,8 +9500,8 @@ export class UserDto implements IUserDto {
     emailAddress: string;
     isActive: boolean | undefined;
     fullName: string | undefined;
-    lastLoginTime: moment.Moment | undefined;
-    creationTime: moment.Moment | undefined;
+    lastLoginTime: Date | undefined;
+    creationTime: Date | undefined;
     roleNames: string[] | undefined;
     ztCodes: UserZtDto[] | undefined;
     id: number | undefined;
@@ -9513,8 +9523,8 @@ export class UserDto implements IUserDto {
             this.emailAddress = data["emailAddress"];
             this.isActive = data["isActive"];
             this.fullName = data["fullName"];
-            this.lastLoginTime = data["lastLoginTime"] ? moment(data["lastLoginTime"].toString()) : <any>undefined;
-            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
+            this.lastLoginTime = data["lastLoginTime"] ? new Date(data["lastLoginTime"].toString()) : <any>undefined;
+            this.creationTime = data["creationTime"] ? new Date(data["creationTime"].toString()) : <any>undefined;
             if (data["roleNames"] && data["roleNames"].constructor === Array) {
                 this.roleNames = [];
                 for (let item of data["roleNames"])
@@ -9575,8 +9585,8 @@ export interface IUserDto {
     emailAddress: string;
     isActive: boolean | undefined;
     fullName: string | undefined;
-    lastLoginTime: moment.Moment | undefined;
-    creationTime: moment.Moment | undefined;
+    lastLoginTime: Date | undefined;
+    creationTime: Date | undefined;
     roleNames: string[] | undefined;
     ztCodes: UserZtDto[] | undefined;
     id: number | undefined;

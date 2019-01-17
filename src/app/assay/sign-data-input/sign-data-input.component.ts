@@ -15,7 +15,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class SignDataInputComponent extends PagedListingComponentBase<AttendanceDto> implements OnInit {
   flagValue: string;
-  timeArray: any;
+  timeArray: Date[];
   orgTree: OrgTreeNodeDto[];
   orgCode: string;
   templateId: string;
@@ -49,6 +49,10 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
       });
     this.isTableLoading = false;
     this.isVisible = false;
+    let selectTime = [];
+    selectTime.push(new Date());
+    selectTime.push(new Date());
+    this.timeArray = selectTime;
   }
 
   refreshUser() {
@@ -96,6 +100,7 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
       });
   }
 
+  // 加载模板
   orgChange(item) {
     if (item) {
       this._searchService.getTemplateHtmlSelectDtosByOrgCode(item)
@@ -111,13 +116,14 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
     }
   }
 
+  // 加载样品
   tplChange(item) {
-    console.log(item);
     if (item) {
       this._searchService.getSpecimenHtmlSelectByTemplateId(item)
         .subscribe((res: HtmlSelectDto[]) => {
           if (res.length > 0) {
             this.listOfSpec = res;
+            this.specId = this.listOfSpec[0].key;
           } else {
             this.msg.warning("该化验模板下没有样品信息！");
           }
@@ -131,14 +137,16 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
     const searchTplId = item.tplId;
     const searchSpecId = item.tplSpecId;
     const newSchemaId = searchSpecId + "#" + searchSpecId;
-    // 绘制表单
+
     if (newSchemaId !== this.oldSechmaId) {
+      // 绘制表单并填充数据
       const specArray = new Array<number>();
       specArray.push(searchSpecId);
       this.searchSchema(searchTplId, specArray);
+    } else {
+      // 仅填充数据
+      this.searchFormValue();
     }
-    // 填充数据
-    this.searchFormValue();
     this.oldSechmaId = newSchemaId;
     this.isVisible = true;
   }
@@ -155,6 +163,7 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
             this.schema = res;
             this.schemaInputToFormGroup(res);
             this.historyInfo = [];
+            this.searchFormValue();
           }
         });
     } else {
@@ -162,15 +171,15 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
     }
   }
 
+  // 从服务器更新表单数据
   searchFormValue() {
     this._searchService.getFormValueBySignId(this.selectedItem.id)
       .subscribe((res: HtmlDataOperRetDto) => {
-        console.log(res.code);
+        // 更新数据
         if (res.code !== 0) {
-          console.log(res.message);
           this.profileForm.patchValue(JSON.parse(res.message));
         } else {
-          this.resetFormValue();
+          this.resetFormValue(); // 全部置空
         }
       });
   }
@@ -196,7 +205,6 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
     console.log(JSON.stringify(formObj));
     this.profileForm.setValue(formObj);
   }
-
 
   // 生成表单
   schemaInputToFormGroup(schemaInfo: TemplateSchemaInputDto) {

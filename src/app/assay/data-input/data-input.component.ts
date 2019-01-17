@@ -168,7 +168,7 @@ export class DataInputComponent extends AppComponentBase implements OnInit {
     }
 
     const dataInput = new CreateDataInputDto();
-    dataInput.samplingDate = moment(this.samplingDate.toLocaleDateString());
+    dataInput.samplingDate = new Date(this.samplingDate.toLocaleDateString());
     dataInput.samplingTime = this.samplingTime.substr(0, 2) + ":" + this.samplingTime.substr(2, 2);
     dataInput.tplId = Number(this.templateId);
     dataInput.formValue = JSON.stringify(valObj);
