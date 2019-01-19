@@ -16,7 +16,7 @@ export class DataSearchComponent extends AppComponentBase implements OnInit {
   listOfTemplate: HtmlSelectDto[];
   listOfSpec: HtmlSelectDto[];
   specId;
-  timeArray;
+  timeArray: Date[];
   tbBody: Array<Array<string>>;
 
 
@@ -27,26 +27,16 @@ export class DataSearchComponent extends AppComponentBase implements OnInit {
   }
 
   ngOnInit() {
-    this._orgService.getOrgTreeByRootCode('00010002')
+    this._orgService.getOrgTreeByZtCode()
       .subscribe((res: OrgTreeNodeDto[]) => {
         this.orgTree = res;
       });
+    this.timeArray = new Array<Date>();
+    this.timeArray.push(new Date());
+    this.timeArray.push(new Date());
   }
 
   btnSearch() {
-    // if (this.templateId) {
-    //   const tplId = Number(this.templateId);
-    //   this._searchService.getTemplateInfoByTemplateIdAndSpecId(tplId, this.specId).subscribe(res => {
-    //     if (!res) {
-    //       this.msg.warning("找不到该模板");
-    //     } else {
-    //       this.tbHead = res;
-    //     }
-    //   });
-    // } else {
-    //   this.msg.warning('请先选择化验模板！');
-    // }
-
     if (this.templateId) {
       const tplId = Number(this.templateId);
       if (!this.timeArray || this.timeArray.length < 2) {
@@ -83,12 +73,12 @@ export class DataSearchComponent extends AppComponentBase implements OnInit {
   }
 
   tplChange(item) {
-    console.log(item);
     if (item) {
       this._searchService.getSpecimenHtmlSelectByTemplateId(item)
         .subscribe((res: HtmlSelectDto[]) => {
           if (res.length > 0) {
             this.listOfSpec = res;
+            this.specId = res[0].key;
           } else {
             this.msg.warning("该化验模板下没有样品信息！");
           }

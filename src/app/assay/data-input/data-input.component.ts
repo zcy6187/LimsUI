@@ -47,7 +47,7 @@ export class DataInputComponent extends AppComponentBase implements OnInit {
   }
 
   ngOnInit() {
-    this._orgService.getOrgTreeByRootCode('00010002')
+    this._orgService.getOrgTreeByZtCode()
       .subscribe((res: OrgTreeNodeDto[]) => {
         this.orgTree = res;
       });
@@ -60,23 +60,6 @@ export class DataInputComponent extends AppComponentBase implements OnInit {
 
   createSamplingTime() {
     this.listOfTime = new Array<HtmlSelectDto>();
-    // for (let i = 0; i < 24; i++) {
-    //   let temp = i.toString();
-    //   if (i < 10) {
-    //     temp = "0" + i.toString();
-    //   }
-    //   for (let minute = 0; minute < 60; minute++) {
-    //     const tempTime = new HtmlSelectDto();
-    //     if (minute < 10) {
-    //       tempTime.key = temp + ":0" + minute;
-    //       tempTime.value = temp + ":0" + minute;
-    //     } else {
-    //       tempTime.key = temp + ":" + minute;
-    //       tempTime.value = temp + ":" + minute;
-    //     }
-    //     this.listOfTime.push(tempTime);
-    //   }
-    // }
     const temp = new HtmlSelectDto();
     temp.key = "0000";
     temp.value = "00:00";
