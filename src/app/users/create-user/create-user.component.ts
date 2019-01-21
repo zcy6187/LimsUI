@@ -1,6 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { CreateUserDto, UserServiceProxy, RoleDto, EditZtCodeDto, ZtCodeServiceProxy, UserZtDto } from '@shared/service-proxies/service-proxies';
 import { ModalComponentBase } from '@shared/component-base';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-create-user',
@@ -22,12 +23,15 @@ export class CreateUserComponent extends ModalComponentBase implements OnInit {
     injector: Injector,
     private _userService: UserServiceProxy,
     private _ztService: ZtCodeServiceProxy,
+    private datePipe: DatePipe,
   ) {
     super(injector);
   }
 
   ngOnInit() {
     this.fetchData();
+    this.user.emailAddress = this.datePipe.transform(new Date(), "yyyyMMddHHMmmss") + "@yg.com";
+    this.user.isActive = true;
   }
 
   fetchData(): void {

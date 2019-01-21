@@ -56,6 +56,8 @@ import { EditAssayUserComponent } from './assay/user/edit-oper/edit-oper.compone
 import { SignDataInputComponent } from './assay/sign-data-input/sign-data-input.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { ZtcodeComponent } from './system/ztcode/ztcode.component';
+import { MultiTableSearchComponent } from './assay/multi-table-search/multi-table-search.component';
+import { ZtMultiTableSearchComponent } from './assay/zt-multi-table-search/zt-multi-table-search.component';
 
 @NgModule({
   imports: [
@@ -115,6 +117,8 @@ import { ZtcodeComponent } from './system/ztcode/ztcode.component';
     SignDataInputComponent,
     WelcomeComponent,
     ZtcodeComponent,
+    MultiTableSearchComponent,
+    ZtMultiTableSearchComponent,
   ],
   entryComponents: [
     CreateTenantComponent,

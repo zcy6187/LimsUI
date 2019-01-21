@@ -119,7 +119,7 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
   // 加载样品
   tplChange(item) {
     if (item) {
-      this._searchService.getSpecimenHtmlSelectByTemplateId(item)
+      this._searchService.getSpecimenHtmlSelectByTemplateId(item, false)
         .subscribe((res: HtmlSelectDto[]) => {
           if (res.length > 0) {
             this.listOfSpec = res;

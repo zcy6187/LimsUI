@@ -532,12 +532,15 @@ export class Assay_DataSearchServiceProxy {
 
     /**
      * @param input (optional) 
+     * @param flag (optional) 
      * @return Success
      */
-    getSpecimenHtmlSelectByTemplateId(input: number | null | undefined): Observable<HtmlSelectDto[]> {
+    getSpecimenHtmlSelectByTemplateId(input: number | null | undefined, flag: boolean | null | undefined): Observable<HtmlSelectDto[]> {
         let url_ = this.baseUrl + "/api/services/app/Assay_DataSearch/GetSpecimenHtmlSelectByTemplateId?";
         if (input !== undefined)
             url_ += "input=" + encodeURIComponent("" + input) + "&"; 
+        if (flag !== undefined)
+            url_ += "flag=" + encodeURIComponent("" + flag) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -808,6 +811,128 @@ export class Assay_DataSearchServiceProxy {
             }));
         }
         return _observableOf<string[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getUserTemplatesByUserId(): Observable<HtmlSelectDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_DataSearch/GetUserTemplatesByUserId";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUserTemplatesByUserId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUserTemplatesByUserId(<any>response_);
+                } catch (e) {
+                    return <Observable<HtmlSelectDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<HtmlSelectDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetUserTemplatesByUserId(response: HttpResponseBase): Observable<HtmlSelectDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(HtmlSelectDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<HtmlSelectDto[]>(<any>null);
+    }
+
+    /**
+     * @param input (optional) 
+     * @param specId (optional) 
+     * @param begin (optional) 
+     * @param endTime (optional) 
+     * @return Success
+     */
+    getMultiTableDataInfoBySpecId(input: number | null | undefined, specId: number[] | null | undefined, begin: Date | null | undefined, endTime: Date | null | undefined): Observable<MultiTableDataInfoDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_DataSearch/GetMultiTableDataInfoBySpecId?";
+        if (input !== undefined)
+            url_ += "input=" + encodeURIComponent("" + input) + "&"; 
+        if (specId !== undefined)
+            specId && specId.forEach(item => { url_ += "specId=" + encodeURIComponent("" + item) + "&"; });
+        if (begin !== undefined)
+            url_ += "begin=" + encodeURIComponent(begin ? "" + begin.toJSON() : "") + "&"; 
+        if (endTime !== undefined)
+            url_ += "endTime=" + encodeURIComponent(endTime ? "" + endTime.toJSON() : "") + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMultiTableDataInfoBySpecId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMultiTableDataInfoBySpecId(<any>response_);
+                } catch (e) {
+                    return <Observable<MultiTableDataInfoDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<MultiTableDataInfoDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetMultiTableDataInfoBySpecId(response: HttpResponseBase): Observable<MultiTableDataInfoDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(MultiTableDataInfoDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MultiTableDataInfoDto[]>(<any>null);
     }
 }
 
@@ -6524,6 +6649,8 @@ export class TypeIn implements ITypeIn {
     operator: string | undefined;
     samplingTime: string | undefined;
     samplingDate: string | undefined;
+    samplingTm: Date | undefined;
+    signTm: Date | undefined;
     lx: string | undefined;
     isParallel: boolean | undefined;
     remark: string | undefined;
@@ -6552,6 +6679,8 @@ export class TypeIn implements ITypeIn {
             this.operator = data["operator"];
             this.samplingTime = data["samplingTime"];
             this.samplingDate = data["samplingDate"];
+            this.samplingTm = data["samplingTm"] ? new Date(data["samplingTm"].toString()) : <any>undefined;
+            this.signTm = data["signTm"] ? new Date(data["signTm"].toString()) : <any>undefined;
             this.lx = data["lx"];
             this.isParallel = data["isParallel"];
             this.remark = data["remark"];
@@ -6580,6 +6709,8 @@ export class TypeIn implements ITypeIn {
         data["operator"] = this.operator;
         data["samplingTime"] = this.samplingTime;
         data["samplingDate"] = this.samplingDate;
+        data["samplingTm"] = this.samplingTm ? this.samplingTm.toISOString() : <any>undefined;
+        data["signTm"] = this.signTm ? this.signTm.toISOString() : <any>undefined;
         data["lx"] = this.lx;
         data["isParallel"] = this.isParallel;
         data["remark"] = this.remark;
@@ -6608,6 +6739,8 @@ export interface ITypeIn {
     operator: string | undefined;
     samplingTime: string | undefined;
     samplingDate: string | undefined;
+    samplingTm: Date | undefined;
+    signTm: Date | undefined;
     lx: string | undefined;
     isParallel: boolean | undefined;
     remark: string | undefined;
@@ -6703,6 +6836,73 @@ export interface ITypeInItem {
     createTime: Date | undefined;
     eleName: string | undefined;
     id: number | undefined;
+}
+
+export class MultiTableDataInfoDto implements IMultiTableDataInfoDto {
+    tableTitle: string | undefined;
+    tableHead: string[] | undefined;
+    tableData: string[][] | undefined;
+
+    constructor(data?: IMultiTableDataInfoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.tableTitle = data["tableTitle"];
+            if (data["tableHead"] && data["tableHead"].constructor === Array) {
+                this.tableHead = [];
+                for (let item of data["tableHead"])
+                    this.tableHead.push(item);
+            }
+            if (data["tableData"] && data["tableData"].constructor === Array) {
+                this.tableData = [];
+                for (let item of data["tableData"])
+                    this.tableData.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): MultiTableDataInfoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MultiTableDataInfoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tableTitle"] = this.tableTitle;
+        if (this.tableHead && this.tableHead.constructor === Array) {
+            data["tableHead"] = [];
+            for (let item of this.tableHead)
+                data["tableHead"].push(item);
+        }
+        if (this.tableData && this.tableData.constructor === Array) {
+            data["tableData"] = [];
+            for (let item of this.tableData)
+                data["tableData"].push(item);
+        }
+        return data; 
+    }
+
+    clone(): MultiTableDataInfoDto {
+        const json = this.toJSON();
+        let result = new MultiTableDataInfoDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IMultiTableDataInfoDto {
+    tableTitle: string | undefined;
+    tableHead: string[] | undefined;
+    tableData: string[][] | undefined;
 }
 
 export class CreateElementDto implements ICreateElementDto {

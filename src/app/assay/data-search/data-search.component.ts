@@ -15,7 +15,7 @@ export class DataSearchComponent extends AppComponentBase implements OnInit {
   tbHead: TemplateInfoDto;
   listOfTemplate: HtmlSelectDto[];
   listOfSpec: HtmlSelectDto[];
-  specId;
+  specId: any[];
   timeArray: Date[];
   tbBody: Array<Array<string>>;
 
@@ -74,11 +74,13 @@ export class DataSearchComponent extends AppComponentBase implements OnInit {
 
   tplChange(item) {
     if (item) {
-      this._searchService.getSpecimenHtmlSelectByTemplateId(item)
+      this._searchService.getSpecimenHtmlSelectByTemplateId(item, false)
         .subscribe((res: HtmlSelectDto[]) => {
           if (res.length > 0) {
             this.listOfSpec = res;
-            this.specId = res[0].key;
+            let specArray = new Array<any>();
+            specArray.push(res[0].key);
+            this.specId = specArray;
           } else {
             this.msg.warning("该化验模板下没有样品信息！");
           }

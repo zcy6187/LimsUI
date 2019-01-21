@@ -68,6 +68,8 @@ export class DataInputComponent extends AppComponentBase implements OnInit {
 
   btnSearch() {
     if (this.templateId) {
+      let specArray = [];
+
       this._dataInputService.getTemplateSchemaInputDtoByTplId(Number(this.templateId), this.specId)
         .subscribe(res => {
           if (!res) {
@@ -129,7 +131,7 @@ export class DataInputComponent extends AppComponentBase implements OnInit {
   tplChange(item) {
     console.log(item);
     if (item) {
-      this._searchService.getSpecimenHtmlSelectByTemplateId(item)
+      this._searchService.getSpecimenHtmlSelectByTemplateId(item, true)
         .subscribe((res: HtmlSelectDto[]) => {
           if (res.length > 0) {
             this.listOfSpec = res;

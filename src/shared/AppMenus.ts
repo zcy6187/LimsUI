@@ -133,6 +133,20 @@ export class AppMenus {
                     icon: { type: "icon", value: "info-circle" },
                     link: "/app/dataSearch",
                 },
+                {
+                    text: "多表查询-用户",
+                    i18n: "用户多表查询",
+                    acl: "Pages.AssaySearch.UserMultiSearch",
+                    icon: { type: "icon", value: "info-circle" },
+                    link: "/app/userMultiTable",
+                },
+                {
+                    text: "多表查询-帐套",
+                    i18n: "帐套多表查询",
+                    acl: "Pages.AssaySearch.ZtMultiSearch",
+                    icon: { type: "icon", value: "info-circle" },
+                    link: "/app/ztMultiTable",
+                },
             ]
         }
     ];
