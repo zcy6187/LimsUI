@@ -1,11 +1,11 @@
 <page-header title="多表查询"></page-header>
 <form nz-form [nzLayout]="'inline'" class="search__form">
   <nz-row [nzGutter]="{ md: 8, lg: 24, xl: 48 }">
-    <nz-col nzMd="6" nzSm="24">
+    <nz-col nzMd="8" nzSm="24">
       <nz-form-item>
         <nz-form-label nzFor="no">化验模板</nz-form-label>
         <nz-form-control>
-          <nz-select style="width: 180px;" [(ngModel)]="templateId" nzAllowClear nzPlaceHolder="选择" name='templateId'
+          <nz-select style="width: 320px;" [(ngModel)]="templateId" nzAllowClear nzPlaceHolder="选择" name='templateId'
             (ngModelChange)='tplChange($event)'>
             <nz-option *ngFor="let option of listOfTemplate" [nzLabel]="option.value" [nzValue]="option.key">
             </nz-option>
@@ -13,11 +13,11 @@
         </nz-form-control>
       </nz-form-item>
     </nz-col>
-    <nz-col nzMd="18" nzSm="24">
+    <nz-col nzMd="16" nzSm="24">
       <nz-form-item>
         <nz-form-label nzFor="no">样品</nz-form-label>
         <nz-form-control>
-          <nz-select style="width: 520px;" [(ngModel)]="specId" nzAllowClear nzPlaceHolder="选择" name='specId' nzMode="tags">
+          <nz-select style="width: 500px;" [(ngModel)]="specId" nzAllowClear nzPlaceHolder="选择" name='specId' nzMode="tags">
             <nz-option *ngFor="let option of listOfSpec" [nzLabel]="option.value" [nzValue]="option.key">
             </nz-option>
           </nz-select>

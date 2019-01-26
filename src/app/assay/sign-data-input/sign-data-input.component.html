@@ -67,12 +67,13 @@
       <th>ID</th>
       <th>机构名称</th>
       <th>化验样品</th>
+      <th>条码号</th>
+      <th>样品编码</th>
       <th>需要化验元素</th>
       <th>已经化验元素</th>
+      <th>操作</th>
       <th>签到时间</th>
       <th>采样日期</th>
-      <th>编码</th>
-      <th>操作</th>
       <th>化验模板</th>
       <th>样品类型</th>
       <th>班次</th>
@@ -86,14 +87,15 @@
       <td>{{item.id}}</td>
       <td>{{item.orgName}}</td>
       <td>{{item.tplSpecName}}</td>
+      <td>{{item.scanId}}</td>
+      <td>{{item.selfCode}}</td>
       <td>{{item.tplElementNames}}</td>
       <td>{{item.eleNames}}</td>
-      <td>{{item.signDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
-      <td>{{item.samplingTime}}</td>
-      <td>{{item.selfCode}}</td>
       <td>
         <a (click)="edit(item)">录入数据</a>
       </td>
+      <td>{{item.signDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td>{{item.samplingTime}}</td>
       <td>{{item.tplName}}</td>
       <td>{{item.lx}}</td>
       <td>{{item.man_banci}}</td>
@@ -122,7 +124,8 @@
                     <input nz-input type="text" formControlName="eleValue">
                   </nz-form-control>
                   <nz-form-control [nzXs]="{span:24,offset:0}" [nzSm]="{span:8,offset:0}">
-                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="选择操作员" formControlName="operId">
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="选择操作员" formControlName="operId"
+                      [nzFilterOption]='pinyinFilterOption'>
                       <nz-option *ngFor="let option of listOfOper" [nzLabel]="option.value" [nzValue]="option.key">
                       </nz-option>
                     </nz-select>

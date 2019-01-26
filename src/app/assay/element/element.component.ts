@@ -52,9 +52,7 @@ export class ElementComponent extends PagedListingComponentBase<ElementDto>  {
         nzMask: true,
       })
       .subscribe(isSave => {
-        if (isSave) {
-          this.refresh();
-        }
+        this.refresh();
       });
   }
 
@@ -65,9 +63,7 @@ export class ElementComponent extends PagedListingComponentBase<ElementDto>  {
         nzMask: true,
       })
       .subscribe(isSave => {
-        if (isSave) {
-          this.refresh();
-        }
+        this.refresh();
       });
   }
 
@@ -81,7 +77,7 @@ export class ElementComponent extends PagedListingComponentBase<ElementDto>  {
           this._AssayBaseServiceProxy
             .deleteElement(entity.id)
             .finally(() => {
-              abp.notify.info('Deleted Role: ' + entity.name);
+              abp.notify.info('删除元素: ' + entity.name);
               this.refresh();
             })
             .subscribe(() => { });

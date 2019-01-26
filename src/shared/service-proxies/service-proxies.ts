@@ -6022,6 +6022,7 @@ export class AttendanceDto implements IAttendanceDto {
     samplingTime: string | undefined;
     selfCode: string | undefined;
     description: string | undefined;
+    scanId: string | undefined;
 
     constructor(data?: IAttendanceDto) {
         if (data) {
@@ -6053,6 +6054,7 @@ export class AttendanceDto implements IAttendanceDto {
             this.samplingTime = data["samplingTime"];
             this.selfCode = data["selfCode"];
             this.description = data["description"];
+            this.scanId = data["scanId"];
         }
     }
 
@@ -6084,6 +6086,7 @@ export class AttendanceDto implements IAttendanceDto {
         data["samplingTime"] = this.samplingTime;
         data["selfCode"] = this.selfCode;
         data["description"] = this.description;
+        data["scanId"] = this.scanId;
         return data; 
     }
 
@@ -6115,6 +6118,7 @@ export interface IAttendanceDto {
     samplingTime: string | undefined;
     selfCode: string | undefined;
     description: string | undefined;
+    scanId: string | undefined;
 }
 
 export class TemplateSchemaInputDto implements ITemplateSchemaInputDto {

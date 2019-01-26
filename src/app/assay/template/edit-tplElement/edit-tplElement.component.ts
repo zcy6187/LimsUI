@@ -17,9 +17,9 @@ export class EditTplElementComponent extends ModalComponentBase implements OnIni
   elementId;
   @Input()
   unitId;
-  @Input()
+  // @Input()
   listOfElement: HtmlSelectDto[];
-  @Input()
+  // @Input()
   listOfUnit: HtmlSelectDto[];
 
   constructor(private injector: Injector, private _tplService: Assay_TplServiceProxy, private _eleService: Assay_ElementServiceProxy, private _unitService: Assay_UnitServiceProxy, public msg: NzMessageService) {
@@ -27,6 +27,15 @@ export class EditTplElementComponent extends ModalComponentBase implements OnIni
   }
 
   ngOnInit() {
+    this._unitService.getHtmlSelectUnits()
+      .subscribe(res => {
+        this.listOfUnit = res;
+      });
+
+    this._eleService.getHtmlSelectElements()
+      .subscribe(res => {
+        this.listOfElement = res;
+      });
   }
 
   save() {

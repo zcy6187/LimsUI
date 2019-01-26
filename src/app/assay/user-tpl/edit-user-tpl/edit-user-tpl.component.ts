@@ -115,7 +115,6 @@ export class EditUserTplComponent extends ModalComponentBase implements OnInit {
             this.msg.warning("网络连接异常！");
           });
     }
-    this.msg.info("修改成功!");
 
   }
 

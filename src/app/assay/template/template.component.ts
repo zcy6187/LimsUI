@@ -47,21 +47,6 @@ export class TemplateComponent extends AppComponentBase implements OnInit {
       .subscribe((res: OrgTreeNodeDto[]) => {
         this.orgTree = res;
       });
-
-    this._specService.getHtmlSelectSpecimens()
-      .subscribe(res => {
-        this.listOfSpecimen = res;
-      });
-
-    this._unitService.getHtmlSelectUnits()
-      .subscribe(res => {
-        this.listOfUnit = res;
-      });
-
-    this._eleService.getHtmlSelectElements()
-      .subscribe(res => {
-        this.listOfElement = res;
-      });
   }
 
   updateAfterSpecimemRefresh() {
@@ -179,8 +164,7 @@ export class TemplateComponent extends AppComponentBase implements OnInit {
   createSpecimen(): void {
     if (this.selectedTplItem) {
       this.modalHelper.open(AddTplSpecimenComponent, {
-        template: this.selectedTplItem, listOfSpecimen: this.listOfSpecimen,
-        listOfUnit: this.listOfUnit
+        template: this.selectedTplItem
       }, 'md', {
           nzMask: true,
         })
@@ -194,7 +178,7 @@ export class TemplateComponent extends AppComponentBase implements OnInit {
 
   createElement(): void {
     if (this.selectedSpecimenItem) {
-      this.modalHelper.open(AddTplElementComponent, { specimen: this.selectedSpecimenItem, listOfElement: this.listOfElement, listOfUnit: this.listOfUnit }, 'md', {
+      this.modalHelper.open(AddTplElementComponent, { specimen: this.selectedSpecimenItem }, 'md', {
         nzMask: true,
       })
         .subscribe(() => {
@@ -236,8 +220,7 @@ export class TemplateComponent extends AppComponentBase implements OnInit {
 
   editTplSpecimen(item: EditTplSpecimenDto) {
     this.modalHelper.open(EditTplSpecimenComponent, {
-      item: item, specId: item.specId.toString(), unitId: item.unitId.toString(), listOfSpecimen: this.listOfSpecimen,
-      listOfUnit: this.listOfUnit
+      item: item, specId: item.specId.toString(), unitId: item.unitId.toString()
     }, 'md', {
         nzMask: true,
       })
@@ -285,8 +268,7 @@ export class TemplateComponent extends AppComponentBase implements OnInit {
 
   editTplElement(item: EditTplElementDto) {
     this.modalHelper.open(EditTplElementComponent, {
-      item: item, elementId: item.elementId.toString(), unitId: item.unitId.toString(), listOfElement: this.listOfElement,
-      listOfUnit: this.listOfUnit
+      item: item, elementId: item.elementId.toString(), unitId: item.unitId.toString()
     }, 'md', {
         nzMask: true,
       })

@@ -51,9 +51,7 @@ export class SpecimenComponent extends PagedListingComponentBase<SpecimenDto>  {
         nzMask: true,
       })
       .subscribe(isSave => {
-        if (isSave) {
-          this.refresh();
-        }
+        this.refresh();
       });
   }
 
@@ -64,9 +62,7 @@ export class SpecimenComponent extends PagedListingComponentBase<SpecimenDto>  {
         nzMask: true,
       })
       .subscribe(isSave => {
-        if (isSave) {
-          this.refresh();
-        }
+        this.refresh();
       });
   }
 

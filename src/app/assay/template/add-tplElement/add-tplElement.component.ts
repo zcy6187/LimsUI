@@ -13,9 +13,9 @@ import { filter, take } from 'rxjs/operators';
 export class AddTplElementComponent extends ModalComponentBase implements OnInit {
   @Input()
   specimen: EditTplSpecimenDto;
-  @Input()
+  // @Input()
   listOfElement: HtmlSelectDto[];
-  @Input()
+  // @Input()
   listOfUnit: HtmlSelectDto[];
   elementId;
   unitId;
@@ -25,6 +25,15 @@ export class AddTplElementComponent extends ModalComponentBase implements OnInit
   }
 
   ngOnInit() {
+    this._unitService.getHtmlSelectUnits()
+      .subscribe(res => {
+        this.listOfUnit = res;
+      });
+
+    this._eleService.getHtmlSelectElements()
+      .subscribe(res => {
+        this.listOfElement = res;
+      });
   }
 
   save() {

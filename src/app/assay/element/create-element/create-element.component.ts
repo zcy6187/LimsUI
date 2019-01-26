@@ -19,11 +19,9 @@ export class CreateElementComponent extends ModalComponentBase {
     private msg: NzMessageService
   ) {
     super(injector);
-    console.log(this.l('element.add'));
   }
 
   save(): void {
-
     this._assayBaseService.addElement(this.element)
       .finally(() => { this.saving = false; })
       .subscribe((res) => {

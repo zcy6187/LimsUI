@@ -18,9 +18,9 @@ export class EditTplSpecimenComponent extends ModalComponentBase implements OnIn
   specId;
   @Input()
   unitId;
-  @Input()
+  // @Input()
   listOfSpecimen: HtmlSelectDto[];
-  @Input()
+  // @Input()
   listOfUnit: HtmlSelectDto[];
   saving: false;
 
@@ -30,8 +30,15 @@ export class EditTplSpecimenComponent extends ModalComponentBase implements OnIn
   }
 
   ngOnInit() {
-    console.log(this.specId);
-    console.log(this.unitId);
+    this._specService.getHtmlSelectSpecimens()
+      .subscribe(res => {
+        this.listOfSpecimen = res;
+      });
+
+    this._unitService.getHtmlSelectUnits()
+      .subscribe(res => {
+        this.listOfUnit = res;
+      });
 
   }
 

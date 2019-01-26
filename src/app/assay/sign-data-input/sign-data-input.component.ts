@@ -6,6 +6,7 @@ import {
 } from '@shared/service-proxies/service-proxies';
 import { NzMessageService, isTemplateRef } from 'ng-zorro-antd';
 import { FormControl, FormGroup } from '@angular/forms';
+import pinyin from 'pinyin';
 
 @Component({
   selector: 'app-sign-data-input',
@@ -34,8 +35,7 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
 
   constructor(private _service: Assay_AttendanceServiceProxy, private _injector: Injector,
     private _searchService: Assay_DataSearchServiceProxy,
-    private _orgService: OrgServiceProxy,
-    private injector: Injector, private msg: NzMessageService, private _dataInputService: Assay_DataInputServiceProxy,
+    private _orgService: OrgServiceProxy, private msg: NzMessageService, private _dataInputService: Assay_DataInputServiceProxy,
     private _assayUserService: Assay_UserServiceProxy,
     private datePipe: DatePipe) {
     super(_injector);
@@ -119,7 +119,7 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
   // 加载样品
   tplChange(item) {
     if (item) {
-      this._searchService.getSpecimenHtmlSelectByTemplateId(item, false)
+      this._searchService.getSpecimenHtmlSelectByTemplateId(item, true)
         .subscribe((res: HtmlSelectDto[]) => {
           if (res.length > 0) {
             this.listOfSpec = res;
@@ -202,7 +202,6 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
       }
       formObj['spe' + specItem.specId] = specObj;
     }
-    console.log(JSON.stringify(formObj));
     this.profileForm.setValue(formObj);
   }
 
@@ -252,6 +251,15 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
         this.getDataFromService();
       });
     // this.writeFormValToHistory(valObj);
+  }
+
+  pinyinFilterOption = (value, opt) => {
+    if (opt.nzLabel.indexOf(value) !== -1) {
+      return true;
+    }
+    const shouzimu = pinyin(opt.nzLabel, { style: pinyin.STYLE_FIRST_LETTER }) as string[];
+    let compareStr = shouzimu.join('');
+    return (compareStr.indexOf(value) !== -1);
   }
 
 }
