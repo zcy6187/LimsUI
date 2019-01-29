@@ -85,7 +85,7 @@ export class EditUserTplComponent extends ModalComponentBase implements OnInit {
 
   save() {
     if (this.userTplList.length < 1) {
-      this.msg.warning("请选择化验模板!");
+      this.msg.warning("至少选择一个化验模板!");
       return;
     }
     let tplIds = "";

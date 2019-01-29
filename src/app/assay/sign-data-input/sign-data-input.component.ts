@@ -7,6 +7,7 @@ import {
 import { NzMessageService, isTemplateRef } from 'ng-zorro-antd';
 import { FormControl, FormGroup } from '@angular/forms';
 import pinyin from 'pinyin';
+import { rS } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-sign-data-input',
@@ -32,6 +33,7 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
   profileForm: FormGroup;
   selectedItem: AttendanceDto;
   listOfOper = new Array<HtmlSelectDto>();
+  submitBtnStatus = false;
 
   constructor(private _service: Assay_AttendanceServiceProxy, private _injector: Injector,
     private _searchService: Assay_DataSearchServiceProxy,
@@ -74,7 +76,7 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
       return;
     }
     this.isTableLoading = true;
-    this.getDataFromService();
+    this.getDataFromService(false);
     this.isTableLoading = false;
   }
 
@@ -89,13 +91,18 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
       });
   }
 
-  private getDataFromService() {
+  private getDataFromService(isInput: boolean) {
     this._service.getAttendances(0, this.pageSize, this.orgCode, Number(this.templateId), this.specId, Number(this.flagValue), this.timeArray[0], this.timeArray[1])
       .subscribe((result: PagedResultDtoOfAttendanceDto) => {
         this.dataList = result.items;
         this.totalItems = result.totalCount;
         if (this.dataList.length < 1) {
-          this.message.info('该条件下没有找到合适的信息！');
+          if (!isInput) {
+            this.message.info('该条件下没有数据！');
+          } else {
+            this.message.info('该条件下没有可录入的数据！');
+          }
+
         }
       });
   }
@@ -149,6 +156,7 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
     }
     this.oldSechmaId = newSchemaId;
     this.isVisible = true;
+    this.submitBtnStatus = false;
   }
 
   // 加载动态表单
@@ -238,6 +246,7 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
 
   // 数据存入数据库
   _submitForm($event, valObj) {
+    this.submitBtnStatus = true;
     const dataInput = new CreateDataInputDto();
     dataInput.samplingDate = this.selectedItem.signDate;
     dataInput.samplingTime = '';
@@ -247,10 +256,15 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
     this._dataInputService.writeValueToTable(dataInput)
       .subscribe((res: HtmlDataOperRetDto) => {
         this.msg.info(res.message);
+        if (res.code > -1) {
+          this.isVisible = false;
+        }
         // 刷新数据
-        this.getDataFromService();
+        this.getDataFromService(true);
+        this.submitBtnStatus = false;
       });
     // this.writeFormValToHistory(valObj);
+
   }
 
   pinyinFilterOption = (value, opt) => {

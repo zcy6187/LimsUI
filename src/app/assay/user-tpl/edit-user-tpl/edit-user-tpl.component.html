@@ -7,7 +7,7 @@
   <div nz-row nzGutter="16">
     <div nz-col nzSpan="8" nzBordered="true">
       <nz-card nzTitle="已拥有的化验模板">
-        <nz-table #userTplTb nzShowSizeChanger [nzData]="userTplList" [nzShowPagination]=false>
+        <nz-table #userTplTb nzShowSizeChanger [nzData]="userTplList" [nzShowPagination]=true>
           <thead>
             <tr>
               <th>模板名称</th>
@@ -53,7 +53,7 @@
             </nz-col>
           </nz-row>
           <nz-row>
-            <nz-table #tplTb nzShowSizeChanger [nzData]="templateList" [nzShowPagination]=false>
+            <nz-table #tplTb nzShowSizeChanger [nzData]="templateList" [nzShowPagination]=true>
               <thead>
                 <tr>
                   <th>模板名称</th>

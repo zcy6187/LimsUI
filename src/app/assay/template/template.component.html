@@ -86,6 +86,8 @@
             <td><a (click)='specClick(item)'>{{item.specName}}</a></td>
             <td>{{item.unitName}}</td>
             <td>
+              <a (click)="showQr(item)">条码</a>
+              <nz-divider nzType="vertical"></nz-divider>
               <a (click)="editTplSpecimen(item)">编辑</a>
               <nz-divider nzType="vertical"></nz-divider>
               <a (click)="deleteTplSpecimen(item)">删除</a>
@@ -132,3 +134,7 @@
     </nz-card>
   </div>
 </div>
+<nz-modal [(nzVisible)]="isQrCode" nzTitle="二维码" (nzOnCancel)="closeQrCode()" (nzOnOk)="closeQrCode()">
+  <qr [value]="qrStr"></qr>
+  <p>条码号：{{qrStr}}</p>
+</nz-modal>

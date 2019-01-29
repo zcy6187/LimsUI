@@ -37,6 +37,8 @@ export class TemplateComponent extends AppComponentBase implements OnInit {
   listOfUnit: HtmlSelectDto[];
   listOfElement: HtmlSelectDto[];
   confirmOk;
+  qrStr;
+  isQrCode = false;
 
   constructor(public msg: NzMessageService, private injector: Injector, private _service: Assay_TplServiceProxy, private _orgService: OrgServiceProxy, private _specService: Assay_SpecimenServiceProxy, private _unitService: Assay_UnitServiceProxy, private _eleService: Assay_ElementServiceProxy, private _modalService: NzModalService) {
     super(injector);
@@ -283,6 +285,17 @@ export class TemplateComponent extends AppComponentBase implements OnInit {
         this.msg.info("删除成功!");
         this.refreshElement();
       });
+  }
+
+  showQr(item: EditTplSpecimenDto) {
+    let qStr = "0000000000" + item.id;
+    qStr = qStr.substr(qStr.length - 10);
+    this.qrStr = qStr;
+    this.isQrCode = true;
+  }
+
+  closeQrCode() {
+    this.isQrCode = false;
   }
 
 }

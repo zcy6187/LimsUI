@@ -50,4 +50,13 @@ export class UserTplComponent extends AppComponentBase implements OnInit {
       );
   }
 
+  delete(item: EditVUserTplDto) {
+    this._service.deleteUserTplById(item.id)
+      .subscribe(
+        () => {
+          this.refresh();
+        }
+      );
+  }
+
 }
