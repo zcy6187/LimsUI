@@ -40,7 +40,7 @@ export class UserTplComponent extends AppComponentBase implements OnInit {
   }
 
   edit(item: EditVUserTplDto) {
-    this.modalHelper.open(EditUserTplComponent, { userTplList: item.tplList, listOfOrg: this.listOfOrg, editVUserTpl: item }, 'lg', {
+    this.modalHelper.open(EditUserTplComponent, { userTplList: item.tplList, listOfOrg: this.listOfOrg, editVUserTpl: item, userSpecimenList: item.specimenList }, 'lg', {
       nzMask: true,
     })
       .subscribe(
@@ -51,7 +51,7 @@ export class UserTplComponent extends AppComponentBase implements OnInit {
   }
 
   delete(item: EditVUserTplDto) {
-    this._service.deleteUserTplById(item.id)
+    this._service.deleteUserTplById(item.userTplId)
       .subscribe(
         () => {
           this.refresh();

@@ -37,7 +37,9 @@ export class TemplateComponent extends AppComponentBase implements OnInit {
   listOfUnit: HtmlSelectDto[];
   listOfElement: HtmlSelectDto[];
   confirmOk;
-  qrStr;
+  qrCode;
+  qrName;
+  qrDepart;
   isQrCode = false;
 
   constructor(public msg: NzMessageService, private injector: Injector, private _service: Assay_TplServiceProxy, private _orgService: OrgServiceProxy, private _specService: Assay_SpecimenServiceProxy, private _unitService: Assay_UnitServiceProxy, private _eleService: Assay_ElementServiceProxy, private _modalService: NzModalService) {
@@ -290,7 +292,9 @@ export class TemplateComponent extends AppComponentBase implements OnInit {
   showQr(item: EditTplSpecimenDto) {
     let qStr = "0000000000" + item.id;
     qStr = qStr.substr(qStr.length - 10);
-    this.qrStr = qStr;
+    this.qrCode = qStr;
+    this.qrName = item.specName;
+    this.qrDepart = this.selectedTplItem.orgName;
     this.isQrCode = true;
   }
 

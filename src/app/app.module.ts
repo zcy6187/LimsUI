@@ -58,6 +58,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { ZtcodeComponent } from './system/ztcode/ztcode.component';
 import { MultiTableSearchComponent } from './assay/multi-table-search/multi-table-search.component';
 import { ZtMultiTableSearchComponent } from './assay/zt-multi-table-search/zt-multi-table-search.component';
+import { OperUserTplComponent } from './assay/user-tpl/oper-user-tpl/oper-user-tpl.component';
 
 @NgModule({
   imports: [
@@ -119,6 +120,7 @@ import { ZtMultiTableSearchComponent } from './assay/zt-multi-table-search/zt-mu
     ZtcodeComponent,
     MultiTableSearchComponent,
     ZtMultiTableSearchComponent,
+    OperUserTplComponent,
   ],
   entryComponents: [
     CreateTenantComponent,

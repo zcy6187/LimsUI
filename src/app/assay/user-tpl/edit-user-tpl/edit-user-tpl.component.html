@@ -4,78 +4,126 @@
     <span>{{l('userTpl.edit')}}</span>
   </h3>
 
-  <div nz-row nzGutter="16">
-    <div nz-col nzSpan="8" nzBordered="true">
-      <nz-card nzTitle="已拥有的化验模板">
-        <nz-table #userTplTb nzShowSizeChanger [nzData]="userTplList" [nzShowPagination]=true>
-          <thead>
-            <tr>
-              <th>模板名称</th>
-              <th>操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let data of userTplTb.data">
-              <td>{{data.tplName}}</td>
-              <td>
-                <a (click)="deleteTpl(data)">移除</a>
-              </td>
-            </tr>
-          </tbody>
-        </nz-table>
-      </nz-card>
-    </div>
-    <div nz-col nzSpan="16" nzBordered="true">
-      <nz-card nzTitle="在此处选择化验模板">
-        <form nz-form [nzLayout]="'inline'" class="search__form">
-          <nz-row [nzGutter]="{ md: 8, lg: 24, xl: 48 }">
-            <nz-col nzMd="14" nzSm="24">
-              <nz-form-item>
-                <nz-form-label nzFor="no">机构</nz-form-label>
-                <nz-form-control>
-                  <nz-tree-select [nzNodes]="listOfOrg" nzShowSearch nzPlaceHolder="选择机构" name='orgCode' [(ngModel)]='orgCode'>
-                  </nz-tree-select>
-                </nz-form-control>
-              </nz-form-item>
-            </nz-col>
-            <nz-col nzMd="8" nzSm="24">
-              <nz-form-item>
-                <nz-form-label nzFor="no">模板</nz-form-label>
-                <nz-form-control>
-                  <input nz-input [(ngModel)]="searchTplName" id="name" name="tplName" placeholder="">
-                </nz-form-control>
-              </nz-form-item>
-            </nz-col>
-            <nz-col nzMd="2" nzSm="24">
-              <nz-form-item>
-                <button nz-button type="submit" [nzType]="'primary'" (click)="btnSearch()">查询</button>
-              </nz-form-item>
-            </nz-col>
-          </nz-row>
-          <nz-row>
-            <nz-table #tplTb nzShowSizeChanger [nzData]="templateList" [nzShowPagination]=true>
+  <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'">
+    <nz-tab nzTitle="添加模板">
+      <div nz-row>
+        <div nz-col nzSpan="10">
+          <nz-card nzTitle="已拥有的化验模板">
+            <nz-table #userTplTb nzShowSizeChanger [nzData]="userTplList" [nzShowPagination]=true>
               <thead>
                 <tr>
                   <th>模板名称</th>
-                  <th>组织</th>
                   <th>操作</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of tplTb.data">
-                  <td>{{item.tplName}}</td>
-                  <td>{{item.orgName}}</td>
+                <tr *ngFor="let data of userTplTb.data">
+                  <td>{{data.tplName}}</td>
                   <td>
-                    <a (click)="addTpl(item)">添加</a>
+                    <a (click)="deleteTpl(data)">移除</a>
                   </td>
                 </tr>
               </tbody>
             </nz-table>
-          </nz-row>
-        </form>
-      </nz-card>
-    </div>
-  </div>
+          </nz-card>
+        </div>
+        <div nz-col nzSpan="14" nzBordered="true">
+          <nz-card nzTitle="在此处选择化验模板">
+            <form nz-form [nzLayout]="'inline'" class="search__form">
+              <nz-row [nzGutter]="{ md: 8, lg: 24, xl: 48 }">
+                <nz-col nzMd="14" nzSm="24">
+                  <nz-form-item>
+                    <nz-form-control>
+                      <nz-tree-select [nzNodes]="listOfOrg" nzShowSearch nzPlaceHolder="选择机构" name='orgCode'
+                        [(ngModel)]='orgCode'>
+                      </nz-tree-select>
+                    </nz-form-control>
+                  </nz-form-item>
+                </nz-col>
+                <nz-col nzMd="6" nzSm="24">
+                  <nz-form-item>
+                    <nz-form-control>
+                      <input nz-input [(ngModel)]="searchTplName" id="name" name="tplName" placeholder="模板搜索">
+                    </nz-form-control>
+                  </nz-form-item>
+                </nz-col>
+                <nz-col nzMd="4" nzSm="24">
+                  <nz-form-item>
+                    <button nz-button type="submit" [nzType]="'primary'" (click)="btnSearch()">查询</button>
+                  </nz-form-item>
+                </nz-col>
+              </nz-row>
+              <nz-row>
+                <nz-table #tplTb nzShowSizeChanger [nzData]="templateList" [nzShowPagination]=true>
+                  <thead>
+                    <tr>
+                      <th>名称</th>
+                      <th>组织</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of tplTb.data">
+                      <td>{{item.tplName}}</td>
+                      <td>{{item.orgName}}</td>
+                      <td>
+                        <a (click)="addTpl(item)">添加</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </nz-table>
+              </nz-row>
+            </form>
+            <button nz-button nzType="danger" (click)="addAll()">全部添加</button>
+          </nz-card>
+        </div>
+      </div>
+    </nz-tab>
+    <nz-tab nzTitle="细化样品">
+      <div nz-row>
+        <div nz-col nzSpan="10">
+          <nz-card nzTitle="已拥有的化验模板">
+            <nz-table #specimenTpl nzShowSizeChanger [nzData]="userTplList" [nzShowPagination]=true>
+              <thead>
+                <tr>
+                  <th>模板名称</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of userTplTb.data">
+                  <td>{{data.tplName}}</td>
+                  <td>
+                    <a (click)="showSpec(data)">查看</a>
+                  </td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </nz-card>
+        </div>
+        <div nz-col nzSpan="14">
+          <nz-card [nzTitle]="selectTplName">
+            <nz-table #specimenTb [nzShowPagination]=true nzPagesize=15>
+              <thead>
+                <tr>
+                  <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
+                  <th>ID</th>
+                  <th>名称</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of bindSpecimen">
+                  <td nzShowCheckbox [(nzChecked)]="item.isChecked" (nzCheckedChange)="refreshStatus(item)"></td>
+                  <td>{{item.id}}</td>
+                  <td>{{item.name}}</td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </nz-card>
+        </div>
+      </div>
+    </nz-tab>
+  </nz-tabset>
   <!-- 功能按钮 -->
   <div class="custom-modal-footer">
     <div class="custom-modal-footter-group">

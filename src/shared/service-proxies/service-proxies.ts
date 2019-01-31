@@ -592,6 +592,67 @@ export class Assay_DataSearchServiceProxy {
     }
 
     /**
+     * @param input (optional) 
+     * @param flag (optional) 
+     * @return Success
+     */
+    getSpecimenHtmlSelectByTemplateIdAndChargeSpecimen(input: number | null | undefined, flag: boolean | null | undefined): Observable<HtmlSelectDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_DataSearch/GetSpecimenHtmlSelectByTemplateIdAndChargeSpecimen?";
+        if (input !== undefined)
+            url_ += "input=" + encodeURIComponent("" + input) + "&"; 
+        if (flag !== undefined)
+            url_ += "flag=" + encodeURIComponent("" + flag) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSpecimenHtmlSelectByTemplateIdAndChargeSpecimen(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSpecimenHtmlSelectByTemplateIdAndChargeSpecimen(<any>response_);
+                } catch (e) {
+                    return <Observable<HtmlSelectDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<HtmlSelectDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetSpecimenHtmlSelectByTemplateIdAndChargeSpecimen(response: HttpResponseBase): Observable<HtmlSelectDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(HtmlSelectDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<HtmlSelectDto[]>(<any>null);
+    }
+
+    /**
      * @param signId (optional) 
      * @return Success
      */
@@ -8172,6 +8233,7 @@ export class EditVUserTplDto implements IEditVUserTplDto {
     isDeleted: boolean | undefined;
     tplNames: string | undefined;
     tplList: TplDto[] | undefined;
+    specimenList: TplSpecimenDto[] | undefined;
 
     constructor(data?: IEditVUserTplDto) {
         if (data) {
@@ -8196,6 +8258,11 @@ export class EditVUserTplDto implements IEditVUserTplDto {
                 this.tplList = [];
                 for (let item of data["tplList"])
                     this.tplList.push(TplDto.fromJS(item));
+            }
+            if (data["specimenList"] && data["specimenList"].constructor === Array) {
+                this.specimenList = [];
+                for (let item of data["specimenList"])
+                    this.specimenList.push(TplSpecimenDto.fromJS(item));
             }
         }
     }
@@ -8222,6 +8289,11 @@ export class EditVUserTplDto implements IEditVUserTplDto {
             for (let item of this.tplList)
                 data["tplList"].push(item.toJSON());
         }
+        if (this.specimenList && this.specimenList.constructor === Array) {
+            data["specimenList"] = [];
+            for (let item of this.specimenList)
+                data["specimenList"].push(item.toJSON());
+        }
         return data; 
     }
 
@@ -8243,6 +8315,7 @@ export interface IEditVUserTplDto {
     isDeleted: boolean | undefined;
     tplNames: string | undefined;
     tplList: TplDto[] | undefined;
+    specimenList: TplSpecimenDto[] | undefined;
 }
 
 export class TplDto implements ITplDto {
@@ -8292,10 +8365,66 @@ export interface ITplDto {
     tplName: string | undefined;
 }
 
+export class TplSpecimenDto implements ITplSpecimenDto {
+    tplId: number | undefined;
+    specimenIds: number[] | undefined;
+
+    constructor(data?: ITplSpecimenDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.tplId = data["tplId"];
+            if (data["specimenIds"] && data["specimenIds"].constructor === Array) {
+                this.specimenIds = [];
+                for (let item of data["specimenIds"])
+                    this.specimenIds.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): TplSpecimenDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TplSpecimenDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tplId"] = this.tplId;
+        if (this.specimenIds && this.specimenIds.constructor === Array) {
+            data["specimenIds"] = [];
+            for (let item of this.specimenIds)
+                data["specimenIds"].push(item);
+        }
+        return data; 
+    }
+
+    clone(): TplSpecimenDto {
+        const json = this.toJSON();
+        let result = new TplSpecimenDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ITplSpecimenDto {
+    tplId: number | undefined;
+    specimenIds: number[] | undefined;
+}
+
 export class CreateUserTplDto implements ICreateUserTplDto {
     userId: number | undefined;
     tplIds: string | undefined;
     lx: number | undefined;
+    specimens: TplSpecimenDto[] | undefined;
 
     constructor(data?: ICreateUserTplDto) {
         if (data) {
@@ -8311,6 +8440,11 @@ export class CreateUserTplDto implements ICreateUserTplDto {
             this.userId = data["userId"];
             this.tplIds = data["tplIds"];
             this.lx = data["lx"];
+            if (data["specimens"] && data["specimens"].constructor === Array) {
+                this.specimens = [];
+                for (let item of data["specimens"])
+                    this.specimens.push(TplSpecimenDto.fromJS(item));
+            }
         }
     }
 
@@ -8326,6 +8460,11 @@ export class CreateUserTplDto implements ICreateUserTplDto {
         data["userId"] = this.userId;
         data["tplIds"] = this.tplIds;
         data["lx"] = this.lx;
+        if (this.specimens && this.specimens.constructor === Array) {
+            data["specimens"] = [];
+            for (let item of this.specimens)
+                data["specimens"].push(item.toJSON());
+        }
         return data; 
     }
 
@@ -8341,6 +8480,7 @@ export interface ICreateUserTplDto {
     userId: number | undefined;
     tplIds: string | undefined;
     lx: number | undefined;
+    specimens: TplSpecimenDto[] | undefined;
 }
 
 export class ChangeUiThemeInput implements IChangeUiThemeInput {

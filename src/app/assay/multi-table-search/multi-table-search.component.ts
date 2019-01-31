@@ -39,7 +39,7 @@ export class MultiTableSearchComponent extends AppComponentBase implements OnIni
 
   tplChange(item) {
     if (item) {
-      this._searchService.getSpecimenHtmlSelectByTemplateId(item, false)
+      this._searchService.getSpecimenHtmlSelectByTemplateIdAndChargeSpecimen(item, false)
         .subscribe((res: HtmlSelectDto[]) => {
           if (res.length > 0) {
             this.listOfSpec = res;
