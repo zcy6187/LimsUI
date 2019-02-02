@@ -135,8 +135,8 @@
   </div>
 </div>
 <nz-modal [(nzVisible)]="isQrCode" nzTitle="二维码" (nzOnCancel)="closeQrCode()" (nzOnOk)="closeQrCode()">
-  <qr [value]="qrStr"></qr>
-  <p>送样单位：{{qrStr}}</p>
-  <p>样品名称：{{qrStr}}</p>
-  <p>样品序号：{{qrStr}}</p>
+  <qr [value]="qrCode"></qr>
+  <p>送样单位：{{qrDepart}}</p>
+  <p>样品名称：{{qrName}}</p>
+  <p>样品序号：{{qrCode}}</p>
 </nz-modal>

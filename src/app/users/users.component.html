@@ -2,16 +2,20 @@
 
 
 <nz-card [nzExtra]="extraTpl">
-
   <ng-template #extraTpl>
-    <button nz-button (click)="refresh()" nzShape="circle">
-      <i class="anticon anticon-reload"></i>
-    </button>
-    <button nz-button (click)="create()" nzShape="circle" nzType="primary">
-      <i class="anticon anticon-plus"></i>
-    </button>
+    <nz-input-group [nzAddOnAfter]="addOnAfterTemplate">
+      <input type="text" nz-input placeholder="用户名" name="searchTxt" [(ngModel)]="searchTxt">
+      <ng-template #addOnAfterTemplate>
+        <button nz-button nzType="primary" nzSearch (click)="research()"><i nz-icon type="search"></i></button>
+        <button nz-button (click)="refresh()" nzShape="circle">
+          <i class="anticon anticon-reload"></i>
+        </button>
+        <button nz-button (click)="create()" nzShape="circle" nzType="primary">
+          <i class="anticon anticon-plus"></i>
+        </button>
+      </ng-template>
+    </nz-input-group>
   </ng-template>
-
 
   <nz-table #ajaxTable nzShowSizeChanger [nzData]="dataList" [nzTotal]="totalItems" [(nzPageIndex)]="pageNumber"
     [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading" (nzPageIndexChange)="refresh()" (nzPageSizeChange)="refresh()"
@@ -40,6 +44,8 @@
           <a (click)="edit(item)">编辑</a>
           <nz-divider nzType="vertical"></nz-divider>
           <a (click)="delete(item)">删除</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a (click)="resetPass(item)">重置密码</a>
         </td>
       </tr>
     </tbody>

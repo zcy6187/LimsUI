@@ -27,7 +27,6 @@ export class EditRoleComponent extends ModalComponentBase implements OnInit {
     this._roleService.getAllPermissions()
       .subscribe((permissions: ListResultDtoOfPermissionDto) => {
         this.permissions = permissions;
-
         this.fetchData();
       });
   }
@@ -63,6 +62,7 @@ export class EditRoleComponent extends ModalComponentBase implements OnInit {
     });
 
     this.role.permissions = tmpPermissions;
+    console.log(JSON.stringify(tmpPermissions));
 
     this._roleService.update(this.role)
       .finally(() => {

@@ -7,6 +7,7 @@ import {
   PagedResultDtoOfUserDto,
   UserServiceProxy,
   UserDto,
+  SelfUserServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 import { CreateUserComponent } from '@app/users/create-user/create-user.component';
 import { EditUserComponent } from '@app/users/edit-user/edit-user.component';
@@ -17,7 +18,12 @@ import { EditUserComponent } from '@app/users/edit-user/edit-user.component';
   styles: [],
 })
 export class UsersComponent extends PagedListingComponentBase<UserDto> {
-  constructor(injector: Injector, private _userService: UserServiceProxy) {
+
+  searchTxt = '';
+
+  constructor(injector: Injector,
+    private _userService: UserServiceProxy,
+    private _selfUserSevice: SelfUserServiceProxy) {
     super(injector);
   }
 
@@ -35,6 +41,23 @@ export class UsersComponent extends PagedListingComponentBase<UserDto> {
         this.dataList = result.items;
         this.totalItems = result.totalCount;
       });
+  }
+
+  protected research() {
+    if (this.searchTxt.length > 0) {
+      this._selfUserSevice.searchUserByUserName(this.searchTxt).subscribe((res: UserDto[]) => {
+        this.dataList = res;
+        this.totalItems = res.length;
+      });
+    } else {
+      this._userService
+        .getAll(0, 10)
+        .subscribe((result: PagedResultDtoOfUserDto) => {
+          this.dataList = result.items;
+          this.totalItems = result.totalCount;
+        });
+    }
+
   }
 
   protected delete(entity: UserDto): void {
@@ -73,5 +96,11 @@ export class UsersComponent extends PagedListingComponentBase<UserDto> {
           this.refresh();
         }
       });
+  }
+
+  resetPass(item: UserDto): void {
+    this._userService.resetUserPassword(item.id).subscribe(() => {
+      this.message.info("重置成功！");
+    })
   }
 }
