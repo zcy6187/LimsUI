@@ -41,23 +41,37 @@
     </nz-col>
   </nz-row>
 </form>
-<ng-container *ngFor='let tbItem of searchData'>
-  <nz-table nzShowSizeChanger [nzLoading]="isTableLoading" [nzShowPagination]=false [nzTitle]=tbItem.tableTitle
-    nzBordered>
+<ng-container *ngFor='let tbItem of searchData;let i=index'>
+  <nz-table [nzData]="tbItem.tableData" [nzShowPagination]="false" [nzTitle]="tbItem.tableTitle" [nzBordered]=true
+    [nzScroll]="tbSizeArray[i]" [nzSize]="small">
     <thead>
       <tr>
-        <th nzWidth="100px" nzLeft="0px">签到时间</th>
-        <th nzWidth="100px" nzLeft="100px">采样时间</th>
-        <th *ngFor='let item of tbItem.tableHead'>{{item}}</th>
+        <th nzWidth="120px" nzLeft="0px">签到时间</th>
+        <th nzWidth="120px" nzLeft="120px">采样时间</th>
+        <th nzWidth="100px">班次</th>
+        <th nzWidth="80px">炉次</th>
+        <th nzWidth="100px">编号</th>
+        <th nzWidth="80px">备注</th>
+        <ng-container *ngFor='let item of tbItem.tableHead;let i=index'>
+          <ng-container [ngSwitch]="i">
+            <th *ngSwitchCase='tbItem.tableHead.length-1'>{{item}}</th>
+            <th *ngSwitchDefault nzWidth="120px">{{item}}</th>
+          </ng-container>
+        </ng-container>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor='let row of tbItem.tableData'>
         <ng-container *ngFor='let tdVal of row;let i=index'>
           <ng-container [ngSwitch]="i">
-            <td *ngSwitchCase='0' nzWidth="100px" nzLeft="0px">{{tdVal}}</td>
-            <td *ngSwitchCase='1' nzWidth="100px" nzLeft="100px">{{tdVal}}</td>
-            <td *ngSwitchDefault>{{tdVal}}</td>
+            <td *ngSwitchCase='0' nzLeft="0px">{{tdVal}}</td>
+            <td *ngSwitchCase='1' nzLeft="120px">{{tdVal}}</td>
+            <td *ngSwitchCase='2' nzWidth="100px">{{tdVal}}</td>
+            <td *ngSwitchCase='3' nzWidth="80px">{{tdVal}}</td>
+            <td *ngSwitchCase='4' nzWidth="100px">{{tdVal}}</td>
+            <td *ngSwitchCase='5' nzWidth="80px">{{tdVal}}</td>
+            <td *ngSwitchCase='row.length-1'>{{tdVal}}</td>
+            <td *ngSwitchDefault nzWidth="120px">{{tdVal}}</td>
           </ng-container>
         </ng-container>
       </tr>

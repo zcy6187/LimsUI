@@ -17,6 +17,7 @@ export class ZtMultiTableSearchComponent extends AppComponentBase implements OnI
   specId: any[];
   orgTree;
   orgCode;
+  tbSizeArray: Array<object>;
 
   constructor(private _searchService: Assay_DataSearchServiceProxy, private _orgService: OrgServiceProxy,
     private injector: Injector, private msg: NzMessageService) {
@@ -71,9 +72,14 @@ export class ZtMultiTableSearchComponent extends AppComponentBase implements OnI
       return;
     }
     this._searchService.getMultiTableDataInfoBySpecId(this.templateId, this.specId, this.timeArray[0], this.timeArray[1])
-      .subscribe(res => {
+      .subscribe((res: Array<MultiTableDataInfoDto>) => {
         this.searchData = res;
-        console.log(res);
+        let tempSizeArray = new Array<object>();
+        this.searchData.forEach(element => {
+          let xsize = element.tableHead.length * 120 + 620 + 'px';
+          tempSizeArray.push({ x: xsize, y: '400px' });
+        });
+        this.tbSizeArray = tempSizeArray;
       });
   }
 
