@@ -1,5 +1,5 @@
 import { Component, OnInit, Injector } from '@angular/core';
-import { HtmlSelectDto, Assay_DataSearchServiceProxy, MultiTableDataInfoDto, OrgServiceProxy, OrgTreeNodeDto } from '@shared/service-proxies/service-proxies';
+import { HtmlSelectDto, Assay_DataSearchServiceProxy, MultiTableDataInfoDto, OrgServiceProxy, OrgTreeNodeDto, StatisticDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/component-base';
 import { NzMessageService } from 'ng-zorro-antd';
 
@@ -18,6 +18,7 @@ export class ZtMultiTableSearchComponent extends AppComponentBase implements OnI
   orgTree;
   orgCode;
   tbSizeArray: Array<object>;
+  tbFooter: Array<string>;
 
   constructor(private _searchService: Assay_DataSearchServiceProxy, private _orgService: OrgServiceProxy,
     private injector: Injector, private msg: NzMessageService) {
@@ -75,11 +76,22 @@ export class ZtMultiTableSearchComponent extends AppComponentBase implements OnI
       .subscribe((res: Array<MultiTableDataInfoDto>) => {
         this.searchData = res;
         let tempSizeArray = new Array<object>();
+        let strArray = new Array<string>();
         this.searchData.forEach(element => {
           let xsize = element.tableHead.length * 120 + 620 + 'px';
           tempSizeArray.push({ x: xsize, y: '400px' });
+          let str = "";
+          element.statisticData.forEach((st, i) => {
+            if (i == 0) {
+              str += "    " + st.eleName + ":" + st.totalRowNum + "行";
+            } else {
+              str += "    " + st.eleName + ":" + st.totalRowNum + "行/" + st.avgValue;
+            }
+          })
+          strArray.push(str);
         });
         this.tbSizeArray = tempSizeArray;
+        this.tbFooter = strArray;
       });
   }
 

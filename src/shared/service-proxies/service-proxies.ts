@@ -7231,6 +7231,7 @@ export class MultiTableDataInfoDto implements IMultiTableDataInfoDto {
     tableTitle: string | undefined;
     tableHead: string[] | undefined;
     tableData: string[][] | undefined;
+    statisticData: StatisticDto[] | undefined;
 
     constructor(data?: IMultiTableDataInfoDto) {
         if (data) {
@@ -7253,6 +7254,11 @@ export class MultiTableDataInfoDto implements IMultiTableDataInfoDto {
                 this.tableData = [];
                 for (let item of data["tableData"])
                     this.tableData.push(item);
+            }
+            if (data["statisticData"] && data["statisticData"].constructor === Array) {
+                this.statisticData = [];
+                for (let item of data["statisticData"])
+                    this.statisticData.push(StatisticDto.fromJS(item));
             }
         }
     }
@@ -7277,6 +7283,11 @@ export class MultiTableDataInfoDto implements IMultiTableDataInfoDto {
             for (let item of this.tableData)
                 data["tableData"].push(item);
         }
+        if (this.statisticData && this.statisticData.constructor === Array) {
+            data["statisticData"] = [];
+            for (let item of this.statisticData)
+                data["statisticData"].push(item.toJSON());
+        }
         return data; 
     }
 
@@ -7292,6 +7303,66 @@ export interface IMultiTableDataInfoDto {
     tableTitle: string | undefined;
     tableHead: string[] | undefined;
     tableData: string[][] | undefined;
+    statisticData: StatisticDto[] | undefined;
+}
+
+export class StatisticDto implements IStatisticDto {
+    eleId: number | undefined;
+    eleName: string | undefined;
+    totalRowNum: number | undefined;
+    totalValue: number | undefined;
+    avgValue: number | undefined;
+
+    constructor(data?: IStatisticDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.eleId = data["eleId"];
+            this.eleName = data["eleName"];
+            this.totalRowNum = data["totalRowNum"];
+            this.totalValue = data["totalValue"];
+            this.avgValue = data["avgValue"];
+        }
+    }
+
+    static fromJS(data: any): StatisticDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StatisticDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["eleId"] = this.eleId;
+        data["eleName"] = this.eleName;
+        data["totalRowNum"] = this.totalRowNum;
+        data["totalValue"] = this.totalValue;
+        data["avgValue"] = this.avgValue;
+        return data; 
+    }
+
+    clone(): StatisticDto {
+        const json = this.toJSON();
+        let result = new StatisticDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IStatisticDto {
+    eleId: number | undefined;
+    eleName: string | undefined;
+    totalRowNum: number | undefined;
+    totalValue: number | undefined;
+    avgValue: number | undefined;
 }
 
 export class CreateElementDto implements ICreateElementDto {
@@ -8056,6 +8127,7 @@ export class EditTplElementDto implements IEditTplElementDto {
     unitId: number | undefined;
     unitName: string | undefined;
     tplSpecId: number | undefined;
+    orderNo: number | undefined;
     maxNum: number | undefined;
     minNum: number | undefined;
 
@@ -8080,6 +8152,7 @@ export class EditTplElementDto implements IEditTplElementDto {
             this.unitId = data["unitId"];
             this.unitName = data["unitName"];
             this.tplSpecId = data["tplSpecId"];
+            this.orderNo = data["orderNo"];
             this.maxNum = data["maxNum"];
             this.minNum = data["minNum"];
         }
@@ -8104,6 +8177,7 @@ export class EditTplElementDto implements IEditTplElementDto {
         data["unitId"] = this.unitId;
         data["unitName"] = this.unitName;
         data["tplSpecId"] = this.tplSpecId;
+        data["orderNo"] = this.orderNo;
         data["maxNum"] = this.maxNum;
         data["minNum"] = this.minNum;
         return data; 
@@ -8128,6 +8202,7 @@ export interface IEditTplElementDto {
     unitId: number | undefined;
     unitName: string | undefined;
     tplSpecId: number | undefined;
+    orderNo: number | undefined;
     maxNum: number | undefined;
     minNum: number | undefined;
 }
@@ -8140,6 +8215,7 @@ export class EditTplSpecimenDto implements IEditTplSpecimenDto {
     specName: string | undefined;
     unitId: number | undefined;
     unitName: string | undefined;
+    orderNum: number | undefined;
 
     constructor(data?: IEditTplSpecimenDto) {
         if (data) {
@@ -8159,6 +8235,7 @@ export class EditTplSpecimenDto implements IEditTplSpecimenDto {
             this.specName = data["specName"];
             this.unitId = data["unitId"];
             this.unitName = data["unitName"];
+            this.orderNum = data["orderNum"];
         }
     }
 
@@ -8178,6 +8255,7 @@ export class EditTplSpecimenDto implements IEditTplSpecimenDto {
         data["specName"] = this.specName;
         data["unitId"] = this.unitId;
         data["unitName"] = this.unitName;
+        data["orderNum"] = this.orderNum;
         return data; 
     }
 
@@ -8197,6 +8275,7 @@ export interface IEditTplSpecimenDto {
     specName: string | undefined;
     unitId: number | undefined;
     unitName: string | undefined;
+    orderNum: number | undefined;
 }
 
 export class ReOrderDto implements IReOrderDto {

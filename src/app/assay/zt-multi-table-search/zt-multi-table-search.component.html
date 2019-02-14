@@ -6,7 +6,7 @@
         <nz-form-label nzFor="no">组织结构</nz-form-label>
         <nz-form-control>
           <nz-tree-select [nzNodes]="orgTree" nzShowSearch nzPlaceHolder="请选择" name='orgCode' [(ngModel)]='orgCode'
-            (ngModelChange)='orgChange($event)'>
+            (ngModelChange)='orgChange($event)' [nzDropdownStyle]="{ 'max-height': '300px' }">
           </nz-tree-select>
         </nz-form-control>
       </nz-form-item>
@@ -53,7 +53,7 @@
 </form>
 <ng-container *ngFor='let tbItem of searchData;let i=index'>
   <nz-table [nzData]="tbItem.tableData" [nzShowPagination]="false" [nzTitle]="tbItem.tableTitle" [nzBordered]=true
-    [nzScroll]="tbSizeArray[i]" [nzSize]="small">
+    [nzScroll]="tbSizeArray[i]" [nzSize]="small" [nzFooter]="tbFooter[i]">
     <thead>
       <tr>
         <th nzWidth="120px" nzLeft="0px">签到时间</th>

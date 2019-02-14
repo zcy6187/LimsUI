@@ -35,7 +35,7 @@
                   <nz-form-item>
                     <nz-form-control>
                       <nz-tree-select [nzNodes]="listOfOrg" nzShowSearch nzPlaceHolder="选择机构" name='orgCode'
-                        [(ngModel)]='orgCode'>
+                        [(ngModel)]='orgCode' [nzDropdownStyle]="{ 'max-height': '300px' }">
                       </nz-tree-select>
                     </nz-form-control>
                   </nz-form-item>

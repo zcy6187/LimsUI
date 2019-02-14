@@ -6,7 +6,7 @@
         <nz-form-label nzSpan="4">机构</nz-form-label>
         <nz-form-control nzSpan="20">
           <nz-tree-select [nzNodes]="orgTree" nzShowSearch nzPlaceHolder="请选择" name='orgCode' [(ngModel)]='orgCode'
-            (ngModelChange)='orgChange($event)'>
+            (ngModelChange)='orgChange($event)' [nzDropdownStyle]="{ 'max-height': '300px' }">
           </nz-tree-select>
         </nz-form-control>
       </nz-form-item>

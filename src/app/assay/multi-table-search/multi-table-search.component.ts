@@ -15,7 +15,8 @@ export class MultiTableSearchComponent extends AppComponentBase implements OnIni
   timeArray: Date[];
   templateId;
   specId: any[];
-  tbSizeArray: Array<object>
+  tbSizeArray: Array<object>;
+  tbFooter: Array<string>;
 
   constructor(private _searchService: Assay_DataSearchServiceProxy,
     private injector: Injector, private msg: NzMessageService) {
@@ -63,11 +64,22 @@ export class MultiTableSearchComponent extends AppComponentBase implements OnIni
       .subscribe((res: Array<MultiTableDataInfoDto>) => {
         this.searchData = res;
         let tempSizeArray = new Array<object>();
+        let strArray = new Array<string>();
         this.searchData.forEach(element => {
           let xsize = element.tableHead.length * 120 + 620 + 'px';
           tempSizeArray.push({ x: xsize, y: '400px' });
+          let str = "";
+          element.statisticData.forEach((st, i) => {
+            if (i == 0) {
+              str += "    " + st.eleName + ":" + st.totalRowNum + "行";
+            } else {
+              str += "    " + st.eleName + ":" + st.totalRowNum + "行/" + st.avgValue;
+            }
+          })
+          strArray.push(str);
         });
         this.tbSizeArray = tempSizeArray;
+        this.tbFooter = strArray;
       });
   }
 
