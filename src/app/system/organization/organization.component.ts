@@ -7,7 +7,7 @@ import { AddOrganizationComponent } from './add-organization/add-organization.co
 @Component({
   selector: 'app-organization',
   templateUrl: './organization.component.html',
-  styles: []
+  styleUrls: ['./organization.css']
 })
 export class OrganizationComponent extends AppComponentBase implements OnInit {
 

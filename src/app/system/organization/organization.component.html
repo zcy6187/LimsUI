@@ -2,11 +2,9 @@
 
 <div nz-row>
   <div nz-col nzSpan="10" nzGutter="8" class="gutter-row">
-    <div class="gutter-box">
-      <nz-card [nzBordered]="true">
-        <nz-tree [nzData]="nodes" nzShowLine="true" (nzClick)="nzEvent($event)">
-        </nz-tree>
-      </nz-card>
+    <div class="gutter-box" [ngStyle]="{'background-color':'red','height':'250px'}">
+      <nz-tree [nzData]="nodes" nzShowLine="true" (nzClick)="nzEvent($event)">
+      </nz-tree>
     </div>
   </div>
   <div nz-col nzSpan="12" nzGutter="8" class="gutter-row">
