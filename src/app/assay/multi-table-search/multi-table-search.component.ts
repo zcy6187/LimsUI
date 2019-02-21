@@ -2,6 +2,10 @@ import { Component, OnInit, Injector } from '@angular/core';
 import { HtmlSelectDto, Assay_DataSearchServiceProxy, MultiTableDataInfoDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/component-base';
 import { NzMessageService } from 'ng-zorro-antd';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { RequestOptions, ResponseContentType, Headers } from '@angular/http';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-multi-table-search',
@@ -19,7 +23,7 @@ export class MultiTableSearchComponent extends AppComponentBase implements OnIni
   tbFooter: Array<string>;
 
   constructor(private _searchService: Assay_DataSearchServiceProxy,
-    private injector: Injector, private msg: NzMessageService) {
+    private injector: Injector, private msg: NzMessageService, private http: HttpClient) {
     super(injector);
   }
 
@@ -81,6 +85,50 @@ export class MultiTableSearchComponent extends AppComponentBase implements OnIni
         this.tbSizeArray = tempSizeArray;
         this.tbFooter = strArray;
       });
+  }
+
+  downloadExcelOneSheet() {
+    if (this.specId.length < 1) {
+      this.msg.warning('请选择样品！');
+      return;
+    }
+    this._searchService.getExcelNameBySpecIdSinleSheet(this.templateId, this.specId, this.timeArray[0], this.timeArray[1])
+      .subscribe(file => {
+        console.log(file);
+        if (file == "-1") {
+          this.msg.warning("生成失败，请重新操作！")
+        } else {
+          this.openExcel(file);
+        }
+
+      });
+  }
+
+  downloadExcelMultiSheet() {
+    if (this.specId.length < 1) {
+      this.msg.warning('请选择样品！');
+      return;
+    }
+    this._searchService.getExcelNameBySpecIdMultiSheet(this.templateId, this.specId, this.timeArray[0], this.timeArray[1])
+      .subscribe(file => {
+        console.log(file);
+        if (file == "-1") {
+          this.msg.warning("生成失败，请重新操作！")
+        } else {
+          this.openExcel(file);
+        }
+
+      });
+  }
+
+  openExcel(fileName: string) {
+    let url = "http://131.107.2.64:2155/api/excel?fileName=" + fileName;
+    this.http.get(url, {
+      responseType: "blob",
+      headers: { 'Accept': 'application/vnd.ms-excel' }
+    }).subscribe(blob => {
+      saveAs(blob, fileName);
+    });
   }
 
 }

@@ -58,12 +58,22 @@ export class DataInputComponent extends AppComponentBase implements OnInit {
       });
   }
 
+  // 采样时间
   createSamplingTime() {
-    this.listOfTime = new Array<HtmlSelectDto>();
-    const temp = new HtmlSelectDto();
-    temp.key = "0000";
-    temp.value = "00:00";
-    this.listOfTime.push(temp);
+    let tempListTime = new Array<HtmlSelectDto>();
+    for (let i = 0; i < 24; i++) {
+      const temp1 = new HtmlSelectDto();
+      let tempStr = "0" + i;
+      tempStr = tempStr.substring(tempStr.length - 2)
+      temp1.key = tempStr + "00";
+      temp1.value = tempStr + ":00";
+      tempListTime.push(temp1);
+      const temp2 = new HtmlSelectDto();
+      temp2.key = +tempStr + "30";
+      temp2.value = tempStr + ":30";
+      tempListTime.push(temp2);
+    }
+    this.listOfTime = tempListTime;
   }
 
   btnSearch() {

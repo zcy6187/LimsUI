@@ -4,8 +4,6 @@ import { environment } from './environments/environment';
 import { hmrBootstrap } from './hmr';
 import { RootModule } from 'root.module';
 
-
-
 if (environment.production) {
   enableProdMode();
 }

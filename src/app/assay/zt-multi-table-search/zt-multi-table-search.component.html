@@ -49,6 +49,16 @@
         <button nz-button type="submit" [nzType]="'primary'" (click)="btnSearch()">查询</button>
       </nz-form-item>
     </nz-col>
+    <nz-col nzMd="4" nzSm="24">
+      <nz-form-item>
+        <button nz-button type="button" [nzType]="'primary'" (click)="downloadExcelMultiSheet()">多sheet导出</button>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="4" nzSm="24">
+      <nz-form-item>
+        <button nz-button type="button" [nzType]="'primary'" (click)="downloadExcelOneSheet()">单sheet导出</button>
+      </nz-form-item>
+    </nz-col>
   </nz-row>
 </form>
 <ng-container *ngFor='let tbItem of searchData;let i=index'>
