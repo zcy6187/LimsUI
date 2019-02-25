@@ -13,9 +13,9 @@
     </nz-col>
     <nz-col nzMd="4" nzSm="24">
       <nz-form-item>
-        <nz-form-label nzFor="no">化验模板</nz-form-label>
+        <nz-form-label nzFor="no">模板</nz-form-label>
         <nz-form-control>
-          <nz-select style="width: 180px;" [(ngModel)]="templateId" nzAllowClear nzPlaceHolder="选择" name='templateId'
+          <nz-select style="width: 130px;" [(ngModel)]="templateId" nzAllowClear nzPlaceHolder="选择" name='templateId'
             (ngModelChange)="tplChange($event)">
             <nz-option *ngFor="let option of listOfTemplate" [nzLabel]="option.value" [nzValue]="option.key">
             </nz-option>
@@ -52,7 +52,12 @@
         <label nz-radio nzValue="3">全部</label>
       </nz-radio-group>
     </nz-col>
-    <nz-col nzMd="4" nzSm="24">
+    <nz-col nzMd="3" nzSm="24">
+      <nz-form-item>
+        <input name="selfCode" placeholder="自定义编码" [(ngModel)]="selfCode">
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="3" nzSm="24">
       <nz-form-item>
         <button nz-button type="submit" [nzType]="'primary'" (click)="btnSearch()">查询</button>
       </nz-form-item>

@@ -195,7 +195,6 @@ export class EditUserTplComponent extends ModalComponentBase implements OnInit {
   }
 
   addAll() {
-    console.log("all");
     if (this.templateList.length > 0) {
       const idArray = new Array<number>(); // 存储既有id，用于去重
       const tempTokenList = new Array<TplDto>(); // 存储新模板
@@ -230,11 +229,27 @@ export class EditUserTplComponent extends ModalComponentBase implements OnInit {
     this.allChecked = allChecked;
     this.indeterminate = (!allChecked) && (!allUnChecked);
     this.updateSpecimen();
-    console.log(this.userSpecimenList);
   }
 
   checkAll(value: boolean): void {
     this.bindSpecimen.forEach(data => data.isChecked = value);
+    // 如果全选的话，把模板下的样品信息全部删除
+    if (value) {
+      // 找一下该模板下是否已经存在记录
+      let findItem = null;
+      let index = -1;
+      for (let item of this.userSpecimenList) {
+        index++;
+        if (item.tplId == this.selectedTplItem.id) {
+          findItem = item;
+          break;
+        }
+      }
+      // 如果元素存在，则删除该元素；
+      if (findItem) {
+        this.userSpecimenList.splice(index, 1);
+      }
+    }
   }
 
   updateSpecimen() {

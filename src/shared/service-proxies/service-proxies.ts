@@ -223,6 +223,144 @@ export class Assay_AttendanceServiceProxy {
         }
         return _observableOf<PagedResultDtoOfAttendanceDto>(<any>null);
     }
+
+    /**
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @param selfCode (optional) 
+     * @return Success
+     */
+    getAttendancesBySelfCode(skipCount: number | null | undefined, maxResultCount: number | null | undefined, selfCode: string | null | undefined): Observable<PagedResultDtoOfAttendanceDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_Attendance/GetAttendancesBySelfCode?";
+        if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        if (selfCode !== undefined)
+            url_ += "selfCode=" + encodeURIComponent("" + selfCode) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAttendancesBySelfCode(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAttendancesBySelfCode(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfAttendanceDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfAttendanceDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAttendancesBySelfCode(response: HttpResponseBase): Observable<PagedResultDtoOfAttendanceDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? PagedResultDtoOfAttendanceDto.fromJS(resultData200) : new PagedResultDtoOfAttendanceDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfAttendanceDto>(<any>null);
+    }
+
+    /**
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @param orgCode (optional) 
+     * @param tplId (optional) 
+     * @param specId (optional) 
+     * @param flag (optional) 
+     * @param beginTime (optional) 
+     * @param endTime (optional) 
+     * @param selfCode (optional) 
+     * @return Success
+     */
+    getAttendancesInfo(skipCount: number | null | undefined, maxResultCount: number | null | undefined, orgCode: string | null | undefined, tplId: number | null | undefined, specId: string | null | undefined, flag: number | null | undefined, beginTime: Date | null | undefined, endTime: Date | null | undefined, selfCode: string | null | undefined): Observable<PagedResultDtoOfAttendanceDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_Attendance/GetAttendancesInfo?";
+        if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        if (orgCode !== undefined)
+            url_ += "orgCode=" + encodeURIComponent("" + orgCode) + "&"; 
+        if (tplId !== undefined)
+            url_ += "tplId=" + encodeURIComponent("" + tplId) + "&"; 
+        if (specId !== undefined)
+            url_ += "specId=" + encodeURIComponent("" + specId) + "&"; 
+        if (flag !== undefined)
+            url_ += "flag=" + encodeURIComponent("" + flag) + "&"; 
+        if (beginTime !== undefined)
+            url_ += "beginTime=" + encodeURIComponent(beginTime ? "" + beginTime.toJSON() : "") + "&"; 
+        if (endTime !== undefined)
+            url_ += "endTime=" + encodeURIComponent(endTime ? "" + endTime.toJSON() : "") + "&"; 
+        if (selfCode !== undefined)
+            url_ += "selfCode=" + encodeURIComponent("" + selfCode) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAttendancesInfo(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAttendancesInfo(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfAttendanceDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfAttendanceDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAttendancesInfo(response: HttpResponseBase): Observable<PagedResultDtoOfAttendanceDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? PagedResultDtoOfAttendanceDto.fromJS(resultData200) : new PagedResultDtoOfAttendanceDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfAttendanceDto>(<any>null);
+    }
 }
 
 @Injectable()

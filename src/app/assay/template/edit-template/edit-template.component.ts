@@ -1,6 +1,6 @@
 import { Component, OnInit, Injector, Input, Output, EventEmitter } from '@angular/core';
 import { ModalComponentBase } from '@shared/component-base';
-import { Assay_TplServiceProxy, EditTplDto } from '@shared/service-proxies/service-proxies';
+import { Assay_TplServiceProxy, EditTplDto, OrgTreeNodeDto } from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-edit-template',
@@ -11,6 +11,8 @@ export class EditTemplateComponent extends ModalComponentBase implements OnInit 
 
   @Input()
   item: EditTplDto;
+  @Input()
+  orgList: OrgTreeNodeDto[];
 
 
   constructor(private injector: Injector, private _service: Assay_TplServiceProxy) {

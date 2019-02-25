@@ -7,7 +7,6 @@ import {
 import { NzMessageService, isTemplateRef } from 'ng-zorro-antd';
 import { FormControl, FormGroup } from '@angular/forms';
 import pinyin from 'pinyin';
-import { rS } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-sign-data-input',
@@ -34,6 +33,7 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
   selectedItem: AttendanceDto;
   listOfOper = new Array<HtmlSelectDto>();
   submitBtnStatus = false;
+  selfCode: string;
 
   constructor(private _service: Assay_AttendanceServiceProxy, private _injector: Injector,
     private _searchService: Assay_DataSearchServiceProxy,
@@ -67,6 +67,11 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
   }
 
   btnSearch() {
+    // 如果selfCode不为空，则不做其它检查
+    if (this.selfCode) {
+      this.getDataFromService(false);
+      return;
+    }
     if (!this.orgCode) {
       this.message.info('机构不能为空！');
       return;
@@ -82,7 +87,7 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
 
   // 分页加载数据
   protected fetchDataList(request: PagedRequestDto, pageNumber: number, finishedCallback: Function): void {
-    this._service.getAttendances(request.skipCount, request.maxResultCount, this.orgCode, Number(this.templateId), this.specId, Number(this.flagValue), this.timeArray[0], this.timeArray[1])
+    this._service.getAttendancesInfo(request.skipCount, request.maxResultCount, this.orgCode, Number(this.templateId), this.specId, Number(this.flagValue), this.timeArray[0], this.timeArray[1], this.selfCode)
       .finally(() => {
         finishedCallback();
       }).subscribe((result: PagedResultDtoOfAttendanceDto) => {
@@ -92,7 +97,7 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
   }
 
   private getDataFromService(isInput: boolean) {
-    this._service.getAttendances(0, this.pageSize, this.orgCode, Number(this.templateId), this.specId, Number(this.flagValue), this.timeArray[0], this.timeArray[1])
+    this._service.getAttendancesInfo(0, this.pageSize, this.orgCode, Number(this.templateId), this.specId, Number(this.flagValue), this.timeArray[0], this.timeArray[1], this.selfCode)
       .subscribe((result: PagedResultDtoOfAttendanceDto) => {
         this.dataList = result.items;
         this.totalItems = result.totalCount;
@@ -102,7 +107,6 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
           } else {
             this.message.info('该条件下没有可录入的数据！');
           }
-
         }
       });
   }

@@ -1,6 +1,6 @@
 import { Component, OnInit, Injector, Input, Output, EventEmitter } from '@angular/core';
 import { ModalComponentBase } from '@shared/component-base';
-import { Assay_TplServiceProxy, CreateTplDto } from '@shared/service-proxies/service-proxies';
+import { Assay_TplServiceProxy, CreateTplDto, OrgTreeNodeDto } from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-add-template',
@@ -10,6 +10,8 @@ import { Assay_TplServiceProxy, CreateTplDto } from '@shared/service-proxies/ser
 export class AddTemplateComponent extends ModalComponentBase implements OnInit {
   @Input()
   orgCode: string;
+  @Input()
+  orgList: OrgTreeNodeDto[];
   public item: CreateTplDto;
 
 
@@ -19,11 +21,12 @@ export class AddTemplateComponent extends ModalComponentBase implements OnInit {
   }
 
   ngOnInit() {
+    this.item = new CreateTplDto();
+    this.item.orgCode = this.orgCode;
   }
 
   save() {
     if (this.item.tplName) {
-      this.item.orgCode = this.orgCode;
       this._service.addTpl(this.item)
         .subscribe((res) => {
           this.notify.info(res);

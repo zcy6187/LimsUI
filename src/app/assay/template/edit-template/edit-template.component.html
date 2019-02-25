@@ -16,6 +16,11 @@
           <ng-container *ngIf="name.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
         </nz-form-explain>
       </nz-form-control>
+      <nz-form-control>
+        <nz-tree-select name="org" [nzNodes]="orgList" nzShowSearch nzPlaceHolder="选择组织" [(ngModel)]="item.orgCode"
+          [nzDropdownStyle]="{ 'max-height': '300px' }">
+        </nz-tree-select>
+      </nz-form-control>
     </nz-form-item>
 
     <!-- 功能按钮 -->

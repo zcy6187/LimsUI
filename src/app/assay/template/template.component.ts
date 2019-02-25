@@ -121,7 +121,7 @@ export class TemplateComponent extends AppComponentBase implements OnInit {
   }
 
   showAddTpl() {
-    this.modalHelper.open(AddTemplateComponent, { orgCode: this.orgCode }, 'md', {
+    this.modalHelper.open(AddTemplateComponent, { orgCode: this.orgCode, orgList: this.orgTree }, 'md', {
       nzMask: true,
     })
       .subscribe(() => {
@@ -206,7 +206,7 @@ export class TemplateComponent extends AppComponentBase implements OnInit {
   }
 
   editTpl(item: EditTplDto) {
-    this.modalHelper.open(EditTemplateComponent, { item: item }, 'md', {
+    this.modalHelper.open(EditTemplateComponent, { item: item, orgList: this.orgTree }, 'md', {
       nzMask: true,
     })
       .subscribe((ret: any) => {
