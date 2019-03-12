@@ -11,23 +11,22 @@
         </nz-form-control>
       </nz-form-item>
     </nz-col>
-    <nz-col nzMd="4" nzSm="24">
+    <nz-col nzMd="8" nzSm="24">
       <nz-form-item>
         <nz-form-label nzFor="no">模板</nz-form-label>
         <nz-form-control>
-          <nz-select style="width: 130px;" [(ngModel)]="templateId" nzAllowClear nzPlaceHolder="选择" name='templateId'
-            (ngModelChange)="tplChange($event)">
+          <nz-select [(ngModel)]="templateId" nzAllowClear nzPlaceHolder="选择" name='templateId' (ngModelChange)="tplChange($event)">
             <nz-option *ngFor="let option of listOfTemplate" [nzLabel]="option.value" [nzValue]="option.key">
             </nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>
     </nz-col>
-    <nz-col nzMd="10" nzSm="24">
+    <nz-col nzMd="8" nzSm="24">
       <nz-form-item>
         <nz-form-label nzFor="no">样品</nz-form-label>
         <nz-form-control>
-          <nz-select style="width: 360px;" [(ngModel)]="specId" nzAllowClear nzPlaceHolder="选择" name='specId' nzMode="tags">
+          <nz-select [(ngModel)]="specId" nzAllowClear nzPlaceHolder="选择" name='specId' nzMode="tags">
             <nz-option *ngFor="let option of listOfSpec" [nzLabel]="option.value" [nzValue]="option.key">
             </nz-option>
           </nz-select>
@@ -54,7 +53,7 @@
     </nz-col>
     <nz-col nzMd="3" nzSm="24">
       <nz-form-item>
-        <input name="selfCode" placeholder="自定义编码" [(ngModel)]="selfCode">
+        <input name="selfCode" placeholder="条码号" [(ngModel)]="selfCode">
       </nz-form-item>
     </nz-col>
     <nz-col nzMd="3" nzSm="24">
@@ -115,6 +114,15 @@
   <ng-container *ngIf="schema">
     <form nz-form [formGroup]="profileForm" (ngSubmit)="_submitForm($event, profileForm.value)">
       <div nz-row>
+        <nz-col nzSpan="7" nzOffset="5">
+          <button nz-button type="submit" nzType="primary" [disabled]="submitBtnStatus">全部保存</button>
+        </nz-col>
+        <nz-col nzSpan="10">
+          <button nz-button type="button" nzType="default" (click)="showElement(profileForm.value)">{{isShowAllElement?"待输入元素":"显示全部元素"}}</button>
+        </nz-col>
+      </div>
+      <div style="height: 5px;"></div>
+      <div nz-row>
         <div nz-col nzSpan="24" *ngFor='let item of schema.specList' style="overflow: auto" [formGroupName]='item.formName'>
           <nz-card [nzTitle]="item.specName">
             <div *ngFor='let ele of item.eleList'>
@@ -123,7 +131,7 @@
               <div [formGroupName]="ele.formName">
                 <input type='text' formControlName="typeEleId" style="display:none" />
                 <input type='text' formControlName="eleName" style="display:none" />
-                <nz-form-item>
+                <nz-form-item *ngIf='ele.isVisible'>
                   <nz-form-label [nzXs]="{span:24,offset:0}" [nzSm]="{span:6,offset:0}">{{ele.eleName}}({{ele.unitName}})</nz-form-label>
                   <nz-form-control [nzXs]="{span:24,offset:0}" [nzSm]="{span:10,offset:0}">
                     <input nz-input type="text" formControlName="eleValue">

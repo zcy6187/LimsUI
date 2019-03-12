@@ -59,6 +59,7 @@ import { ZtcodeComponent } from './system/ztcode/ztcode.component';
 import { MultiTableSearchComponent } from './assay/multi-table-search/multi-table-search.component';
 import { ZtMultiTableSearchComponent } from './assay/zt-multi-table-search/zt-multi-table-search.component';
 import { OperUserTplComponent } from './assay/user-tpl/oper-user-tpl/oper-user-tpl.component';
+import { StatisticExcelerComponent } from './assay/statistic/statistic-exceler/statistic-exceler.component';
 
 @NgModule({
   imports: [
@@ -121,6 +122,7 @@ import { OperUserTplComponent } from './assay/user-tpl/oper-user-tpl/oper-user-t
     MultiTableSearchComponent,
     ZtMultiTableSearchComponent,
     OperUserTplComponent,
+    StatisticExcelerComponent,
   ],
   entryComponents: [
     CreateTenantComponent,

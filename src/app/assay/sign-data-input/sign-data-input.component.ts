@@ -7,6 +7,7 @@ import {
 import { NzMessageService, isTemplateRef } from 'ng-zorro-antd';
 import { FormControl, FormGroup } from '@angular/forms';
 import pinyin from 'pinyin';
+import { stringify } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-sign-data-input',
@@ -26,7 +27,11 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
   dataList;
   isTableLoading;
   oldSechmaId;
-  schema;
+  schema: TemplateSchemaInputDto; // 前台绑定信息
+  eleSchema: TemplateSchemaInputDto; // 存储是否绑定的信息
+  allSchema: TemplateSchemaInputDto; // 存储全部信息
+  isShowAllElement: boolean;
+
   isVisible;
   historyInfo;
   profileForm: FormGroup;
@@ -34,6 +39,8 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
   listOfOper = new Array<HtmlSelectDto>();
   submitBtnStatus = false;
   selfCode: string;
+  formText: string; // 表单按钮（全部显示；只显示输入元素）
+
 
   constructor(private _service: Assay_AttendanceServiceProxy, private _injector: Injector,
     private _searchService: Assay_DataSearchServiceProxy,
@@ -57,6 +64,7 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
     this.timeArray = selectTime;
   }
 
+  // 获取化验室人员
   refreshUser() {
     if (this.listOfOper.length < 1) {
       this._assayUserService.getHtmlSelectAssayUsers()
@@ -87,7 +95,15 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
 
   // 分页加载数据
   protected fetchDataList(request: PagedRequestDto, pageNumber: number, finishedCallback: Function): void {
-    this._service.getAttendancesInfo(request.skipCount, request.maxResultCount, this.orgCode, Number(this.templateId), this.specId, Number(this.flagValue), this.timeArray[0], this.timeArray[1], this.selfCode)
+    let templateId = 0;
+    if (this.templateId) {
+      templateId = Number(this.templateId);
+    }
+    let selSpecId = "0";
+    if (this.specId) {
+      selSpecId = this.specId;
+    }
+    this._service.getAttendancesInfo(request.skipCount, request.maxResultCount, this.orgCode, templateId, selSpecId, Number(this.flagValue), this.timeArray[0], this.timeArray[1], this.selfCode)
       .finally(() => {
         finishedCallback();
       }).subscribe((result: PagedResultDtoOfAttendanceDto) => {
@@ -97,7 +113,15 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
   }
 
   private getDataFromService(isInput: boolean) {
-    this._service.getAttendancesInfo(0, this.pageSize, this.orgCode, Number(this.templateId), this.specId, Number(this.flagValue), this.timeArray[0], this.timeArray[1], this.selfCode)
+    let templateId = 0;
+    if (this.templateId) {
+      templateId = Number(this.templateId);
+    }
+    let selSpecId = "0";
+    if (this.specId) {
+      selSpecId = this.specId;
+    }
+    this._service.getAttendancesInfo(0, this.pageSize, this.orgCode, templateId, selSpecId, Number(this.flagValue), this.timeArray[0], this.timeArray[1], this.selfCode)
       .subscribe((result: PagedResultDtoOfAttendanceDto) => {
         this.dataList = result.items;
         this.totalItems = result.totalCount;
@@ -147,57 +171,64 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
     this.selectedItem = item;
     const searchTplId = item.tplId;
     const searchSpecId = item.tplSpecId;
-    const newSchemaId = searchSpecId + "#" + searchSpecId;
+    const newSchemaId = searchTplId + "#" + searchSpecId;
 
+    this.isShowAllElement = false;
     if (newSchemaId !== this.oldSechmaId) {
-      // 绘制表单并填充数据
-      const specArray = new Array<number>();
-      specArray.push(searchSpecId);
-      this.searchSchema(searchTplId, specArray);
-    } else {
-      // 仅填充数据
-      this.searchFormValue();
+      this.searchSchemaBySignId(item.id);
     }
+    // 填充数据-无论第一次加载，还是中间加载，都要去填充数据，防止其在查询
+    this.searchFormValue();
     this.oldSechmaId = newSchemaId;
     this.isVisible = true;
     this.submitBtnStatus = false;
   }
 
-  // 加载动态表单
-  searchSchema(tplId: number, specArray: Array<number>) {
-    if (this.templateId) {
-      this._dataInputService.getTemplateSchemaInputDtoByTplId(tplId, specArray)
-        .subscribe(res => {
-          if (!res) {
-            this.msg.warning("找不到化验模板");
-          } else {
-            this.refreshUser();
-            this.schema = res;
-            this.schemaInputToFormGroup(res);
-            this.historyInfo = [];
-            this.searchFormValue();
-          }
-        });
-    } else {
-      this.msg.warning('请先选择化验模板！');
-    }
+  // 按签到ID加载动态表单
+  searchSchemaBySignId(signId: number) {
+    this._dataInputService.getTemplateSchemaInputDtoBySignId(signId)
+      .subscribe(res => {
+        if (!res) {
+          this.msg.warning("找不到化验模板");
+        } else {
+          this.refreshUser();
+          this.allSchema = res;
+          this.eleSchema = this.getEleSchema(res);
+          this.schema = this.eleSchema;
+          this.schemaInputToFormGroup(this.schema); // 初始化表单
+        }
+      });
+  }
+
+  // 生成元素架构表
+  getEleSchema(res: TemplateSchemaInputDto): TemplateSchemaInputDto {
+    let eleArray = this.selectedItem.elementIds.split(",");
+    let tmpEleSchema = res.clone();
+    tmpEleSchema.specList[0].eleList.forEach((item) => {
+      if (eleArray.indexOf(item.eleId.toString()) >= 0) {
+        item.isVisible = true;
+      } else {
+        item.isVisible = false;
+      }
+    });
+    return tmpEleSchema;
   }
 
   // 从服务器更新表单数据
   searchFormValue() {
     this._searchService.getFormValueBySignId(this.selectedItem.id)
       .subscribe((res: HtmlDataOperRetDto) => {
+        this.resetFormValue(); // 全部置空,再赋值数据，置空时，可以将非输入的数据不显示。
         // 更新数据
         if (res.code !== 0) {
           this.profileForm.patchValue(JSON.parse(res.message));
-        } else {
-          this.resetFormValue(); // 全部置空
         }
       });
   }
 
   resetFormValue() {
     const specArray: Array<SpecInputDto> = this.schema.specList;
+    console.log(JSON.stringify(specArray));
     const mainGroup: any = {};
     const formObj = {};
     for (const specItem of specArray) {
@@ -217,7 +248,7 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
     this.profileForm.setValue(formObj);
   }
 
-  // 生成表单
+  // 动态生成表单
   schemaInputToFormGroup(schemaInfo: TemplateSchemaInputDto) {
     const specArray: Array<SpecInputDto> = schemaInfo.specList;
     const mainGroup: any = {};
@@ -260,6 +291,7 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
     this._dataInputService.writeValueToTable(dataInput)
       .subscribe((res: HtmlDataOperRetDto) => {
         this.msg.info(res.message);
+        // 添加成功，则关闭
         if (res.code > -1) {
           this.isVisible = false;
         }
@@ -269,6 +301,17 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
       });
     // this.writeFormValToHistory(valObj);
 
+  }
+
+  showElement(valObj) {
+    // 如果显示全部元素,则只显示部分元素
+    if (this.isShowAllElement) {
+      this.schema = this.eleSchema;
+    } else {
+      this.schema = this.allSchema;
+    }
+    this.profileForm.setValue(valObj);
+    this.isShowAllElement = !this.isShowAllElement;
   }
 
   pinyinFilterOption = (value, opt) => {

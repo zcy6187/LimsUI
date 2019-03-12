@@ -227,17 +227,26 @@ export class Assay_AttendanceServiceProxy {
     /**
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
+     * @param beginTime (optional) 
+     * @param endTime (optional) 
      * @param selfCode (optional) 
+     * @param flag (optional) 
      * @return Success
      */
-    getAttendancesBySelfCode(skipCount: number | null | undefined, maxResultCount: number | null | undefined, selfCode: string | null | undefined): Observable<PagedResultDtoOfAttendanceDto> {
+    getAttendancesBySelfCode(skipCount: number | null | undefined, maxResultCount: number | null | undefined, beginTime: Date | null | undefined, endTime: Date | null | undefined, selfCode: string | null | undefined, flag: number | null | undefined): Observable<PagedResultDtoOfAttendanceDto> {
         let url_ = this.baseUrl + "/api/services/app/Assay_Attendance/GetAttendancesBySelfCode?";
         if (skipCount !== undefined)
             url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
         if (maxResultCount !== undefined)
             url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        if (beginTime !== undefined)
+            url_ += "beginTime=" + encodeURIComponent(beginTime ? "" + beginTime.toJSON() : "") + "&"; 
+        if (endTime !== undefined)
+            url_ += "endTime=" + encodeURIComponent(endTime ? "" + endTime.toJSON() : "") + "&"; 
         if (selfCode !== undefined)
             url_ += "selfCode=" + encodeURIComponent("" + selfCode) + "&"; 
+        if (flag !== undefined)
+            url_ += "flag=" + encodeURIComponent("" + flag) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -372,6 +381,60 @@ export class Assay_DataInputServiceProxy {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param signId (optional) 
+     * @return Success
+     */
+    getTemplateSchemaInputDtoBySignId(signId: number | null | undefined): Observable<TemplateSchemaInputDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_DataInput/GetTemplateSchemaInputDtoBySignId?";
+        if (signId !== undefined)
+            url_ += "signId=" + encodeURIComponent("" + signId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTemplateSchemaInputDtoBySignId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTemplateSchemaInputDtoBySignId(<any>response_);
+                } catch (e) {
+                    return <Observable<TemplateSchemaInputDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<TemplateSchemaInputDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetTemplateSchemaInputDtoBySignId(response: HttpResponseBase): Observable<TemplateSchemaInputDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? TemplateSchemaInputDto.fromJS(resultData200) : new TemplateSchemaInputDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<TemplateSchemaInputDto>(<any>null);
     }
 
     /**
@@ -1887,6 +1950,266 @@ export class Assay_SpecimenServiceProxy {
             }));
         }
         return _observableOf<HtmlSelectDto[]>(<any>null);
+    }
+}
+
+@Injectable()
+export class Assay_StatisticServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param beginTime (optional) 
+     * @param endTime (optional) 
+     * @param orgCode (optional) 
+     * @return Success
+     */
+    getPlantSummary(beginTime: Date | null | undefined, endTime: Date | null | undefined, orgCode: string | null | undefined): Observable<PlantSummaryDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_Statistic/GetPlantSummary?";
+        if (beginTime !== undefined)
+            url_ += "beginTime=" + encodeURIComponent(beginTime ? "" + beginTime.toJSON() : "") + "&"; 
+        if (endTime !== undefined)
+            url_ += "endTime=" + encodeURIComponent(endTime ? "" + endTime.toJSON() : "") + "&"; 
+        if (orgCode !== undefined)
+            url_ += "orgCode=" + encodeURIComponent("" + orgCode) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPlantSummary(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPlantSummary(<any>response_);
+                } catch (e) {
+                    return <Observable<PlantSummaryDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PlantSummaryDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPlantSummary(response: HttpResponseBase): Observable<PlantSummaryDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? PlantSummaryDto.fromJS(resultData200) : new PlantSummaryDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PlantSummaryDto>(<any>null);
+    }
+
+    /**
+     * @param beginTime (optional) 
+     * @param endTime (optional) 
+     * @param orgCode (optional) 
+     * @return Success
+     */
+    getSectionSummary(beginTime: Date | null | undefined, endTime: Date | null | undefined, orgCode: string | null | undefined): Observable<SectionSummaryDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_Statistic/GetSectionSummary?";
+        if (beginTime !== undefined)
+            url_ += "beginTime=" + encodeURIComponent(beginTime ? "" + beginTime.toJSON() : "") + "&"; 
+        if (endTime !== undefined)
+            url_ += "endTime=" + encodeURIComponent(endTime ? "" + endTime.toJSON() : "") + "&"; 
+        if (orgCode !== undefined)
+            url_ += "orgCode=" + encodeURIComponent("" + orgCode) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSectionSummary(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSectionSummary(<any>response_);
+                } catch (e) {
+                    return <Observable<SectionSummaryDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<SectionSummaryDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetSectionSummary(response: HttpResponseBase): Observable<SectionSummaryDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(SectionSummaryDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<SectionSummaryDto[]>(<any>null);
+    }
+
+    /**
+     * @param beginTime (optional) 
+     * @param endTime (optional) 
+     * @param orgCode (optional) 
+     * @return Success
+     */
+    getCompanySummary(beginTime: Date | null | undefined, endTime: Date | null | undefined, orgCode: string | null | undefined): Observable<PlantSummaryDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_Statistic/GetCompanySummary?";
+        if (beginTime !== undefined)
+            url_ += "beginTime=" + encodeURIComponent(beginTime ? "" + beginTime.toJSON() : "") + "&"; 
+        if (endTime !== undefined)
+            url_ += "endTime=" + encodeURIComponent(endTime ? "" + endTime.toJSON() : "") + "&"; 
+        if (orgCode !== undefined)
+            url_ += "orgCode=" + encodeURIComponent("" + orgCode) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCompanySummary(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCompanySummary(<any>response_);
+                } catch (e) {
+                    return <Observable<PlantSummaryDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PlantSummaryDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetCompanySummary(response: HttpResponseBase): Observable<PlantSummaryDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(PlantSummaryDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PlantSummaryDto[]>(<any>null);
+    }
+
+    /**
+     * @param beginTime (optional) 
+     * @param endTime (optional) 
+     * @param orgCode (optional) 
+     * @return Success
+     */
+    getExcel(beginTime: Date | null | undefined, endTime: Date | null | undefined, orgCode: string | null | undefined): Observable<string> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_Statistic/GetExcel?";
+        if (beginTime !== undefined)
+            url_ += "beginTime=" + encodeURIComponent(beginTime ? "" + beginTime.toJSON() : "") + "&"; 
+        if (endTime !== undefined)
+            url_ += "endTime=" + encodeURIComponent(endTime ? "" + endTime.toJSON() : "") + "&"; 
+        if (orgCode !== undefined)
+            url_ += "orgCode=" + encodeURIComponent("" + orgCode) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetExcel(<any>response_);
+                } catch (e) {
+                    return <Observable<string>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetExcel(response: HttpResponseBase): Observable<string> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string>(<any>null);
     }
 }
 
@@ -6672,6 +6995,7 @@ export class AttendanceDto implements IAttendanceDto {
     selfCode: string | undefined;
     description: string | undefined;
     scanId: string | undefined;
+    elementIds: string | undefined;
 
     constructor(data?: IAttendanceDto) {
         if (data) {
@@ -6704,6 +7028,7 @@ export class AttendanceDto implements IAttendanceDto {
             this.selfCode = data["selfCode"];
             this.description = data["description"];
             this.scanId = data["scanId"];
+            this.elementIds = data["elementIds"];
         }
     }
 
@@ -6736,6 +7061,7 @@ export class AttendanceDto implements IAttendanceDto {
         data["selfCode"] = this.selfCode;
         data["description"] = this.description;
         data["scanId"] = this.scanId;
+        data["elementIds"] = this.elementIds;
         return data; 
     }
 
@@ -6768,6 +7094,7 @@ export interface IAttendanceDto {
     selfCode: string | undefined;
     description: string | undefined;
     scanId: string | undefined;
+    elementIds: string | undefined;
 }
 
 export class TemplateSchemaInputDto implements ITemplateSchemaInputDto {
@@ -6904,6 +7231,7 @@ export class ElementInputDto implements IElementInputDto {
     eleName: string | undefined;
     unitName: string | undefined;
     eleValue: string | undefined;
+    isVisible: boolean | undefined;
 
     constructor(data?: IElementInputDto) {
         if (data) {
@@ -6923,6 +7251,7 @@ export class ElementInputDto implements IElementInputDto {
             this.eleName = data["eleName"];
             this.unitName = data["unitName"];
             this.eleValue = data["eleValue"];
+            this.isVisible = data["isVisible"];
         }
     }
 
@@ -6942,6 +7271,7 @@ export class ElementInputDto implements IElementInputDto {
         data["eleName"] = this.eleName;
         data["unitName"] = this.unitName;
         data["eleValue"] = this.eleValue;
+        data["isVisible"] = this.isVisible;
         return data; 
     }
 
@@ -6961,6 +7291,7 @@ export interface IElementInputDto {
     eleName: string | undefined;
     unitName: string | undefined;
     eleValue: string | undefined;
+    isVisible: boolean | undefined;
 }
 
 export class CreateDataInputDto implements ICreateDataInputDto {
@@ -7941,6 +8272,179 @@ export interface ISpecimenDto {
     name: string;
     lx: string | undefined;
     id: number | undefined;
+}
+
+export class PlantSummaryDto implements IPlantSummaryDto {
+    orgCode: string | undefined;
+    orgName: string | undefined;
+    sectionList: SectionSummaryDto[] | undefined;
+
+    constructor(data?: IPlantSummaryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.orgCode = data["orgCode"];
+            this.orgName = data["orgName"];
+            if (data["sectionList"] && data["sectionList"].constructor === Array) {
+                this.sectionList = [];
+                for (let item of data["sectionList"])
+                    this.sectionList.push(SectionSummaryDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PlantSummaryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PlantSummaryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["orgCode"] = this.orgCode;
+        data["orgName"] = this.orgName;
+        if (this.sectionList && this.sectionList.constructor === Array) {
+            data["sectionList"] = [];
+            for (let item of this.sectionList)
+                data["sectionList"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): PlantSummaryDto {
+        const json = this.toJSON();
+        let result = new PlantSummaryDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPlantSummaryDto {
+    orgCode: string | undefined;
+    orgName: string | undefined;
+    sectionList: SectionSummaryDto[] | undefined;
+}
+
+export class SectionSummaryDto implements ISectionSummaryDto {
+    orgCode: string | undefined;
+    orgName: string | undefined;
+    specList: SpecSummaryDto[] | undefined;
+
+    constructor(data?: ISectionSummaryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.orgCode = data["orgCode"];
+            this.orgName = data["orgName"];
+            if (data["specList"] && data["specList"].constructor === Array) {
+                this.specList = [];
+                for (let item of data["specList"])
+                    this.specList.push(SpecSummaryDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): SectionSummaryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SectionSummaryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["orgCode"] = this.orgCode;
+        data["orgName"] = this.orgName;
+        if (this.specList && this.specList.constructor === Array) {
+            data["specList"] = [];
+            for (let item of this.specList)
+                data["specList"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): SectionSummaryDto {
+        const json = this.toJSON();
+        let result = new SectionSummaryDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISectionSummaryDto {
+    orgCode: string | undefined;
+    orgName: string | undefined;
+    specList: SpecSummaryDto[] | undefined;
+}
+
+export class SpecSummaryDto implements ISpecSummaryDto {
+    specName: string | undefined;
+    specCount: number | undefined;
+    eleCount: number | undefined;
+    auAg: number | undefined;
+
+    constructor(data?: ISpecSummaryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.specName = data["specName"];
+            this.specCount = data["specCount"];
+            this.eleCount = data["eleCount"];
+            this.auAg = data["auAg"];
+        }
+    }
+
+    static fromJS(data: any): SpecSummaryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SpecSummaryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["specName"] = this.specName;
+        data["specCount"] = this.specCount;
+        data["eleCount"] = this.eleCount;
+        data["auAg"] = this.auAg;
+        return data; 
+    }
+
+    clone(): SpecSummaryDto {
+        const json = this.toJSON();
+        let result = new SpecSummaryDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISpecSummaryDto {
+    specName: string | undefined;
+    specCount: number | undefined;
+    eleCount: number | undefined;
+    auAg: number | undefined;
 }
 
 export class CreateTplToken implements ICreateTplToken {

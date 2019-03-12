@@ -58,6 +58,9 @@ export class ZtMultiTableSearchComponent extends AppComponentBase implements OnI
       this._searchService.getSpecimenHtmlSelectByTemplateId(item, false)
         .subscribe((res: HtmlSelectDto[]) => {
           if (res.length > 0) {
+            var tmp = new HtmlSelectDto();
+            tmp.key = '-1', tmp.value = '全部';
+            res.push(tmp)
             this.listOfSpec = res;
             let selectArray = new Array<any>();
             selectArray.push(res[0].key);

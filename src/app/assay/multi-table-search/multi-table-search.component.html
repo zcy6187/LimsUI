@@ -1,19 +1,19 @@
 <page-header title="多表查询"></page-header>
 <form nz-form [nzLayout]="'inline'" class="search__form">
   <nz-row [nzGutter]="{ md: 8, lg: 24, xl: 48 }">
-    <nz-col nzMd="8" nzSm="24">
+    <nz-col nzMd="12" nzSm="24">
       <nz-form-item>
         <nz-form-label nzFor="no">化验模板</nz-form-label>
         <nz-form-control>
-          <nz-select style="width: 320px;" [(ngModel)]="templateId" nzAllowClear nzPlaceHolder="选择" name='templateId'
-            (ngModelChange)='tplChange($event)' [nzDropdownStyle]="{ 'max-height': '300px' }">
+          <nz-select [(ngModel)]="templateId" nzAllowClear nzPlaceHolder="选择" name='templateId' (ngModelChange)='tplChange($event)'
+            [nzDropdownStyle]="{ 'max-height': '300px' }" [nzShowSearch]='true'>
             <nz-option *ngFor="let option of listOfTemplate" [nzLabel]="option.value" [nzValue]="option.key">
             </nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>
     </nz-col>
-    <nz-col nzMd="16" nzSm="24">
+    <nz-col nzMd="12" nzSm="24">
       <nz-form-item>
         <nz-form-label nzFor="no">样品</nz-form-label>
         <nz-form-control>

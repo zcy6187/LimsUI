@@ -1,0 +1,31 @@
+<page-header title="组织费用统计"></page-header>
+<form nz-form [nzLayout]="'inline'" class="search__form">
+  <nz-row [nzGutter]="{ md: 8, lg: 24, xl: 48 }">
+    <nz-col nzMd="8" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzFor="no">组织结构</nz-form-label>
+        <nz-form-control>
+          <nz-tree-select [nzNodes]="orgTree" nzShowSearch nzPlaceHolder="请选择" name='orgCode' [(ngModel)]='orgCode'
+            [nzDropdownStyle]="{ 'max-height': '300px' }">
+          </nz-tree-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="12" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzFor="no">送样时间段</nz-form-label>
+        <nz-form-control>
+          <nz-range-picker nzFormat="yyyy-MM-dd" [(ngModel)]='timeArray' name='timeArray' nz-local='zh'></nz-range-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="3" nzSm="24">
+      <nz-form-item>
+        <button nz-button type="submit" [nzType]="'primary'" (click)="btnSearch()">导出</button>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+</form>
+<div class="loading" [hidden]="isLoading">
+  <nz-spin nzSimple></nz-spin>
+</div>

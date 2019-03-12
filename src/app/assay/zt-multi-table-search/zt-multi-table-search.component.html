@@ -11,23 +11,23 @@
         </nz-form-control>
       </nz-form-item>
     </nz-col>
-    <nz-col nzMd="4" nzSm="24">
+    <nz-col nzMd="8" nzSm="24">
       <nz-form-item>
         <nz-form-label nzFor="no">化验模板</nz-form-label>
         <nz-form-control>
-          <nz-select style="width: 180px;" [(ngModel)]="templateId" nzAllowClear nzPlaceHolder="选择" name='templateId'
-            (ngModelChange)='tplChange($event)'>
+          <nz-select [(ngModel)]="templateId" nzAllowClear nzPlaceHolder="选择" name='templateId' (ngModelChange)='tplChange($event)'
+            [nzShowSearch]='true'>
             <nz-option *ngFor="let option of listOfTemplate" [nzLabel]="option.value" [nzValue]="option.key">
             </nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>
     </nz-col>
-    <nz-col nzMd="10" nzSm="24">
+    <nz-col nzMd="8" nzSm="24">
       <nz-form-item>
         <nz-form-label nzFor="no">样品</nz-form-label>
         <nz-form-control>
-          <nz-select style="width: 420px;" [(ngModel)]="specId" nzAllowClear nzPlaceHolder="选择" name='specId' nzMode="tags">
+          <nz-select [(ngModel)]="specId" nzAllowClear nzPlaceHolder="选择" name='specId' nzMode="tags" [nzShowSearch]='true'>
             <nz-option *ngFor="let option of listOfSpec" [nzLabel]="option.value" [nzValue]="option.key">
             </nz-option>
           </nz-select>

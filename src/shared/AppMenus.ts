@@ -114,7 +114,7 @@ export class AppMenus {
                 {
                     text: "签到录入",
                     i18n: "",
-                    acl: "Pages.Assay.SearchInput",
+                    acl: "Pages.AssayInput.SearchInput",
                     icon: { type: "icon", value: "info-circle" },
                     link: "/app/signDataInput",
                 },
@@ -147,6 +147,21 @@ export class AppMenus {
                     icon: { type: "icon", value: "info-circle" },
                     link: "/app/ztMultiTable",
                 },
+            ]
+        },
+        {
+            text: "统计报表",
+            i18n: "",
+            acl: "Pages.Statistic",
+            icon: { type: "icon", value: "home" },
+            children: [
+                {
+                    text: "组织费用统计",
+                    i18n: "",
+                    acl: "Pages.Statistic.Company",
+                    icon: { type: "icon", value: "info-circle" },
+                    link: "/app/statisticCompany",
+                }
             ]
         }
     ];
