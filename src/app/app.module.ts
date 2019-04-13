@@ -60,6 +60,9 @@ import { MultiTableSearchComponent } from './assay/multi-table-search/multi-tabl
 import { ZtMultiTableSearchComponent } from './assay/zt-multi-table-search/zt-multi-table-search.component';
 import { OperUserTplComponent } from './assay/user-tpl/oper-user-tpl/oper-user-tpl.component';
 import { StatisticExcelerComponent } from './assay/statistic/statistic-exceler/statistic-exceler.component';
+import { XySignDataInputComponent } from './assay/xy-sign-data-input/xy-sign-data-input.component';
+import { UsrDataSearchComponent } from './assay/usr-data-search/usr-data-search.component';
+import { ChartsComponent } from './assay/charts/charts.component';
 
 @NgModule({
   imports: [
@@ -123,6 +126,9 @@ import { StatisticExcelerComponent } from './assay/statistic/statistic-exceler/s
     ZtMultiTableSearchComponent,
     OperUserTplComponent,
     StatisticExcelerComponent,
+    XySignDataInputComponent,
+    UsrDataSearchComponent,
+    ChartsComponent,
   ],
   entryComponents: [
     CreateTenantComponent,

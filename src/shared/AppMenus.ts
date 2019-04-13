@@ -118,6 +118,13 @@ export class AppMenus {
                     icon: { type: "icon", value: "info-circle" },
                     link: "/app/signDataInput",
                 },
+                {
+                    text: "签到录入-简版",
+                    i18n: "",
+                    acl: "Pages.AssayInput.XySignDataInput",
+                    icon: { type: "icon", value: "info-circle" },
+                    link: "/app/xySignDataInput",
+                }
             ]
         },
         {
@@ -127,18 +134,25 @@ export class AppMenus {
             icon: { type: "icon", value: "home" },
             children: [
                 {
-                    text: "数据查询",
+                    text: "帐套单表横列查询",
                     i18n: "",
                     acl: "Pages.AssaySearch.SimpleSearch",
                     icon: { type: "icon", value: "info-circle" },
                     link: "/app/dataSearch",
                 },
                 {
-                    text: "多表查询-用户",
-                    i18n: "用户多表查询",
+                    text: "多表查询",
+                    i18n: "多表查询",
                     acl: "Pages.AssaySearch.UserMultiSearch",
                     icon: { type: "icon", value: "info-circle" },
                     link: "/app/userMultiTable",
+                },
+                {
+                    text: "单表查询",
+                    i18n: "单表查询",
+                    acl: "Pages.AssaySearch.UserSingleTableSearch",
+                    icon: { type: "icon", value: "info-circle" },
+                    link: "/app/usrdataSearch",
                 },
                 {
                     text: "多表查询-帐套",

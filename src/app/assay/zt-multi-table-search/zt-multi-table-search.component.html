@@ -1,4 +1,4 @@
-<page-header title="多表查询"></page-header>
+<div style="height:10px;"></div>
 <form nz-form [nzLayout]="'inline'" class="search__form">
   <nz-row [nzGutter]="{ md: 8, lg: 24, xl: 48 }">
     <nz-col nzMd="8" nzSm="24">
@@ -15,8 +15,8 @@
       <nz-form-item>
         <nz-form-label nzFor="no">化验模板</nz-form-label>
         <nz-form-control>
-          <nz-select [(ngModel)]="templateId" nzAllowClear nzPlaceHolder="选择" name='templateId' (ngModelChange)='tplChange($event)'
-            [nzShowSearch]='true'>
+          <nz-select [(ngModel)]="templateId" nzAllowClear nzPlaceHolder="选择" name='templateId'
+            (ngModelChange)='tplChange($event)' [nzShowSearch]='true'>
             <nz-option *ngFor="let option of listOfTemplate" [nzLabel]="option.value" [nzValue]="option.key">
             </nz-option>
           </nz-select>
@@ -27,7 +27,8 @@
       <nz-form-item>
         <nz-form-label nzFor="no">样品</nz-form-label>
         <nz-form-control>
-          <nz-select [(ngModel)]="specId" nzAllowClear nzPlaceHolder="选择" name='specId' nzMode="tags" [nzShowSearch]='true'>
+          <nz-select [(ngModel)]="specId" nzAllowClear nzPlaceHolder="选择" name='specId' nzMode="tags"
+            [nzShowSearch]='true'>
             <nz-option *ngFor="let option of listOfSpec" [nzLabel]="option.value" [nzValue]="option.key">
             </nz-option>
           </nz-select>
@@ -40,7 +41,8 @@
       <nz-form-item>
         <nz-form-label nzFor="no">签到时间段</nz-form-label>
         <nz-form-control>
-          <nz-range-picker nzFormat="yyyy-MM-dd" [(ngModel)]='timeArray' name='timeArray' nz-local='zh'></nz-range-picker>
+          <nz-range-picker nzFormat="yyyy-MM-dd" [(ngModel)]='timeArray' name='timeArray' nz-local='zh'>
+          </nz-range-picker>
         </nz-form-control>
       </nz-form-item>
     </nz-col>
@@ -61,9 +63,9 @@
     </nz-col>
   </nz-row>
 </form>
-<ng-container *ngFor='let tbItem of searchData;let i=index'>
+<ng-container *ngFor='let tbItem of searchData;let tNum=index'>
   <nz-table [nzData]="tbItem.tableData" [nzShowPagination]="false" [nzTitle]="tbItem.tableTitle" [nzBordered]=true
-    [nzScroll]="tbSizeArray[i]" [nzSize]="small" [nzFooter]="tbFooter[i]">
+    [nzScroll]="tbSizeArray[tNum]" [nzSize]="small" [nzFooter]="tbFooter[i]">
     <thead>
       <tr>
         <th nzWidth="120px" nzLeft="0px">签到时间</th>
@@ -74,8 +76,8 @@
         <th nzWidth="80px">备注</th>
         <ng-container *ngFor='let item of tbItem.tableHead;let i=index'>
           <ng-container [ngSwitch]="i">
-            <th *ngSwitchCase='tbItem.tableHead.length-1'>{{item}}</th>
-            <th *ngSwitchDefault nzWidth="120px">{{item}}</th>
+            <th *ngSwitchCase='tbItem.tableHead.length-1' (click)=showChart(tNum,i)>{{item}}</th>
+            <th *ngSwitchDefault nzWidth="120px" (click)=showChart(tNum,i)>{{item}}</th>
           </ng-container>
         </ng-container>
       </tr>
@@ -98,3 +100,15 @@
     </tbody>
   </nz-table>
 </ng-container>
+
+<ng-template #tplTitle>
+  <span>{{element}}趋势图</span>
+</ng-template>
+<ng-template #tplContent>
+  <g2-bar height="200" [data]="chartData"></g2-bar>
+</ng-template>
+<ng-template #tplFooter>
+  <button nz-button nzType="primary" (click)="destroyTplModal()">
+    关闭
+  </button>
+</ng-template>

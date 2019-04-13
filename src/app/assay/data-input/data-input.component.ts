@@ -6,9 +6,7 @@ import {
 import { NzMessageService } from 'ng-zorro-antd';
 import { AppComponentBase } from '@shared/component-base';
 import { FormGroup, FormControl } from '@angular/forms';
-import { Moment } from 'moment';
-import { formControlBinding } from '@angular/forms/src/directives/reactive_directives/form_control_directive';
-import * as moment from 'moment';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-data-input',
@@ -40,7 +38,8 @@ export class DataInputComponent extends AppComponentBase implements OnInit {
     private _orgService: OrgServiceProxy,
     private injector: Injector, private msg: NzMessageService,
     private _dataInputService: Assay_DataInputServiceProxy,
-    private _assayUserService: Assay_UserServiceProxy) {
+    private _assayUserService: Assay_UserServiceProxy,
+    private datePipe: DatePipe) {
     super(injector);
     this.createSamplingTime();
     this.historyInfo = new Array<Array<string>>();
@@ -56,6 +55,7 @@ export class DataInputComponent extends AppComponentBase implements OnInit {
       .subscribe((res: HtmlSelectDto[]) => {
         this.listOfOper = res;
       });
+    this.samplingDate = new Date();
   }
 
   // 采样时间
@@ -64,7 +64,9 @@ export class DataInputComponent extends AppComponentBase implements OnInit {
     for (let i = 0; i < 24; i++) {
       const temp1 = new HtmlSelectDto();
       let tempStr = "0" + i;
-      tempStr = tempStr.substring(tempStr.length - 2)
+      if (i > 9) {
+        tempStr = i.toString();
+      }
       temp1.key = tempStr + "00";
       temp1.value = tempStr + ":00";
       tempListTime.push(temp1);
@@ -79,7 +81,6 @@ export class DataInputComponent extends AppComponentBase implements OnInit {
   btnSearch() {
     if (this.templateId) {
       let specArray = [];
-
       this._dataInputService.getTemplateSchemaInputDtoByTplId(Number(this.templateId), this.specId)
         .subscribe(res => {
           if (!res) {
@@ -163,9 +164,15 @@ export class DataInputComponent extends AppComponentBase implements OnInit {
     }
 
     const dataInput = new CreateDataInputDto();
-    dataInput.samplingDate = new Date(this.samplingDate.toLocaleDateString());
-    dataInput.samplingTime = this.samplingTime.substr(0, 2) + ":" + this.samplingTime.substr(2, 2);
+    dataInput.samplingDate = this.samplingDate.toLocaleDateString();
+    let tmpTime: string = this.samplingTime.substring(0, 2) + ":" + this.samplingTime.substring(2);
+    if (this.samplingTime.length < 4) {
+      this.samplingTime = "0" + this.samplingTime;
+      tmpTime = this.samplingTime.substring(0, 2) + ":" + this.samplingTime.substring(2);
+    }
+    dataInput.samplingTime = tmpTime;
     dataInput.tplId = Number(this.templateId);
+    dataInput.signDate = null;
     dataInput.formValue = JSON.stringify(valObj);
     this._dataInputService.writeValueToTable(dataInput)
       .subscribe((res: HtmlDataOperRetDto) => {

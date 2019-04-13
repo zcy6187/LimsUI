@@ -92,13 +92,16 @@ export class EditTokenComponent extends ModalComponentBase implements OnInit {
       this.msg.warning("请选择机构!");
       return;
     }
-    if (this.tokenTplList.length < 1) {
-      this.msg.warning("请选择化验模板!");
-      return;
-    }
+    // if (this.tokenTplList.length < 1) {
+    //   this.msg.warning("请选择化验模板!");
+    //   return;
+    // }
     let tplIds = "";
-    for (const data of this.tokenTplList) {
-      tplIds += data.id + ",";
+    console.log(this.tokenTplList);
+    if (this.tokenTplList.length > 0) {
+      for (const data of this.tokenTplList) {
+        tplIds += data.id + ",";
+      }
     }
     tplIds = tplIds.substr(0, tplIds.length - 1);
     this.item.tplIds = tplIds;

@@ -1,19 +1,14 @@
-import { Component, OnInit, Injector, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, Injector, TemplateRef, ViewChild } from '@angular/core';
 import { Assay_DataSearchServiceProxy, OrgServiceProxy, OrgTreeNodeDto, HtmlSelectDto, TemplateInfoDto, DataSearchTableDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/component-base';
 import { NzMessageService, NzModalRef, NzModalService } from 'ng-zorro-antd';
-import { G2TimelineModule } from '@delon/chart'
 
 @Component({
-  selector: 'app-data-search',
-  templateUrl: './data-search.component.html',
-  styles: [
-    `.ant-table table {
-      border-collapse: separate;
-      border-spacing: 0;
-    }`]
+  selector: 'app-usr-data-search',
+  templateUrl: './usr-data-search.component.html',
+  styles: []
 })
-export class DataSearchComponent extends AppComponentBase implements OnInit {
+export class UsrDataSearchComponent extends AppComponentBase implements OnInit {
   orgTree: OrgTreeNodeDto[];
   orgCode: string;
   templateId: string;
@@ -25,6 +20,7 @@ export class DataSearchComponent extends AppComponentBase implements OnInit {
   tbBody: Array<Array<string>>;
   widthConfig: string[];
   scrollStyle;
+
   tplModal: NzModalRef;
   chartData: any[];
   element;
@@ -38,12 +34,14 @@ export class DataSearchComponent extends AppComponentBase implements OnInit {
 
   constructor(private _searchService: Assay_DataSearchServiceProxy,
     private _orgService: OrgServiceProxy,
-    private injector: Injector, private msg: NzMessageService, private modalService: NzModalService) {
+    private injector: Injector,
+    private msg: NzMessageService,
+    private modalService: NzModalService) {
     super(injector);
   }
 
   ngOnInit() {
-    this._orgService.getOrgTreeByZtCode()
+    this._orgService.getOrgTreeByTplQx()
       .subscribe((res: OrgTreeNodeDto[]) => {
         this.orgTree = res;
       });
@@ -84,7 +82,7 @@ export class DataSearchComponent extends AppComponentBase implements OnInit {
 
   orgChange(item) {
     if (item) {
-      this._searchService.getTemplateHtmlSelectDtosByOrgCode(item)
+      this._searchService.getTemplateHtmlSelectDtosByOrgCodeAndTplQx(item)
         .subscribe((res: HtmlSelectDto[]) => {
           if (res.length > 0) {
             this.listOfTemplate = res;
@@ -99,7 +97,7 @@ export class DataSearchComponent extends AppComponentBase implements OnInit {
 
   tplChange(item) {
     if (item) {
-      this._searchService.getSpecimenHtmlSelectByTemplateId(item, false)
+      this._searchService.getSpecimenHtmlSelectByTemplateIdAndChargeSpecimen(item, false)
         .subscribe((res: HtmlSelectDto[]) => {
           if (res.length > 0) {
             let ff: HtmlSelectDto = new HtmlSelectDto();
@@ -198,4 +196,5 @@ export class DataSearchComponent extends AppComponentBase implements OnInit {
   destroyTplModal(): void {
     this.tplModal.destroy();
   }
+
 }

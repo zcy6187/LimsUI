@@ -22,8 +22,8 @@
         <nz-form-item>
           <nz-form-control nzHasFeedback>
             <nz-form-control>
-              <nz-tree-select [nzNodes]="listOfOrg" nzShowSearch nzPlaceHolder="选择机构" name='orgCodeNode' [(ngModel)]='item.orgCode'
-                nzSpan="24">
+              <nz-tree-select [nzNodes]="listOfOrg" nzShowSearch nzPlaceHolder="选择机构" name='orgCodeNode'
+                [(ngModel)]='item.orgCode' nzSpan="24" [nzDropdownStyle]="{ 'max-height': '300px' }">
               </nz-tree-select>
             </nz-form-control>
           </nz-form-control>
@@ -78,7 +78,8 @@
               <nz-form-item>
                 <nz-form-label nzFor="no">机构</nz-form-label>
                 <nz-form-control>
-                  <nz-tree-select [nzNodes]="listOfOrg" nzShowSearch nzPlaceHolder="选择机构" name='orgCode' [(ngModel)]='orgCode'>
+                  <nz-tree-select [nzNodes]="listOfOrg" nzShowSearch nzPlaceHolder="选择机构" name='orgCode'
+                    [(ngModel)]='orgCode'>
                   </nz-tree-select>
                 </nz-form-control>
               </nz-form-item>

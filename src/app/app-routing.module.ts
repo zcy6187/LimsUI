@@ -26,6 +26,8 @@ import { ZtcodeComponent } from './system/ztcode/ztcode.component';
 import { MultiTableSearchComponent } from './assay/multi-table-search/multi-table-search.component';
 import { ZtMultiTableSearchComponent } from './assay/zt-multi-table-search/zt-multi-table-search.component';
 import { StatisticExcelerComponent } from './assay/statistic/statistic-exceler/statistic-exceler.component';
+import { XySignDataInputComponent } from './assay/xy-sign-data-input/xy-sign-data-input.component';
+import { UsrDataSearchComponent } from './assay/usr-data-search/usr-data-search.component';
 
 
 const routes: Routes = [
@@ -108,6 +110,10 @@ const routes: Routes = [
         component: DataSearchComponent,
       },
       {
+        path: 'usrdataSearch',
+        component: UsrDataSearchComponent,
+      },
+      {
         path: 'list',
         component: ListComponent,
       },
@@ -134,6 +140,10 @@ const routes: Routes = [
       {
         path: 'statisticCompany',
         component: StatisticExcelerComponent
+      },
+      {
+        path: 'xySignDataInput',
+        component: XySignDataInputComponent
       }
     ],
   },

@@ -1,7 +1,7 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild, TemplateRef } from '@angular/core';
 import { HtmlSelectDto, Assay_DataSearchServiceProxy, MultiTableDataInfoDto, OrgServiceProxy, OrgTreeNodeDto, StatisticDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/component-base';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService, NzModalRef, NzModalService } from 'ng-zorro-antd';
 import { HttpClient } from '@angular/common/http';
 import { saveAs } from 'file-saver';
 
@@ -22,8 +22,22 @@ export class ZtMultiTableSearchComponent extends AppComponentBase implements OnI
   tbSizeArray: Array<object>;
   tbFooter: Array<string>;
 
+  tplModal: NzModalRef;
+  chartData: any[];
+  element;
+
+  @ViewChild('tplTitle')
+  tplTitle: TemplateRef<any>;  //获取模板
+  @ViewChild('tplContent')
+  tplContent: TemplateRef<any>;  //获取模板
+  @ViewChild('tplFooter')
+  tplFooter: TemplateRef<any>;  //获取模板
+
   constructor(private _searchService: Assay_DataSearchServiceProxy, private _orgService: OrgServiceProxy,
-    private injector: Injector, private msg: NzMessageService, private http: HttpClient) {
+    private injector: Injector,
+    private msg: NzMessageService,
+    private http: HttpClient,
+    private modalService: NzModalService) {
     super(injector);
   }
 
@@ -144,5 +158,53 @@ export class ZtMultiTableSearchComponent extends AppComponentBase implements OnI
     });
   }
 
+  getChartData(tbNum, eleNum) {
+    let tmpData = this.searchData[tbNum].tableData;
+    let dataLen = tmpData.length;
+    let totalNum = 0;
+    let indexCount = 0;
+    let avgNum: number = 0;
+    let xArray = new Array<string>();
+    let yArray = new Array<number>();
+
+    for (let i = 0; i < dataLen; i += 1) {
+      let tmpArray = tmpData[i];
+      let tmpValue = tmpArray[eleNum + 6];
+      let tmpNum = Number(tmpValue);
+
+      if (tmpValue && !isNaN(tmpNum) && tmpNum > 0) {
+        totalNum += tmpNum;
+        xArray.push(tmpArray[1].substring(0, 16));
+        yArray.push(tmpNum);
+        indexCount++;
+      }
+    }
+    avgNum = Number((totalNum / indexCount).toFixed(2));
+    let tmpChartData: any[] = new Array<any>();
+    for (let i = 0; i < xArray.length; i++) {
+      tmpChartData.push({
+        x: xArray[i],
+        y: yArray[i]
+      });
+    }
+    return tmpChartData;
+  }
+
+  showChart(tNum, eleNum) {
+    this.element = this.searchData[tNum].tableHead[eleNum];
+    this.chartData = this.getChartData(tNum, eleNum);
+    this.tplModal = this.modalService.create({
+      nzTitle: this.tplTitle,
+      nzContent: this.tplContent,
+      nzFooter: this.tplFooter,
+      nzMaskClosable: false,
+      nzClosable: false,
+      nzWidth: 1200,
+    });
+  }
+
+  destroyTplModal(): void {
+    this.tplModal.destroy();
+  }
 }
 

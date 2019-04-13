@@ -70,19 +70,19 @@
     <tr>
       <th>ID</th>
       <th>机构名称</th>
-      <th>化验样品</th>
       <th>条码号</th>
-      <th>样品编码</th>
+      <th>样品名称</th>
+      <th>单位</th>
+      <!-- <th>样品编码</th>
       <th>需要化验元素</th>
-      <th>已经化验元素</th>
-      <th>操作</th>
-      <th>签到时间</th>
+      <th>已经化验元素</th> -->
       <th>采样日期</th>
+      <th>签到时间</th>
+      <th>操作</th>
       <th>化验模板</th>
-      <th>样品类型</th>
+      <!-- <th>样品类型</th>
       <th>班次</th>
-      <th>炉次</th>
-      <th>备注</th>
+      <th>炉次</th> -->
       <th>当前状态</th>
     </tr>
   </thead>
@@ -90,21 +90,21 @@
     <tr *ngFor="let item of ajaxTable.data">
       <td>{{item.id}}</td>
       <td>{{item.orgName}}</td>
-      <td>{{item.tplSpecName}}</td>
       <td>{{item.scanId}}</td>
-      <td>{{item.selfCode}}</td>
+      <td>{{item.tplSpecName}}</td>
+      <td>{{item.description}}</td>
+      <!-- <td>{{item.selfCode}}</td>
       <td>{{item.tplElementNames}}</td>
-      <td>{{item.eleNames}}</td>
+      <td>{{item.eleNames}}</td> -->
+      <td>{{item.samplingTime}}</td>
+      <td>{{item.signDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
       <td>
         <a (click)="edit(item)">录入数据</a>
       </td>
-      <td>{{item.signDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
-      <td>{{item.samplingTime}}</td>
       <td>{{item.tplName}}</td>
-      <td>{{item.lx}}</td>
+      <!-- <td>{{item.lx}}</td>
       <td>{{item.man_banci}}</td>
-      <td>{{item.man_luci}}</td>
-      <td>{{item.description}}</td>
+      <td>{{item.man_luci}}</td> -->
       <td>{{item.flag}}</td>
     </tr>
   </tbody>

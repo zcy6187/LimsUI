@@ -47,7 +47,6 @@ export class TokenComponent extends AppComponentBase implements OnInit {
   }
 
   edit(item: EditTplToken) {
-    console.log(item.tokenTplList);
     this.modalHelper.open(EditTokenComponent, { item: item, listOfOrg: this.listOfOrg, tokenTplList: item.tokenTplList }, 'lg', {
       nzMask: true,
     })
@@ -60,6 +59,14 @@ export class TokenComponent extends AppComponentBase implements OnInit {
       nzMask: true,
     })
       .subscribe((ret: any) => {
+      });
+  }
+
+  delete(item: EditTplToken) {
+    this._service.deleteTplToken(item.id)
+      .subscribe(() => {
+        this.message.info("操作完成！");
+        this.refresh();
       });
   }
 }

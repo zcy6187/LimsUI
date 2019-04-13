@@ -1,23 +1,34 @@
-<page-header title="多表查询"></page-header>
+<div style="height:10px;"></div>
 <form nz-form [nzLayout]="'inline'" class="search__form">
   <nz-row [nzGutter]="{ md: 8, lg: 24, xl: 48 }">
-    <nz-col nzMd="12" nzSm="24">
+    <nz-col nzMd="8" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzFor="no">组织结构</nz-form-label>
+        <nz-form-control>
+          <nz-tree-select [nzNodes]="orgTree" nzShowSearch nzPlaceHolder="请选择" name='orgCode' [(ngModel)]='orgCode'
+            (ngModelChange)='orgChange($event)' [nzDropdownStyle]="{ 'max-height': '300px' }">
+          </nz-tree-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="8" nzSm="24">
       <nz-form-item>
         <nz-form-label nzFor="no">化验模板</nz-form-label>
         <nz-form-control>
-          <nz-select [(ngModel)]="templateId" nzAllowClear nzPlaceHolder="选择" name='templateId' (ngModelChange)='tplChange($event)'
-            [nzDropdownStyle]="{ 'max-height': '300px' }" [nzShowSearch]='true'>
+          <nz-select [(ngModel)]="templateId" nzAllowClear nzPlaceHolder="选择" name='templateId'
+            (ngModelChange)='tplChange($event)' [nzDropdownStyle]="{ 'max-height': '300px' }" [nzShowSearch]='true'>
             <nz-option *ngFor="let option of listOfTemplate" [nzLabel]="option.value" [nzValue]="option.key">
             </nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>
     </nz-col>
-    <nz-col nzMd="12" nzSm="24">
+    <nz-col nzMd="8" nzSm="24">
       <nz-form-item>
         <nz-form-label nzFor="no">样品</nz-form-label>
         <nz-form-control>
-          <nz-select style="width: 500px;" [(ngModel)]="specId" nzAllowClear nzPlaceHolder="选择" name='specId' nzMode="tags">
+          <nz-select style="width: 500px;" [(ngModel)]="specId" nzAllowClear nzPlaceHolder="选择" name='specId'
+            nzMode="tags">
             <nz-option *ngFor="let option of listOfSpec" [nzLabel]="option.value" [nzValue]="option.key">
             </nz-option>
           </nz-select>
@@ -30,42 +41,48 @@
       <nz-form-item>
         <nz-form-label nzFor="no">送样时间段</nz-form-label>
         <nz-form-control>
-          <nz-range-picker nzFormat="yyyy-MM-dd" [(ngModel)]='timeArray' name='timeArray' nz-local='zh'></nz-range-picker>
+          <nz-range-picker nzFormat="yyyy-MM-dd" [(ngModel)]='timeArray' name='timeArray' nz-local='zh'>
+          </nz-range-picker>
         </nz-form-control>
       </nz-form-item>
     </nz-col>
-    <nz-col nzMd="4" nzSm="24">
+    <nz-col nzMd="3" nzSm="24">
       <nz-form-item>
         <button nz-button type="submit" [nzType]="'primary'" (click)="btnSearch()">查询</button>
       </nz-form-item>
     </nz-col>
-    <nz-col nzMd="4" nzSm="24">
+    <nz-col nzMd="3" nzSm="24">
+      <nz-form-item>
+        <button nz-button type="button" [nzType]="'primary'" (click)="btnIsShow()">过滤显示列</button>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="3" nzSm="24">
       <nz-form-item>
         <button nz-button type="button" [nzType]="'primary'" (click)="downloadExcelMultiSheet()">多sheet导出</button>
       </nz-form-item>
     </nz-col>
-    <nz-col nzMd="4" nzSm="24">
+    <nz-col nzMd="3" nzSm="24">
       <nz-form-item>
         <button nz-button type="button" [nzType]="'primary'" (click)="downloadExcelOneSheet()">单sheet导出</button>
       </nz-form-item>
     </nz-col>
   </nz-row>
 </form>
-<ng-container *ngFor='let tbItem of searchData;let i=index'>
+<ng-container *ngFor='let tbItem of searchData;let tNum=index'>
   <nz-table [nzData]="tbItem.tableData" [nzShowPagination]="false" [nzTitle]="tbItem.tableTitle" [nzBordered]=true
-    [nzScroll]="tbSizeArray[i]" [nzSize]="small" [nzFooter]="tbFooter[i]">
-    <thead>
+    [nzScroll]="tbSizeArray[tNum]" [nzSize]="small" [nzFooter]="tbFooter[tNum]">
+    <thead (nzSortChange)="sort($event)" nzSingleSort="true">
       <tr>
-        <th nzWidth="120px" nzLeft="0px">签到时间</th>
-        <th nzWidth="120px" nzLeft="120px">采样时间</th>
-        <th nzWidth="100px">班次</th>
-        <th nzWidth="80px">炉次</th>
-        <th nzWidth="100px">编号</th>
-        <th nzWidth="80px">备注</th>
+        <th nzShowSort nzSortKey='signTime' nzWidth="120px" nzLeft="0px" [hidden]=!colVisible[0]>签到时间</th>
+        <th nzShowSort nzSortKey='samplingTime' nzWidth="120px" nzLeft="120px" [hidden]=!colVisible[1]>采样时间</th>
+        <th nzWidth="100px" [hidden]=!colVisible[2]>班次</th>
+        <th nzWidth="80px" [hidden]=!colVisible[3]>炉次</th>
+        <th nzWidth="100px" [hidden]=!colVisible[4]>编号</th>
+        <th nzWidth="80px" [hidden]=!colVisible[5]>备注</th>
         <ng-container *ngFor='let item of tbItem.tableHead;let i=index'>
           <ng-container [ngSwitch]="i">
-            <th *ngSwitchCase='tbItem.tableHead.length-1'>{{item}}</th>
-            <th *ngSwitchDefault nzWidth="120px">{{item}}</th>
+            <th *ngSwitchCase='tbItem.tableHead.length-1' (click)=showChart(tNum,i)>{{item}}</th>
+            <th *ngSwitchDefault nzWidth="120px" (click)=showChart(tNum,i)>{{item}}</th>
           </ng-container>
         </ng-container>
       </tr>
@@ -74,12 +91,12 @@
       <tr *ngFor='let row of tbItem.tableData'>
         <ng-container *ngFor='let tdVal of row;let i=index'>
           <ng-container [ngSwitch]="i">
-            <td *ngSwitchCase='0' nzLeft="0px">{{tdVal}}</td>
-            <td *ngSwitchCase='1' nzLeft="120px">{{tdVal}}</td>
-            <td *ngSwitchCase='2' nzWidth="100px">{{tdVal}}</td>
-            <td *ngSwitchCase='3' nzWidth="80px">{{tdVal}}</td>
-            <td *ngSwitchCase='4' nzWidth="100px">{{tdVal}}</td>
-            <td *ngSwitchCase='5' nzWidth="80px">{{tdVal}}</td>
+            <td *ngSwitchCase='0' nzLeft="0px" [hidden]=!colVisible[i]>{{tdVal}}</td>
+            <td *ngSwitchCase='1' nzLeft="120px" [hidden]=!colVisible[i]>{{tdVal}}</td>
+            <td *ngSwitchCase='2' nzWidth="100px" [hidden]=!colVisible[i]>{{tdVal}}</td>
+            <td *ngSwitchCase='3' nzWidth="80px" [hidden]=!colVisible[i]>{{tdVal}}</td>
+            <td *ngSwitchCase='4' nzWidth="100px" [hidden]=!colVisible[i]>{{tdVal}}</td>
+            <td *ngSwitchCase='5' nzWidth="80px" [hidden]=!colVisible[i]>{{tdVal}}</td>
             <td *ngSwitchCase='row.length-1'>{{tdVal}}</td>
             <td *ngSwitchDefault nzWidth="120px">{{tdVal}}</td>
           </ng-container>
@@ -88,3 +105,39 @@
     </tbody>
   </nz-table>
 </ng-container>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="调整显示列" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+  <div nz-form>
+    <nz-row><label nz-checkbox [(ngModel)]="colVisible[0]">
+        签到时间
+      </label></nz-row>
+    <nz-row><label nz-checkbox [(ngModel)]="colVisible[1]">
+        采样时间
+      </label></nz-row>
+    <nz-row><label nz-checkbox [(ngModel)]="colVisible[2]">
+        班次
+      </label></nz-row>
+    <nz-row><label nz-checkbox [(ngModel)]="colVisible[3]">
+        炉次
+      </label></nz-row>
+    <nz-row><label nz-checkbox [(ngModel)]="colVisible[4]">
+        编号
+      </label></nz-row>
+    <nz-row><label nz-checkbox [(ngModel)]="colVisible[5]">
+        备注
+      </label></nz-row>
+  </div>
+</nz-modal>
+
+
+<ng-template #tplTitle>
+  <span>{{element}}趋势图</span>
+</ng-template>
+<ng-template #tplContent>
+  <g2-bar height="200" [data]="chartData"></g2-bar>
+</ng-template>
+<ng-template #tplFooter>
+  <button nz-button nzType="primary" (click)="destroyTplModal()">
+    关闭
+  </button>
+</ng-template>

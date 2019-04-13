@@ -624,6 +624,64 @@ export class Assay_DataSearchServiceProxy {
      * @param input (optional) 
      * @return Success
      */
+    getTemplateHtmlSelectDtosByOrgCodeAndTplQx(input: string | null | undefined): Observable<HtmlSelectDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_DataSearch/GetTemplateHtmlSelectDtosByOrgCodeAndTplQx?";
+        if (input !== undefined)
+            url_ += "input=" + encodeURIComponent("" + input) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTemplateHtmlSelectDtosByOrgCodeAndTplQx(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTemplateHtmlSelectDtosByOrgCodeAndTplQx(<any>response_);
+                } catch (e) {
+                    return <Observable<HtmlSelectDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<HtmlSelectDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetTemplateHtmlSelectDtosByOrgCodeAndTplQx(response: HttpResponseBase): Observable<HtmlSelectDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(HtmlSelectDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<HtmlSelectDto[]>(<any>null);
+    }
+
+    /**
+     * @param input (optional) 
+     * @return Success
+     */
     getTemplateInfoByTemplateId(input: number | null | undefined): Observable<TemplateInfoDto> {
         let url_ = this.baseUrl + "/api/services/app/Assay_DataSearch/GetTemplateInfoByTemplateId?";
         if (input !== undefined)
@@ -1050,6 +1108,64 @@ export class Assay_DataSearchServiceProxy {
     }
 
     protected processGetSingleRow(response: HttpResponseBase): Observable<string[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(item);
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string[]>(<any>null);
+    }
+
+    /**
+     * @param dataList (optional) 
+     * @return Success
+     */
+    getStatisticRow(dataList: string[][] | null | undefined): Observable<string[]> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_DataSearch/GetStatisticRow?";
+        if (dataList !== undefined)
+            dataList && dataList.forEach(item => { url_ += "dataList=" + encodeURIComponent("" + item) + "&"; });
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetStatisticRow(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStatisticRow(<any>response_);
+                } catch (e) {
+                    return <Observable<string[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetStatisticRow(response: HttpResponseBase): Observable<string[]> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -2335,42 +2451,13 @@ export class Assay_TokenServiceProxy {
     }
 
     /**
-     * @param id (optional) 
-     * @param cmdToken (optional) 
-     * @param orgCode (optional) 
-     * @param orgName (optional) 
-     * @param tplIds (optional) 
-     * @param tplNames (optional) 
-     * @param contracter (optional) 
-     * @param phoneNumber (optional) 
-     * @param tokenTplList (optional) 
+     * @param input (optional) 
      * @return Success
      */
-    deleteTplToken(id: number | null | undefined, cmdToken: string | null | undefined, orgCode: string | null | undefined, orgName: string | null | undefined, tplIds: string | null | undefined, tplNames: string | null | undefined, contracter: string | null | undefined, phoneNumber: string | null | undefined, tokenTplList: any[] | null | undefined): Observable<void> {
+    deleteTplToken(input: number | null | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/Assay_Token/DeleteTplToken?";
-        if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
-        if (cmdToken !== undefined)
-            url_ += "CmdToken=" + encodeURIComponent("" + cmdToken) + "&"; 
-        if (orgCode !== undefined)
-            url_ += "OrgCode=" + encodeURIComponent("" + orgCode) + "&"; 
-        if (orgName !== undefined)
-            url_ += "OrgName=" + encodeURIComponent("" + orgName) + "&"; 
-        if (tplIds !== undefined)
-            url_ += "TplIds=" + encodeURIComponent("" + tplIds) + "&"; 
-        if (tplNames !== undefined)
-            url_ += "TplNames=" + encodeURIComponent("" + tplNames) + "&"; 
-        if (contracter !== undefined)
-            url_ += "Contracter=" + encodeURIComponent("" + contracter) + "&"; 
-        if (phoneNumber !== undefined)
-            url_ += "PhoneNumber=" + encodeURIComponent("" + phoneNumber) + "&"; 
-        if (tokenTplList !== undefined)
-            tokenTplList && tokenTplList.forEach((item, index) => { 
-                for (let attr in item)
-        			if (item.hasOwnProperty(attr)) {
-        				url_ += "TokenTplList[" + index + "]." + attr + "=" + encodeURIComponent("" + (<any>item)[attr]) + "&";
-        			}
-            });
+        if (input !== undefined)
+            url_ += "input=" + encodeURIComponent("" + input) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -4492,6 +4579,61 @@ export class OrgServiceProxy {
     }
 
     protected processGetOrgTreeByZtCode(response: HttpResponseBase): Observable<OrgTreeNodeDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(OrgTreeNodeDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<OrgTreeNodeDto[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getOrgTreeByTplQx(): Observable<OrgTreeNodeDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Org/GetOrgTreeByTplQx";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetOrgTreeByTplQx(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetOrgTreeByTplQx(<any>response_);
+                } catch (e) {
+                    return <Observable<OrgTreeNodeDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<OrgTreeNodeDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetOrgTreeByTplQx(response: HttpResponseBase): Observable<OrgTreeNodeDto[]> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -7296,7 +7438,7 @@ export interface IElementInputDto {
 
 export class CreateDataInputDto implements ICreateDataInputDto {
     tplId: number | undefined;
-    samplingDate: Date | undefined;
+    samplingDate: string | undefined;
     signDate: Date | undefined;
     samplingTime: string | undefined;
     formValue: string | undefined;
@@ -7313,7 +7455,7 @@ export class CreateDataInputDto implements ICreateDataInputDto {
     init(data?: any) {
         if (data) {
             this.tplId = data["tplId"];
-            this.samplingDate = data["samplingDate"] ? new Date(data["samplingDate"].toString()) : <any>undefined;
+            this.samplingDate = data["samplingDate"];
             this.signDate = data["signDate"] ? new Date(data["signDate"].toString()) : <any>undefined;
             this.samplingTime = data["samplingTime"];
             this.formValue = data["formValue"];
@@ -7330,7 +7472,7 @@ export class CreateDataInputDto implements ICreateDataInputDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["tplId"] = this.tplId;
-        data["samplingDate"] = this.samplingDate ? this.samplingDate.toISOString() : <any>undefined;
+        data["samplingDate"] = this.samplingDate;
         data["signDate"] = this.signDate ? this.signDate.toISOString() : <any>undefined;
         data["samplingTime"] = this.samplingTime;
         data["formValue"] = this.formValue;
@@ -7347,7 +7489,7 @@ export class CreateDataInputDto implements ICreateDataInputDto {
 
 export interface ICreateDataInputDto {
     tplId: number | undefined;
-    samplingDate: Date | undefined;
+    samplingDate: string | undefined;
     signDate: Date | undefined;
     samplingTime: string | undefined;
     formValue: string | undefined;
@@ -8506,53 +8648,6 @@ export interface ICreateTplToken {
     phoneNumber: string | undefined;
 }
 
-export class TokenTplDto implements ITokenTplDto {
-    id: number | undefined;
-    tplName: string | undefined;
-
-    constructor(data?: ITokenTplDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.id = data["id"];
-            this.tplName = data["tplName"];
-        }
-    }
-
-    static fromJS(data: any): TokenTplDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new TokenTplDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["tplName"] = this.tplName;
-        return data; 
-    }
-
-    clone(): TokenTplDto {
-        const json = this.toJSON();
-        let result = new TokenTplDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ITokenTplDto {
-    id: number | undefined;
-    tplName: string | undefined;
-}
-
 export class EditTplToken implements IEditTplToken {
     id: number | undefined;
     cmdToken: string | undefined;
@@ -8634,6 +8729,53 @@ export interface IEditTplToken {
     contracter: string | undefined;
     phoneNumber: string | undefined;
     tokenTplList: TokenTplDto[] | undefined;
+}
+
+export class TokenTplDto implements ITokenTplDto {
+    id: number | undefined;
+    tplName: string | undefined;
+
+    constructor(data?: ITokenTplDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.tplName = data["tplName"];
+        }
+    }
+
+    static fromJS(data: any): TokenTplDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TokenTplDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tplName"] = this.tplName;
+        return data; 
+    }
+
+    clone(): TokenTplDto {
+        const json = this.toJSON();
+        let result = new TokenTplDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ITokenTplDto {
+    id: number | undefined;
+    tplName: string | undefined;
 }
 
 export class CreateTplDto implements ICreateTplDto {

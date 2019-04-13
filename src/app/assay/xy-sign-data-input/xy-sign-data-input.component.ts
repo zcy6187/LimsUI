@@ -8,13 +8,14 @@ import { NzMessageService, isTemplateRef } from 'ng-zorro-antd';
 import { FormControl, FormGroup } from '@angular/forms';
 import pinyin from 'pinyin';
 
+
 @Component({
-  selector: 'app-sign-data-input',
-  templateUrl: './sign-data-input.component.html',
+  selector: 'app-xy-sign-data-input',
+  templateUrl: './xy-sign-data-input.component.html',
   styles: [],
   providers: [DatePipe]
 })
-export class SignDataInputComponent extends PagedListingComponentBase<AttendanceDto> implements OnInit {
+export class XySignDataInputComponent extends PagedListingComponentBase<AttendanceDto> implements OnInit {
   flagValue: string;
   timeArray: Date[];
   orgTree: OrgTreeNodeDto[];
@@ -230,7 +231,8 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
         // 更新数据
         if (res.code !== 0) {
           this.profileForm.patchValue(JSON.parse(res.message));
-        };
+        } else {
+        }
       });
   }
 
