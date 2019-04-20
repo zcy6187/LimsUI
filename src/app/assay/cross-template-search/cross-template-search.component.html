@@ -1,0 +1,224 @@
+<div style="height:10px;"></div>
+<form nz-form [nzLayout]="'inline'" class="search__form">
+  <nz-row [nzGutter]="{ md: 8, lg: 24, xl: 48 }">
+    <nz-col nzMd="10" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzFor="no">选择查询模板</nz-form-label>
+        <nz-form-control>
+          <nz-select [(ngModel)]="selfTplId" name='selfTplId' style="width: 220px;">
+            <nz-option *ngFor="let option of listOfSelfTpl" [nzLabel]="option.value" [nzValue]="option.key">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="4" nzSm="24">
+      <button nz-button (click)="btnAdd()">添加自定义模板</button>
+    </nz-col>
+    <nz-col nzMd="4" nzSm="24">
+      <button nz-button (click)="btnEdit()">编辑自定义模板</button>
+    </nz-col>
+  </nz-row>
+  <nz-row>
+    <nz-col nzMd="8" nzSm="24">
+      <nz-form-item>
+        <nz-form-label nzFor="no">送样时间段</nz-form-label>
+        <nz-form-control>
+          <nz-range-picker nzFormat="yyyy-MM-dd" [(ngModel)]='timeArray' name='timeArray' nz-local='zh'>
+          </nz-range-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="6" nzSm="24">
+      <nz-form-item>
+        <button nz-button type="submit" [nzType]="'primary'" (click)="btnSearch()">查询</button>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+</form>
+
+<nz-card>
+  <ng-container *ngIf='tbHead'>
+    <nz-table #tplTk nzShowSizeChanger [nzData]="tbBody" [nzLoading]="isTableLoading" [nzShowPagination]=false
+      [nzSize]='default' [nzWidthConfig]="widthConfig" [nzScroll]="scrollStyle" [nzBordered]=true>
+      <thead>
+        <tr>
+          <th nzShowSort nzSortKey='signTime' nzLeft="0px" rowspan="3">采样时间</th>
+          <ng-container *ngFor='let item of tbHead'>
+            <th [attr.colspan]='item.template.count'>{{item.template.name}}</th>
+          </ng-container>
+        </tr>
+        <tr>
+          <ng-container *ngFor='let item of tbHead'>
+            <ng-container *ngFor='let specItem of item.specimens'>
+              <th [attr.colspan]='specItem.count'>{{specItem.name}}</th>
+            </ng-container>
+          </ng-container>
+        </tr>
+        <tr>
+          <ng-container *ngFor='let eleItem of elementArray;let colIndex=index'>
+            <th (click)="showChart(colIndex,eleItem)">{{eleItem}}</th>
+          </ng-container>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor='let row of tbBody;let j=index'>
+          <ng-container [ngSwitch]="j" *ngIf="tbBody.length>1">
+            <tr style="background-color:#d6ecfa" *ngSwitchCase="tbBody.length-1">
+              <ng-container *ngFor='let tdVal of row;let i=index'>
+                <ng-container [ngSwitch]="i">
+                  <td *ngSwitchCase='0' nzLeft="0px">{{tdVal}}</td>
+                  <td *ngSwitchDefault>{{tdVal}}</td>
+                </ng-container>
+              </ng-container>
+            </tr>
+            <tr *ngSwitchDefault>
+              <ng-container *ngFor='let tdVal of row;let i=index'>
+                <ng-container [ngSwitch]="i">
+                  <td *ngSwitchCase='0' nzLeft="0px">{{tdVal}}</td>
+                  <td *ngSwitchDefault>{{tdVal}}</td>
+                </ng-container>
+              </ng-container>
+            </tr>
+          </ng-container>
+          <ng-container *ngIf="tbBody.length==1">
+            <tr>
+              <ng-container *ngFor='let tdVal of row;let i=index'>
+                <ng-container [ngSwitch]="i">
+                  <td *ngSwitchCase='0' nzLeft="0px">{{tdVal}}</td>
+                  <td *ngSwitchCase='1' nzLeft="140px">{{tdVal}}</td>
+                  <td *ngSwitchDefault>{{tdVal}}</td>
+                </ng-container>
+              </ng-container>
+            </tr>
+          </ng-container>
+        </ng-container>
+      </tbody>
+    </nz-table>
+  </ng-container>
+</nz-card>
+
+<ng-template #tplTitle>
+  <span>{{element}}趋势图</span>
+</ng-template>
+<ng-template #tplContent>
+  <g2-bar height="200" [data]="chartData"></g2-bar>
+</ng-template>
+<ng-template #tplFooter>
+  <button nz-button nzType="primary" (click)="destroyTplModal()">
+    关闭
+  </button>
+</ng-template>
+
+<ng-template #chgTitle>
+  <span>添加自定义模板</span>
+</ng-template>
+<ng-template #chgContent>
+  <div nz-form [nzLayout]="'inline'" class="search__form" style="width:1000px;">
+    <nz-row>
+      <nz-form-item>
+        <nz-form-label nzFor="no">模板名称:</nz-form-label>
+        <nz-form-control>
+          <input nz-input style="width:200px;" [(ngModel)]='tplName'>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-row>
+    <nz-row>
+      <nz-col nzMd="8" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="no">组织结构</nz-form-label>
+          <nz-form-control>
+            <nz-tree-select [nzNodes]="orgTree" nzShowSearch nzPlaceHolder="请选择" name='orgCode' style="width:250px;"
+              nzDropdownMatchSelectWidth='true' [(ngModel)]='orgCode' (ngModelChange)='orgChange($event)'
+              [nzDropdownStyle]="{ 'max-height': '300px' }">
+            </nz-tree-select>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzMd="6" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="no">化验模板</nz-form-label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="templateId" nzAllowClear nzPlaceHolder="选择" name='templateId' style="width:150px;"
+              nzDropdownMatchSelectWidth='true' (ngModelChange)='tplChange($event)'>
+              <nz-option *ngFor="let option of listOfTemplate" [nzLabel]="option.value" [nzValue]="option.key">
+              </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzMd="6" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="no">样品</nz-form-label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="specId" nzAllowClear nzPlaceHolder="选择" name='specId' style="width:150px;"
+              nzDropdownMatchSelectWidth='true' nzMode="tags">
+              <nz-option *ngFor="let option of listOfSpec" [nzLabel]="option.value" [nzValue]="option.key">
+              </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzMd="4" nzSm="24">
+        <button nz-button nzType="primary" (click)='addTplToTb()'>添加</button>
+      </nz-col>
+    </nz-row>
+    <nz-row>
+      <nz-table nzBordered='true'>
+        <thead>
+          <tr>
+            <ng-container *ngFor='let row of chgTpl'>
+              <th [attr.colspan]="row.specList.length">{{row.tplName}}</th>
+            </ng-container>
+          </tr>
+          <tr>
+            <ng-container *ngFor='let row of chgTpl;let rowNum=index'>
+              <ng-container *ngFor='let spec of row.specList'>
+                <th>{{spec.val}}</th>
+              </ng-container>
+            </ng-container>
+          </tr>
+        </thead>
+      </nz-table>
+    </nz-row>
+    <nz-row>
+      <nz-col nzMd="12" nzSm="24"></nz-col>
+      <nz-col nzMd="12" nzSm="24">
+        <button nz-button (click)="submitTpl()">保存</button>
+        <button nz-button (click)="clearTpl()">清空</button>
+      </nz-col>
+    </nz-row>
+  </div>
+</ng-template>
+<ng-template #chgFooter>
+  <button nz-button nzType="default" (click)="closeChgModal()">
+    关闭
+  </button>
+</ng-template>
+
+<ng-template #editTitle>
+  <span>编辑自定义模板</span>
+</ng-template>
+<ng-template #editContent>
+  <nz-table nzBordered='true' [nzData]="selfTplArray">
+    <thead>
+      <tr>
+        <th>模板编号</th>
+        <th>模板名称</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of selfTplArray">
+        <td>{{item.id}}</td>
+        <td>{{item.tplName}}</td>
+        <td><button nz-button (click)="deleteSelfTpl(item.id)">删除</button></td>
+      </tr>
+    </tbody>
+  </nz-table>
+</ng-template>
+<ng-template #editFooter>
+  <button nz-button nzType="default" (click)="closeEditModal()">
+    关闭
+  </button>
+</ng-template>

@@ -28,6 +28,7 @@ import { ZtMultiTableSearchComponent } from './assay/zt-multi-table-search/zt-mu
 import { StatisticExcelerComponent } from './assay/statistic/statistic-exceler/statistic-exceler.component';
 import { XySignDataInputComponent } from './assay/xy-sign-data-input/xy-sign-data-input.component';
 import { UsrDataSearchComponent } from './assay/usr-data-search/usr-data-search.component';
+import { CrossTemplateSearchComponent } from './assay/cross-template-search/cross-template-search.component';
 
 
 const routes: Routes = [
@@ -144,6 +145,10 @@ const routes: Routes = [
       {
         path: 'xySignDataInput',
         component: XySignDataInputComponent
+      },
+      {
+        path: 'selfTplSearch',
+        component: CrossTemplateSearchComponent
       }
     ],
   },

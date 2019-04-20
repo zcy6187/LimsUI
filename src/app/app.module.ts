@@ -63,6 +63,7 @@ import { StatisticExcelerComponent } from './assay/statistic/statistic-exceler/s
 import { XySignDataInputComponent } from './assay/xy-sign-data-input/xy-sign-data-input.component';
 import { UsrDataSearchComponent } from './assay/usr-data-search/usr-data-search.component';
 import { ChartsComponent } from './assay/charts/charts.component';
+import { CrossTemplateSearchComponent } from './assay/cross-template-search/cross-template-search.component';
 
 @NgModule({
   imports: [
@@ -129,6 +130,7 @@ import { ChartsComponent } from './assay/charts/charts.component';
     XySignDataInputComponent,
     UsrDataSearchComponent,
     ChartsComponent,
+    CrossTemplateSearchComponent,
   ],
   entryComponents: [
     CreateTenantComponent,

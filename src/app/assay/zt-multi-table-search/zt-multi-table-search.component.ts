@@ -22,6 +22,9 @@ export class ZtMultiTableSearchComponent extends AppComponentBase implements OnI
   tbSizeArray: Array<object>;
   tbFooter: Array<string>;
 
+  avgFooter: Array<Array<string>>;
+  rowFooter: Array<Array<string>>;
+
   tplModal: NzModalRef;
   chartData: any[];
   element;
@@ -39,6 +42,8 @@ export class ZtMultiTableSearchComponent extends AppComponentBase implements OnI
     private http: HttpClient,
     private modalService: NzModalService) {
     super(injector);
+    this.rowFooter = new Array<Array<string>>();
+    this.avgFooter = new Array<Array<string>>();
   }
 
   ngOnInit() {
@@ -95,22 +100,24 @@ export class ZtMultiTableSearchComponent extends AppComponentBase implements OnI
       .subscribe((res: Array<MultiTableDataInfoDto>) => {
         this.searchData = res;
         let tempSizeArray = new Array<object>();
-        let strArray = new Array<string>();
+        let rowInfo = new Array<Array<string>>();
+        let avgInfo = new Array<Array<string>>();
         this.searchData.forEach(element => {
           let xsize = element.tableHead.length * 120 + 620 + 'px';
           tempSizeArray.push({ x: xsize, y: '400px' });
-          let str = "";
+          this.tbSizeArray = tempSizeArray;
+          let avgArray: Array<string> = new Array<string>();
+          let rowArray: Array<string> = new Array<string>();
           element.statisticData.forEach((st, i) => {
-            if (i == 0) {
-              str += "    " + st.eleName + ":" + st.totalRowNum + "行";
-            } else {
-              str += "    " + st.eleName + ":" + st.totalRowNum + "行/" + st.avgValue;
-            }
-          })
-          strArray.push(str);
+            rowArray.push(st.totalRowNum.toString());
+            avgArray.push(st.avgValue.toString());
+          });
+          avgInfo.push(avgArray);
+          rowInfo.push(rowArray);
         });
         this.tbSizeArray = tempSizeArray;
-        this.tbFooter = strArray;
+        this.avgFooter = avgInfo;
+        this.rowFooter = rowInfo;
       });
   }
 

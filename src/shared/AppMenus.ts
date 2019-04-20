@@ -161,6 +161,13 @@ export class AppMenus {
                     icon: { type: "icon", value: "info-circle" },
                     link: "/app/ztMultiTable",
                 },
+                {
+                    text: "自定义拼接查询",
+                    i18n: "自定义拼接查询",
+                    acl: "Pages.AssaySearch.SelfTplSearch",
+                    icon: { type: "icon", value: "info-circle" },
+                    link: "/app/selfTplSearch",
+                },
             ]
         },
         {

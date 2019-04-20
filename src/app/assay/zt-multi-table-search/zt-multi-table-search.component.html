@@ -65,12 +65,12 @@
 </form>
 <ng-container *ngFor='let tbItem of searchData;let tNum=index'>
   <nz-table [nzData]="tbItem.tableData" [nzShowPagination]="false" [nzTitle]="tbItem.tableTitle" [nzBordered]=true
-    [nzScroll]="tbSizeArray[tNum]" [nzSize]="small" [nzFooter]="tbFooter[i]">
+    [nzScroll]="tbSizeArray[tNum]" [nzSize]="small">
     <thead>
       <tr>
-        <th nzWidth="120px" nzLeft="0px">签到时间</th>
-        <th nzWidth="120px" nzLeft="120px">采样时间</th>
-        <th nzWidth="100px">班次</th>
+        <th nzWidth="160px" nzLeft="0px">签到时间</th>
+        <th nzWidth="160px" nzLeft="160px">采样时间</th>
+        <th nzWidth="120px">班次</th>
         <th nzWidth="80px">炉次</th>
         <th nzWidth="100px">编号</th>
         <th nzWidth="80px">备注</th>
@@ -86,15 +86,37 @@
       <tr *ngFor='let row of tbItem.tableData'>
         <ng-container *ngFor='let tdVal of row;let i=index'>
           <ng-container [ngSwitch]="i">
-            <td *ngSwitchCase='0' nzLeft="0px">{{tdVal}}</td>
-            <td *ngSwitchCase='1' nzLeft="120px">{{tdVal}}</td>
-            <td *ngSwitchCase='2' nzWidth="100px">{{tdVal}}</td>
+            <td *ngSwitchCase='0' nzLeft="0px" nzWidth="160px">{{tdVal}}</td>
+            <td *ngSwitchCase='1' nzLeft="160px" nzWidth="160px">{{tdVal}}</td>
+            <td *ngSwitchCase='2' nzWidth="120px">{{tdVal}}</td>
             <td *ngSwitchCase='3' nzWidth="80px">{{tdVal}}</td>
             <td *ngSwitchCase='4' nzWidth="100px">{{tdVal}}</td>
             <td *ngSwitchCase='5' nzWidth="80px">{{tdVal}}</td>
             <td *ngSwitchCase='row.length-1'>{{tdVal}}</td>
             <td *ngSwitchDefault nzWidth="120px">{{tdVal}}</td>
           </ng-container>
+        </ng-container>
+      </tr>
+      <tr style="background-color:#FFDAB9">
+        <td nzLeft="0px" nzWidth="160px">有效行</td>
+        <td nzLeft="160px" nzWidth="160px"> </td>
+        <td nzWidth="120px"> </td>
+        <td nzWidth="80px"> </td>
+        <td nzWidth="100px"> </td>
+        <td nzWidth="80px"> </td>
+        <ng-container *ngFor='let tdVal of rowFooter[tNum];let i=index'>
+          <td nzWidth="120px" *ngIf='i>0'>{{tdVal}}</td>
+        </ng-container>
+      </tr>
+      <tr style="background-color:#FFDAB9">
+        <td nzLeft="0px" nzWidth="160px">均值</td>
+        <td nzLeft="160px" nzWidth="160px"> </td>
+        <td nzWidth="120px"> </td>
+        <td nzWidth="80px"> </td>
+        <td nzWidth="100px"> </td>
+        <td nzWidth="80px"> </td>
+        <ng-container *ngFor='let tdVal of avgFooter[tNum];let i=index'>
+          <td nzWidth="120px" *ngIf='i>0'>{{tdVal}}</td>
         </ng-container>
       </tr>
     </tbody>

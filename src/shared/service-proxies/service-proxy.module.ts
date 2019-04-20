@@ -28,6 +28,7 @@ import * as ApiServiceProxies from '@shared/service-proxies/service-proxies';
     ApiServiceProxies.ZtCodeServiceProxy,
     ApiServiceProxies.SelfUserServiceProxy,
     ApiServiceProxies.Assay_StatisticServiceProxy,
+    ApiServiceProxies.Assay_SelfTplServiceProxy,
     { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true },
   ],
 })

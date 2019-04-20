@@ -19,6 +19,8 @@ export class MultiTableSearchComponent extends AppComponentBase implements OnIni
   specId: any[];
   tbSizeArray: Array<object>;
   tbFooter: Array<string>;
+  avgFooter: Array<Array<string>>;
+  rowFooter: Array<Array<string>>;
   orgTree: OrgTreeNodeDto[];
   orgCode: string;
 
@@ -52,6 +54,9 @@ export class MultiTableSearchComponent extends AppComponentBase implements OnIni
       .subscribe((res: OrgTreeNodeDto[]) => {
         this.orgTree = res;
       });
+
+    this.rowFooter = new Array<Array<string>>();
+    this.avgFooter = new Array<Array<string>>();
 
     this.timeArray = [];
     this.timeArray.push(new Date());
@@ -108,6 +113,8 @@ export class MultiTableSearchComponent extends AppComponentBase implements OnIni
         }
         let tempSizeArray = new Array<object>();
         let strArray = new Array<string>();
+        let rowInfo = new Array<Array<string>>();
+        let avgInfo = new Array<Array<string>>();
         this.searchData.forEach(element => {
           let xsize = element.tableHead.length * 120 + 620 + 'px';
           tempSizeArray.push({ x: xsize, y: '400px' });
@@ -120,9 +127,20 @@ export class MultiTableSearchComponent extends AppComponentBase implements OnIni
             }
           })
           strArray.push(str);
+          let avgArray: Array<string> = new Array<string>();
+          let rowArray: Array<string> = new Array<string>();
+
+          element.statisticData.forEach((st, i) => {
+            rowArray.push(st.totalRowNum.toString());
+            avgArray.push(st.avgValue.toString());
+          });
+          avgInfo.push(avgArray);
+          rowInfo.push(rowArray);
         });
         this.tbSizeArray = tempSizeArray;
         this.tbFooter = strArray;
+        this.rowFooter = rowInfo;
+        this.avgFooter = avgInfo;
       });
   }
 

@@ -2,7 +2,6 @@ import { Component, OnInit, Injector, ViewChild, TemplateRef } from '@angular/co
 import { Assay_DataSearchServiceProxy, OrgServiceProxy, OrgTreeNodeDto, HtmlSelectDto, TemplateInfoDto, DataSearchTableDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/component-base';
 import { NzMessageService, NzModalRef, NzModalService } from 'ng-zorro-antd';
-import { G2TimelineModule } from '@delon/chart'
 
 @Component({
   selector: 'app-data-search',

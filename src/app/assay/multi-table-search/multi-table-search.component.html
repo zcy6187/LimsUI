@@ -39,7 +39,7 @@
   <nz-row>
     <nz-col nzMd="8" nzSm="24">
       <nz-form-item>
-        <nz-form-label nzFor="no">送样时间段</nz-form-label>
+        <nz-form-label nzFor="no">采样时间段</nz-form-label>
         <nz-form-control>
           <nz-range-picker nzFormat="yyyy-MM-dd" [(ngModel)]='timeArray' name='timeArray' nz-local='zh'>
           </nz-range-picker>
@@ -73,9 +73,9 @@
     [nzScroll]="tbSizeArray[tNum]" [nzSize]="small" [nzFooter]="tbFooter[tNum]">
     <thead (nzSortChange)="sort($event)" nzSingleSort="true">
       <tr>
-        <th nzShowSort nzSortKey='signTime' nzWidth="120px" nzLeft="0px" [hidden]=!colVisible[0]>签到时间</th>
-        <th nzShowSort nzSortKey='samplingTime' nzWidth="120px" nzLeft="120px" [hidden]=!colVisible[1]>采样时间</th>
-        <th nzWidth="100px" [hidden]=!colVisible[2]>班次</th>
+        <th nzShowSort nzSortKey='signTime' nzWidth="160px" nzLeft="0px" [hidden]=!colVisible[0]>签到时间</th>
+        <th nzShowSort nzSortKey='samplingTime' nzWidth="160px" nzLeft="160px" [hidden]=!colVisible[1]>采样时间</th>
+        <th nzWidth="130px" [hidden]=!colVisible[2]>班次</th>
         <th nzWidth="80px" [hidden]=!colVisible[3]>炉次</th>
         <th nzWidth="100px" [hidden]=!colVisible[4]>编号</th>
         <th nzWidth="80px" [hidden]=!colVisible[5]>备注</th>
@@ -92,14 +92,36 @@
         <ng-container *ngFor='let tdVal of row;let i=index'>
           <ng-container [ngSwitch]="i">
             <td *ngSwitchCase='0' nzLeft="0px" [hidden]=!colVisible[i]>{{tdVal}}</td>
-            <td *ngSwitchCase='1' nzLeft="120px" [hidden]=!colVisible[i]>{{tdVal}}</td>
-            <td *ngSwitchCase='2' nzWidth="100px" [hidden]=!colVisible[i]>{{tdVal}}</td>
+            <td *ngSwitchCase='1' nzLeft="160px" [hidden]=!colVisible[i]>{{tdVal}}</td>
+            <td *ngSwitchCase='2' nzWidth="130px" [hidden]=!colVisible[i]>{{tdVal}}</td>
             <td *ngSwitchCase='3' nzWidth="80px" [hidden]=!colVisible[i]>{{tdVal}}</td>
             <td *ngSwitchCase='4' nzWidth="100px" [hidden]=!colVisible[i]>{{tdVal}}</td>
             <td *ngSwitchCase='5' nzWidth="80px" [hidden]=!colVisible[i]>{{tdVal}}</td>
-            <td *ngSwitchCase='row.length-1'>{{tdVal}}</td>
+            <td *ngSwitchCase='row.length-1' nzWidth="120px">{{tdVal}}</td>
             <td *ngSwitchDefault nzWidth="120px">{{tdVal}}</td>
           </ng-container>
+        </ng-container>
+      </tr>
+      <tr style="background-color:#FFDAB9">
+        <td nzLeft="0px" [hidden]=!colVisible[0]>有效行</td>
+        <td nzLeft="160px" [hidden]=!colVisible[1]> </td>
+        <td nzWidth="130px" [hidden]=!colVisible[2]> </td>
+        <td nzWidth="80px" [hidden]=!colVisible[3]> </td>
+        <td nzWidth="100px" [hidden]=!colVisible[4]> </td>
+        <td nzWidth="80px" [hidden]=!colVisible[5]> </td>
+        <ng-container *ngFor='let tdVal of rowFooter[tNum];let i=index'>
+          <td nzWidth="120px" *ngIf='i>0'>{{tdVal}}</td>
+        </ng-container>
+      </tr>
+      <tr style="background-color:#FFDAB9">
+        <td nzLeft="0px" [hidden]=!colVisible[0]>均值</td>
+        <td nzLeft="160px" [hidden]=!colVisible[1]> </td>
+        <td nzWidth="130px" [hidden]=!colVisible[2]> </td>
+        <td nzWidth="80px" [hidden]=!colVisible[3]> </td>
+        <td nzWidth="100px" [hidden]=!colVisible[4]> </td>
+        <td nzWidth="80px" [hidden]=!colVisible[5]> </td>
+        <ng-container *ngFor='let tdVal of avgFooter[tNum];let i=index'>
+          <td nzWidth="120px" *ngIf='i>0'>{{tdVal}}</td>
         </ng-container>
       </tr>
     </tbody>

@@ -966,6 +966,66 @@ export class Assay_DataSearchServiceProxy {
     }
 
     /**
+     * @param selfTplId (optional) 
+     * @param begin (optional) 
+     * @param endTime (optional) 
+     * @return Success
+     */
+    getDataInfoBySelfCode(selfTplId: number | null | undefined, begin: Date | null | undefined, endTime: Date | null | undefined): Observable<SelfSearchTableDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_DataSearch/GetDataInfoBySelfCode?";
+        if (selfTplId !== undefined)
+            url_ += "selfTplId=" + encodeURIComponent("" + selfTplId) + "&"; 
+        if (begin !== undefined)
+            url_ += "begin=" + encodeURIComponent(begin ? "" + begin.toJSON() : "") + "&"; 
+        if (endTime !== undefined)
+            url_ += "endTime=" + encodeURIComponent(endTime ? "" + endTime.toJSON() : "") + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDataInfoBySelfCode(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDataInfoBySelfCode(<any>response_);
+                } catch (e) {
+                    return <Observable<SelfSearchTableDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<SelfSearchTableDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDataInfoBySelfCode(response: HttpResponseBase): Observable<SelfSearchTableDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? SelfSearchTableDto.fromJS(resultData200) : new SelfSearchTableDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<SelfSearchTableDto>(<any>null);
+    }
+
+    /**
      * @param input (optional) 
      * @param specId (optional) 
      * @param begin (optional) 
@@ -1777,6 +1837,183 @@ export class Assay_ElementServiceProxy {
             }));
         }
         return _observableOf<HtmlSelectDto[]>(<any>null);
+    }
+}
+
+@Injectable()
+export class Assay_SelfTplServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    getTplInfoById(): Observable<CreateSelfTplDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_SelfTpl/GetTplInfoById";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTplInfoById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTplInfoById(<any>response_);
+                } catch (e) {
+                    return <Observable<CreateSelfTplDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CreateSelfTplDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetTplInfoById(response: HttpResponseBase): Observable<CreateSelfTplDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(CreateSelfTplDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CreateSelfTplDto[]>(<any>null);
+    }
+
+    /**
+     * @param input (optional) 
+     * @return Success
+     */
+    writeTplValueToTable(input: CreateSelfTplDto | null | undefined): Observable<HtmlDataOperRetDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_SelfTpl/WriteTplValueToTable";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processWriteTplValueToTable(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processWriteTplValueToTable(<any>response_);
+                } catch (e) {
+                    return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<HtmlDataOperRetDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processWriteTplValueToTable(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? HtmlDataOperRetDto.fromJS(resultData200) : new HtmlDataOperRetDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<HtmlDataOperRetDto>(<any>null);
+    }
+
+    /**
+     * @param tplId (optional) 
+     * @return Success
+     */
+    deleteSelfTplById(tplId: number | null | undefined): Observable<HtmlDataOperRetDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_SelfTpl/DeleteSelfTplById?";
+        if (tplId !== undefined)
+            url_ += "tplId=" + encodeURIComponent("" + tplId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteSelfTplById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteSelfTplById(<any>response_);
+                } catch (e) {
+                    return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<HtmlDataOperRetDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteSelfTplById(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? HtmlDataOperRetDto.fromJS(resultData200) : new HtmlDataOperRetDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<HtmlDataOperRetDto>(<any>null);
     }
 }
 
@@ -7711,6 +7948,69 @@ export interface IBaseInfoDto {
     orderNum: number | undefined;
 }
 
+export class SelfSearchTableDto implements ISelfSearchTableDto {
+    tableHead: TemplateInfoDto[] | undefined;
+    tableData: string[][] | undefined;
+
+    constructor(data?: ISelfSearchTableDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (data["tableHead"] && data["tableHead"].constructor === Array) {
+                this.tableHead = [];
+                for (let item of data["tableHead"])
+                    this.tableHead.push(TemplateInfoDto.fromJS(item));
+            }
+            if (data["tableData"] && data["tableData"].constructor === Array) {
+                this.tableData = [];
+                for (let item of data["tableData"])
+                    this.tableData.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): SelfSearchTableDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SelfSearchTableDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.tableHead && this.tableHead.constructor === Array) {
+            data["tableHead"] = [];
+            for (let item of this.tableHead)
+                data["tableHead"].push(item.toJSON());
+        }
+        if (this.tableData && this.tableData.constructor === Array) {
+            data["tableData"] = [];
+            for (let item of this.tableData)
+                data["tableData"].push(item);
+        }
+        return data; 
+    }
+
+    clone(): SelfSearchTableDto {
+        const json = this.toJSON();
+        let result = new SelfSearchTableDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISelfSearchTableDto {
+    tableHead: TemplateInfoDto[] | undefined;
+    tableData: string[][] | undefined;
+}
+
 export class DataSearchTableDto implements IDataSearchTableDto {
     tableHead: TemplateInfoDto | undefined;
     tableData: string[][] | undefined;
@@ -8261,6 +8561,171 @@ export interface IElementDto {
     code: string | undefined;
     description: string | undefined;
     id: number | undefined;
+}
+
+export class CreateSelfTplDto implements ICreateSelfTplDto {
+    id: number | undefined;
+    tplName: string | undefined;
+    selfTpls: SelfTplDto[] | undefined;
+
+    constructor(data?: ICreateSelfTplDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.tplName = data["tplName"];
+            if (data["selfTpls"] && data["selfTpls"].constructor === Array) {
+                this.selfTpls = [];
+                for (let item of data["selfTpls"])
+                    this.selfTpls.push(SelfTplDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CreateSelfTplDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateSelfTplDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tplName"] = this.tplName;
+        if (this.selfTpls && this.selfTpls.constructor === Array) {
+            data["selfTpls"] = [];
+            for (let item of this.selfTpls)
+                data["selfTpls"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): CreateSelfTplDto {
+        const json = this.toJSON();
+        let result = new CreateSelfTplDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateSelfTplDto {
+    id: number | undefined;
+    tplName: string | undefined;
+    selfTpls: SelfTplDto[] | undefined;
+}
+
+export class SelfTplDto implements ISelfTplDto {
+    tplId: string | undefined;
+    tplName: string | undefined;
+    specList: KeyValDto[] | undefined;
+
+    constructor(data?: ISelfTplDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.tplId = data["tplId"];
+            this.tplName = data["tplName"];
+            if (data["specList"] && data["specList"].constructor === Array) {
+                this.specList = [];
+                for (let item of data["specList"])
+                    this.specList.push(KeyValDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): SelfTplDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SelfTplDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tplId"] = this.tplId;
+        data["tplName"] = this.tplName;
+        if (this.specList && this.specList.constructor === Array) {
+            data["specList"] = [];
+            for (let item of this.specList)
+                data["specList"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): SelfTplDto {
+        const json = this.toJSON();
+        let result = new SelfTplDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISelfTplDto {
+    tplId: string | undefined;
+    tplName: string | undefined;
+    specList: KeyValDto[] | undefined;
+}
+
+export class KeyValDto implements IKeyValDto {
+    key: string | undefined;
+    val: string | undefined;
+
+    constructor(data?: IKeyValDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.key = data["key"];
+            this.val = data["val"];
+        }
+    }
+
+    static fromJS(data: any): KeyValDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new KeyValDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["key"] = this.key;
+        data["val"] = this.val;
+        return data; 
+    }
+
+    clone(): KeyValDto {
+        const json = this.toJSON();
+        let result = new KeyValDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IKeyValDto {
+    key: string | undefined;
+    val: string | undefined;
 }
 
 export class CreateSpecimenDto implements ICreateSpecimenDto {
