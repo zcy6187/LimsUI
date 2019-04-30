@@ -128,6 +128,21 @@ export class AppMenus {
             ]
         },
         {
+            text: "过程管理",
+            i18n: "",
+            acl: "Pages.Process",
+            icon: { type: "icon", value: "home" },
+            children: [
+                {
+                    text: "元素公式",
+                    i18n: "",
+                    acl: "Pages.Process.Formula",
+                    icon: { type: "icon", value: "info-circle" },
+                    link: "/app/formula",
+                }
+            ]
+        },
+        {
             text: "数据查询",
             i18n: "",
             acl: "Pages.AssaySearch",

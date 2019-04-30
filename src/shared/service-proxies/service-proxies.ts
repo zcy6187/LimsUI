@@ -1841,6 +1841,306 @@ export class Assay_ElementServiceProxy {
 }
 
 @Injectable()
+export class Assay_FormulaServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param input (optional) 
+     * @param formula (optional) 
+     * @return Success
+     */
+    addFormulaById(input: number | null | undefined, formula: CreateFormulaDto | null | undefined): Observable<HtmlDataOperRetDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_Formula/AddFormulaById?";
+        if (input !== undefined)
+            url_ += "input=" + encodeURIComponent("" + input) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(formula);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddFormulaById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddFormulaById(<any>response_);
+                } catch (e) {
+                    return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<HtmlDataOperRetDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddFormulaById(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? HtmlDataOperRetDto.fromJS(resultData200) : new HtmlDataOperRetDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<HtmlDataOperRetDto>(<any>null);
+    }
+
+    /**
+     * @param input (optional) 
+     * @param formula (optional) 
+     * @return Success
+     */
+    updateFormulaById(input: number | null | undefined, formula: CreateFormulaDto | null | undefined): Observable<HtmlDataOperRetDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_Formula/UpdateFormulaById?";
+        if (input !== undefined)
+            url_ += "input=" + encodeURIComponent("" + input) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(formula);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateFormulaById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateFormulaById(<any>response_);
+                } catch (e) {
+                    return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<HtmlDataOperRetDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdateFormulaById(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? HtmlDataOperRetDto.fromJS(resultData200) : new HtmlDataOperRetDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<HtmlDataOperRetDto>(<any>null);
+    }
+
+    /**
+     * @param input (optional) 
+     * @return Success
+     */
+    deleteFormulaByFormulaId(input: number | null | undefined): Observable<HtmlDataOperRetDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_Formula/DeleteFormulaByFormulaId?";
+        if (input !== undefined)
+            url_ += "input=" + encodeURIComponent("" + input) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteFormulaByFormulaId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteFormulaByFormulaId(<any>response_);
+                } catch (e) {
+                    return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<HtmlDataOperRetDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteFormulaByFormulaId(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? HtmlDataOperRetDto.fromJS(resultData200) : new HtmlDataOperRetDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<HtmlDataOperRetDto>(<any>null);
+    }
+
+    /**
+     * @param input (optional) 
+     * @return Success
+     */
+    getFormulaByEleId(input: number | null | undefined): Observable<AssayEleFormula[]> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_Formula/GetFormulaByEleId?";
+        if (input !== undefined)
+            url_ += "input=" + encodeURIComponent("" + input) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetFormulaByEleId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetFormulaByEleId(<any>response_);
+                } catch (e) {
+                    return <Observable<AssayEleFormula[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AssayEleFormula[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetFormulaByEleId(response: HttpResponseBase): Observable<AssayEleFormula[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(AssayEleFormula.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AssayEleFormula[]>(<any>null);
+    }
+
+    /**
+     * @param input (optional) 
+     * @return Success
+     */
+    getPramsByFormulaId(input: number | null | undefined): Observable<AssayFormulaPram[]> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_Formula/GetPramsByFormulaId?";
+        if (input !== undefined)
+            url_ += "input=" + encodeURIComponent("" + input) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPramsByFormulaId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPramsByFormulaId(<any>response_);
+                } catch (e) {
+                    return <Observable<AssayFormulaPram[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AssayFormulaPram[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPramsByFormulaId(response: HttpResponseBase): Observable<AssayFormulaPram[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(AssayFormulaPram.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AssayFormulaPram[]>(<any>null);
+    }
+}
+
+@Injectable()
 export class Assay_SelfTplServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -8560,6 +8860,187 @@ export interface IElementDto {
     name: string;
     code: string | undefined;
     description: string | undefined;
+    id: number | undefined;
+}
+
+export class CreateFormulaDto implements ICreateFormulaDto {
+    eleId: number | undefined;
+    name: string | undefined;
+    formulaExp: string | undefined;
+    intro: string | undefined;
+
+    constructor(data?: ICreateFormulaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.eleId = data["eleId"];
+            this.name = data["name"];
+            this.formulaExp = data["formulaExp"];
+            this.intro = data["intro"];
+        }
+    }
+
+    static fromJS(data: any): CreateFormulaDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateFormulaDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["eleId"] = this.eleId;
+        data["name"] = this.name;
+        data["formulaExp"] = this.formulaExp;
+        data["intro"] = this.intro;
+        return data; 
+    }
+
+    clone(): CreateFormulaDto {
+        const json = this.toJSON();
+        let result = new CreateFormulaDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateFormulaDto {
+    eleId: number | undefined;
+    name: string | undefined;
+    formulaExp: string | undefined;
+    intro: string | undefined;
+}
+
+export class AssayEleFormula implements IAssayEleFormula {
+    eleId: number | undefined;
+    name: string | undefined;
+    formulaExp: string | undefined;
+    isDeleted: boolean | undefined;
+    intro: string | undefined;
+    lastModifyTime: Date | undefined;
+    operatorId: number | undefined;
+    id: number | undefined;
+
+    constructor(data?: IAssayEleFormula) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.eleId = data["eleId"];
+            this.name = data["name"];
+            this.formulaExp = data["formulaExp"];
+            this.isDeleted = data["isDeleted"];
+            this.intro = data["intro"];
+            this.lastModifyTime = data["lastModifyTime"] ? new Date(data["lastModifyTime"].toString()) : <any>undefined;
+            this.operatorId = data["operatorId"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): AssayEleFormula {
+        data = typeof data === 'object' ? data : {};
+        let result = new AssayEleFormula();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["eleId"] = this.eleId;
+        data["name"] = this.name;
+        data["formulaExp"] = this.formulaExp;
+        data["isDeleted"] = this.isDeleted;
+        data["intro"] = this.intro;
+        data["lastModifyTime"] = this.lastModifyTime ? this.lastModifyTime.toISOString() : <any>undefined;
+        data["operatorId"] = this.operatorId;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): AssayEleFormula {
+        const json = this.toJSON();
+        let result = new AssayEleFormula();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IAssayEleFormula {
+    eleId: number | undefined;
+    name: string | undefined;
+    formulaExp: string | undefined;
+    isDeleted: boolean | undefined;
+    intro: string | undefined;
+    lastModifyTime: Date | undefined;
+    operatorId: number | undefined;
+    id: number | undefined;
+}
+
+export class AssayFormulaPram implements IAssayFormulaPram {
+    formulaId: number | undefined;
+    pramName: string | undefined;
+    intro: string | undefined;
+    id: number | undefined;
+
+    constructor(data?: IAssayFormulaPram) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.formulaId = data["formulaId"];
+            this.pramName = data["pramName"];
+            this.intro = data["intro"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): AssayFormulaPram {
+        data = typeof data === 'object' ? data : {};
+        let result = new AssayFormulaPram();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["formulaId"] = this.formulaId;
+        data["pramName"] = this.pramName;
+        data["intro"] = this.intro;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): AssayFormulaPram {
+        const json = this.toJSON();
+        let result = new AssayFormulaPram();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IAssayFormulaPram {
+    formulaId: number | undefined;
+    pramName: string | undefined;
+    intro: string | undefined;
     id: number | undefined;
 }
 

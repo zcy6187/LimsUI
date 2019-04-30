@@ -1,0 +1,79 @@
+<div class="padding-bottom-45">
+  <div nz-row>
+    <div nz-col nzSpan="3">
+      <h3>
+        <span>编辑公式</span>
+      </h3>
+    </div>
+    <div nz-col nzSpan="3">
+      <button nz-button nzType="primary" (click)="addFormula()">新增公式</button>
+    </div>
+  </div>
+  <div nz-row>
+    <div nz-col nzSpan="10">
+      <div nz-row>
+        <div nz-col>
+          <h3>公式：</h3>
+          <nz-table [nzData]="formulaList" nzBordered nzShowPagination='false'>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>名称</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let formulaItem of formulaList;">
+                <td>{{formulaItem.id}}</td>
+                <td (click)="showPrams(formulaItem.id)">{{formulaItem.name}}</td>
+                <td>
+                  <a (click)="edit(formulaItem.id)">编辑</a>
+                  <nz-divider nzType="vertical"></nz-divider>
+                  <a (click)="delete(formulaItem.id)">删除</a>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+        <div nz-col>
+          <h3>参数：</h3>
+          <nz-table [nzData]="pramList" nzBordered nzShowPagination='false'>
+            <thead>
+              <tr>
+                <th>名称</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of pramList;">
+                <td>{{item.pramName}}</td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+      </div>
+    </div>
+    <div nz-col nzSpan="12">
+      <form nz-form [hidden]="isFormHidden">
+        <nz-form-item>
+          <nz-form-label [nzSm]="12" [nzXs]="24">当前状态：{{formStatus}}</nz-form-label>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24">名称:</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24">
+            <input nz-input name="curFormulaName" [(ngModel)]="curFormula.name" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24">公式:</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24">
+            <textarea nz-input name="curFormulaFormulaExp" [(ngModel)]="curFormula.formulaExp" rows="2"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control [nzOffset]="7" [nzSpan]="12">
+            <button nz-button (click)="save()">保存</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </div>
+  </div>

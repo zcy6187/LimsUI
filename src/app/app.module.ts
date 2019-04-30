@@ -64,6 +64,8 @@ import { XySignDataInputComponent } from './assay/xy-sign-data-input/xy-sign-dat
 import { UsrDataSearchComponent } from './assay/usr-data-search/usr-data-search.component';
 import { ChartsComponent } from './assay/charts/charts.component';
 import { CrossTemplateSearchComponent } from './assay/cross-template-search/cross-template-search.component';
+import { EquationComponent } from './process/equation/equation.component';
+import { FormulaEditComponent } from './process/equation/edit/formulaEdit.component';
 
 @NgModule({
   imports: [
@@ -131,6 +133,8 @@ import { CrossTemplateSearchComponent } from './assay/cross-template-search/cros
     UsrDataSearchComponent,
     ChartsComponent,
     CrossTemplateSearchComponent,
+    EquationComponent,
+    FormulaEditComponent,
   ],
   entryComponents: [
     CreateTenantComponent,
@@ -160,7 +164,7 @@ import { CrossTemplateSearchComponent } from './assay/cross-template-search/cros
     OrderElementComponent,
     CreateAssayUserComponent,
     EditAssayUserComponent,
+    FormulaEditComponent,
   ],
-  // providers: [LocalizationService, MenuService],
 })
 export class AppModule { }

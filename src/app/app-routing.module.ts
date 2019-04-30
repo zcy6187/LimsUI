@@ -29,6 +29,7 @@ import { StatisticExcelerComponent } from './assay/statistic/statistic-exceler/s
 import { XySignDataInputComponent } from './assay/xy-sign-data-input/xy-sign-data-input.component';
 import { UsrDataSearchComponent } from './assay/usr-data-search/usr-data-search.component';
 import { CrossTemplateSearchComponent } from './assay/cross-template-search/cross-template-search.component';
+import { EquationComponent } from './process/equation/equation.component';
 
 
 const routes: Routes = [
@@ -149,6 +150,10 @@ const routes: Routes = [
       {
         path: 'selfTplSearch',
         component: CrossTemplateSearchComponent
+      },
+      {
+        path: 'formula',
+        component: EquationComponent
       }
     ],
   },

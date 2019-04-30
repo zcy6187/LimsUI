@@ -76,8 +76,8 @@
         <th nzWidth="80px">备注</th>
         <ng-container *ngFor='let item of tbItem.tableHead;let i=index'>
           <ng-container [ngSwitch]="i">
-            <th *ngSwitchCase='tbItem.tableHead.length-1' (click)=showChart(tNum,i)>{{item}}</th>
-            <th *ngSwitchDefault nzWidth="120px" (click)=showChart(tNum,i)>{{item}}</th>
+            <th *ngSwitchCase='tbItem.tableHead.length-1' nzWidth="100px" (click)=showChart(tNum,i)>{{item}}</th>
+            <th *ngSwitchDefault nzWidth="100px" (click)=showChart(tNum,i)>{{item}}</th>
           </ng-container>
         </ng-container>
       </tr>
@@ -92,8 +92,8 @@
             <td *ngSwitchCase='3' nzWidth="80px">{{tdVal}}</td>
             <td *ngSwitchCase='4' nzWidth="100px">{{tdVal}}</td>
             <td *ngSwitchCase='5' nzWidth="80px">{{tdVal}}</td>
-            <td *ngSwitchCase='row.length-1'>{{tdVal}}</td>
-            <td *ngSwitchDefault nzWidth="120px">{{tdVal}}</td>
+            <td *ngSwitchCase='row.length-1' nzWidth="100px">{{tdVal}}</td>
+            <td *ngSwitchDefault nzWidth="100px">{{tdVal}}</td>
           </ng-container>
         </ng-container>
       </tr>
@@ -105,7 +105,7 @@
         <td nzWidth="100px"> </td>
         <td nzWidth="80px"> </td>
         <ng-container *ngFor='let tdVal of rowFooter[tNum];let i=index'>
-          <td nzWidth="120px" *ngIf='i>0'>{{tdVal}}</td>
+          <td nzWidth="100px" *ngIf='i>0'>{{tdVal}}</td>
         </ng-container>
       </tr>
       <tr style="background-color:#FFDAB9">
@@ -116,7 +116,7 @@
         <td nzWidth="100px"> </td>
         <td nzWidth="80px"> </td>
         <ng-container *ngFor='let tdVal of avgFooter[tNum];let i=index'>
-          <td nzWidth="120px" *ngIf='i>0'>{{tdVal}}</td>
+          <td nzWidth="100px" *ngIf='i>0'>{{tdVal}}</td>
         </ng-container>
       </tr>
     </tbody>
