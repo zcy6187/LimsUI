@@ -2,6 +2,7 @@ import { Component, OnInit, Injector, TemplateRef, ViewChild } from '@angular/co
 import { Assay_DataSearchServiceProxy, OrgServiceProxy, OrgTreeNodeDto, HtmlSelectDto, TemplateInfoDto, DataSearchTableDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/component-base';
 import { NzMessageService, NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-usr-data-search',
@@ -36,7 +37,8 @@ export class UsrDataSearchComponent extends AppComponentBase implements OnInit {
     private _orgService: OrgServiceProxy,
     private injector: Injector,
     private msg: NzMessageService,
-    private modalService: NzModalService) {
+    private modalService: NzModalService,
+    private http: HttpClient) {
     super(injector);
   }
 
@@ -72,7 +74,7 @@ export class UsrDataSearchComponent extends AppComponentBase implements OnInit {
             };
             this.widthConfig = widthArray;
             let width = (120 * this.widthConfig.length + 180) + "px";  //设置总宽度
-            this.scrollStyle = { x: width, y: "800px" };
+            this.scrollStyle = { x: width, y: "600px" };
           }
         });
     } else {
@@ -195,6 +197,36 @@ export class UsrDataSearchComponent extends AppComponentBase implements OnInit {
 
   destroyTplModal(): void {
     this.tplModal.destroy();
+  }
+
+  btnDownload() {
+    if (this.templateId) {
+      const tplId = Number(this.templateId);
+      if (!this.timeArray || this.timeArray.length < 2) {
+        this.msg.info('请选择查询时间段！');
+        return;
+      }
+      this._searchService.getExcelNameByTemplateIdAndSpecId(tplId, this.specId, this.timeArray[0], this.timeArray[1])
+        .subscribe(file => {
+          if (file == "-1") {
+            this.msg.warning("生成失败，请重新操作！")
+          } else {
+            this.openExcel(file);
+          }
+        });
+    } else {
+      this.msg.warning('请先选择化验模板！');
+    }
+  }
+
+  openExcel(fileName: string) {
+    let url = "http://131.107.2.64:2155/api/excel?fileName=" + fileName;
+    this.http.get(url, {
+      responseType: "blob",
+      headers: { 'Accept': 'application/vnd.ms-excel' }
+    }).subscribe(blob => {
+      saveAs(blob, fileName);
+    });
   }
 
 }

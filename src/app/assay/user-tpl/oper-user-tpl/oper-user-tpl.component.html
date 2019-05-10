@@ -1,14 +1,36 @@
 <div class="padding-bottom-45">
-
   <h3>
     <span>用户模板编辑</span>
   </h3>
-  <!-- <div nz-row>
-    <div nz-col nzSpan="10">
-      <nz-card nzTitle="组织结构">
-        <nz-tree [nzData]="nodes" nzCheckable="true" nzMultiple="true" [nzCheckedKeys]="defaultCheckedKeys"
-          [nzExpandedKeys]="defaultExpandedKeys" [nzSelectedKeys]="defaultSelectedKeys" (nzClick)="nzEvent($event)"
-          (nzExpandChange)="nzEvent($event)" (nzCheckBoxChange)="nzEvent($event)">
-        </nz-tree>
-      </nz-card>
-    </div> -->
+  <div nz-row>
+    <div nz-col nzSpan="8">
+      <nz-tree [nzData]="orgNodes" nzCheckable nzMultiple [nzCheckedKeys]="defaultCheckedKeys"
+        [nzExpandedKeys]="defaultExpandedKeys" [nzSelectedKeys]="defaultSelectedKeys" (nzClick)="nzEvent($event)"
+        (nzExpandChange)="nzEvent($event)" (nzCheckBoxChange)="nzEvent($event)">
+      </nz-tree>
+    </div>
+    <div nz-col nzSpan="12">
+      <nz-table #tplTable nzShowSizeChanger [nzData]="listOfTplData"
+        (nzCurrentPageDataChange)="currentPageDataChange($event)">
+        <thead>
+          <tr>
+            <th nzShowCheckbox nzShowRowSelection [nzSelections]="listOfSelectedTpl" [(nzChecked)]="isAllTplChecked"
+              [nzIndeterminate]="isIndeterminate" (nzCheckedChange)="checkAll($event)"></th>
+            <th>编号</th>
+            <th>模板名称</th>
+            <th>组织</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of tplTable.data">
+            <td nzShowCheckbox [(nzChecked)]="mapOfCheckedId[data.id]" (nzCheckedChange)="refreshStatus()"></td>
+            <td>{{ data.name }}</td>
+            <td>{{ data.age }}</td>
+            <td>{{ data.address }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+    <div nz-col></div>
+  </div>
+</div>

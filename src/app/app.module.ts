@@ -66,6 +66,8 @@ import { ChartsComponent } from './assay/charts/charts.component';
 import { CrossTemplateSearchComponent } from './assay/cross-template-search/cross-template-search.component';
 import { EquationComponent } from './process/equation/equation.component';
 import { FormulaEditComponent } from './process/equation/edit/formulaEdit.component';
+import { ConstComponent } from './process/const/const.component';
+// import { EquipmentComponent } from './process/equipment/equipment.component';
 
 @NgModule({
   imports: [
@@ -135,6 +137,8 @@ import { FormulaEditComponent } from './process/equation/edit/formulaEdit.compon
     CrossTemplateSearchComponent,
     EquationComponent,
     FormulaEditComponent,
+    ConstComponent,
+    // EquipmentComponent,
   ],
   entryComponents: [
     CreateTenantComponent,
