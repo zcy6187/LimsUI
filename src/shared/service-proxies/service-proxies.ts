@@ -3946,6 +3946,64 @@ export class Assay_TplServiceProxy {
     }
 
     /**
+     * @param orgId (optional) 
+     * @return Success
+     */
+    getTplsByOrgId(orgId: number | null | undefined): Observable<EditTplDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_Tpl/GetTplsByOrgId?";
+        if (orgId !== undefined)
+            url_ += "orgId=" + encodeURIComponent("" + orgId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTplsByOrgId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTplsByOrgId(<any>response_);
+                } catch (e) {
+                    return <Observable<EditTplDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<EditTplDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetTplsByOrgId(response: HttpResponseBase): Observable<EditTplDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(EditTplDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<EditTplDto[]>(<any>null);
+    }
+
+    /**
      * @param orgCode (optional) 
      * @param tplName (optional) 
      * @return Success
@@ -4963,6 +5021,512 @@ export class Assay_UserTplServiceProxy {
             }));
         }
         return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getUserOrgIds(): Observable<string[]> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_UserTpl/GetUserOrgIds";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUserOrgIds(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUserOrgIds(<any>response_);
+                } catch (e) {
+                    return <Observable<string[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetUserOrgIds(response: HttpResponseBase): Observable<string[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(item);
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getUserTplIds(): Observable<string[]> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_UserTpl/GetUserTplIds";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUserTplIds(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUserTplIds(<any>response_);
+                } catch (e) {
+                    return <Observable<string[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetUserTplIds(response: HttpResponseBase): Observable<string[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(item);
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string[]>(<any>null);
+    }
+
+    /**
+     * @param tplId (optional) 
+     * @return Success
+     */
+    getUserTplSpecIds(tplId: number | null | undefined): Observable<string[]> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_UserTpl/GetUserTplSpecIds?";
+        if (tplId !== undefined)
+            url_ += "tplId=" + encodeURIComponent("" + tplId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUserTplSpecIds(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUserTplSpecIds(<any>response_);
+                } catch (e) {
+                    return <Observable<string[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetUserTplSpecIds(response: HttpResponseBase): Observable<string[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(item);
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string[]>(<any>null);
+    }
+
+    /**
+     * @param input (optional) 
+     * @return Success
+     */
+    addOrUpdateUserOrg(input: UserDataDto | null | undefined): Observable<HtmlDataOperRetDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_UserTpl/AddOrUpdateUserOrg";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddOrUpdateUserOrg(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddOrUpdateUserOrg(<any>response_);
+                } catch (e) {
+                    return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<HtmlDataOperRetDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddOrUpdateUserOrg(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? HtmlDataOperRetDto.fromJS(resultData200) : new HtmlDataOperRetDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<HtmlDataOperRetDto>(<any>null);
+    }
+
+    /**
+     * @param specItem (optional) 
+     * @return Success
+     */
+    addOrUpdateSingleTplSpec(specItem: TplSpecDto | null | undefined): Observable<HtmlDataOperRetDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_UserTpl/AddOrUpdateSingleTplSpec";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(specItem);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddOrUpdateSingleTplSpec(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddOrUpdateSingleTplSpec(<any>response_);
+                } catch (e) {
+                    return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<HtmlDataOperRetDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddOrUpdateSingleTplSpec(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? HtmlDataOperRetDto.fromJS(resultData200) : new HtmlDataOperRetDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<HtmlDataOperRetDto>(<any>null);
+    }
+
+    /**
+     * @param tplId (optional) 
+     * @param specIds (optional) 
+     * @return Success
+     */
+    addOrUpdateTplSpecByTplId(tplId: number | null | undefined, specIds: string | null | undefined): Observable<HtmlDataOperRetDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_UserTpl/AddOrUpdateTplSpecByTplId?";
+        if (tplId !== undefined)
+            url_ += "tplId=" + encodeURIComponent("" + tplId) + "&"; 
+        if (specIds !== undefined)
+            url_ += "specIds=" + encodeURIComponent("" + specIds) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddOrUpdateTplSpecByTplId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddOrUpdateTplSpecByTplId(<any>response_);
+                } catch (e) {
+                    return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<HtmlDataOperRetDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddOrUpdateTplSpecByTplId(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? HtmlDataOperRetDto.fromJS(resultData200) : new HtmlDataOperRetDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<HtmlDataOperRetDto>(<any>null);
+    }
+
+    /**
+     * @param orgIds (optional) 
+     * @return Success
+     */
+    addOrUpdateUserOrgs(orgIds: string | null | undefined): Observable<HtmlDataOperRetDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_UserTpl/AddOrUpdateUserOrgs?";
+        if (orgIds !== undefined)
+            url_ += "orgIds=" + encodeURIComponent("" + orgIds) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddOrUpdateUserOrgs(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddOrUpdateUserOrgs(<any>response_);
+                } catch (e) {
+                    return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<HtmlDataOperRetDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddOrUpdateUserOrgs(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? HtmlDataOperRetDto.fromJS(resultData200) : new HtmlDataOperRetDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<HtmlDataOperRetDto>(<any>null);
+    }
+
+    /**
+     * @param orgId (optional) 
+     * @param tplIds (optional) 
+     * @return Success
+     */
+    addOrUpdateOrgTpls(orgId: number | null | undefined, tplIds: string | null | undefined): Observable<HtmlDataOperRetDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_UserTpl/AddOrUpdateOrgTpls?";
+        if (orgId !== undefined)
+            url_ += "orgId=" + encodeURIComponent("" + orgId) + "&"; 
+        if (tplIds !== undefined)
+            url_ += "tplIds=" + encodeURIComponent("" + tplIds) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddOrUpdateOrgTpls(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddOrUpdateOrgTpls(<any>response_);
+                } catch (e) {
+                    return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<HtmlDataOperRetDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddOrUpdateOrgTpls(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? HtmlDataOperRetDto.fromJS(resultData200) : new HtmlDataOperRetDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<HtmlDataOperRetDto>(<any>null);
+    }
+
+    /**
+     * @param orgId (optional) 
+     * @return Success
+     */
+    getUserTplIdsByOrgId(orgId: number | null | undefined): Observable<string[]> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_UserTpl/GetUserTplIdsByOrgId?";
+        if (orgId !== undefined)
+            url_ += "orgId=" + encodeURIComponent("" + orgId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUserTplIdsByOrgId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUserTplIdsByOrgId(<any>response_);
+                } catch (e) {
+                    return <Observable<string[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetUserTplIdsByOrgId(response: HttpResponseBase): Observable<string[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(item);
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string[]>(<any>null);
     }
 }
 
@@ -10813,6 +11377,112 @@ export interface ICreateUserTplDto {
     tplIds: string | undefined;
     lx: number | undefined;
     specimens: TplSpecimenDto[] | undefined;
+}
+
+export class UserDataDto implements IUserDataDto {
+    orgIds: string | undefined;
+    tplIds: string | undefined;
+    tplSpecList: TplSpecDto[] | undefined;
+
+    constructor(data?: IUserDataDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.orgIds = data["orgIds"];
+            this.tplIds = data["tplIds"];
+            if (data["tplSpecList"] && data["tplSpecList"].constructor === Array) {
+                this.tplSpecList = [];
+                for (let item of data["tplSpecList"])
+                    this.tplSpecList.push(TplSpecDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): UserDataDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserDataDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["orgIds"] = this.orgIds;
+        data["tplIds"] = this.tplIds;
+        if (this.tplSpecList && this.tplSpecList.constructor === Array) {
+            data["tplSpecList"] = [];
+            for (let item of this.tplSpecList)
+                data["tplSpecList"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): UserDataDto {
+        const json = this.toJSON();
+        let result = new UserDataDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUserDataDto {
+    orgIds: string | undefined;
+    tplIds: string | undefined;
+    tplSpecList: TplSpecDto[] | undefined;
+}
+
+export class TplSpecDto implements ITplSpecDto {
+    tplId: string | undefined;
+    specIds: string | undefined;
+
+    constructor(data?: ITplSpecDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.tplId = data["tplId"];
+            this.specIds = data["specIds"];
+        }
+    }
+
+    static fromJS(data: any): TplSpecDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TplSpecDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tplId"] = this.tplId;
+        data["specIds"] = this.specIds;
+        return data; 
+    }
+
+    clone(): TplSpecDto {
+        const json = this.toJSON();
+        let result = new TplSpecDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ITplSpecDto {
+    tplId: string | undefined;
+    specIds: string | undefined;
 }
 
 export class ChangeUiThemeInput implements IChangeUiThemeInput {
