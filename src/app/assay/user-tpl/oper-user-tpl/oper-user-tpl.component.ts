@@ -1,6 +1,8 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/component-base';
-import { OrgServiceProxy, OrgTreeNodeDto, Assay_UserTplServiceProxy, Assay_TplServiceProxy } from '@shared/service-proxies/service-proxies';
+import { OrgServiceProxy, OrgTreeNodeDto, Assay_UserTplServiceProxy, Assay_TplServiceProxy, HtmlDataOperRetDto } from '@shared/service-proxies/service-proxies';
+import { TbData } from '../tb-data';
+import { NzTreeComponent, NzTreeNode } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-oper-user-tpl',
@@ -12,9 +14,17 @@ export class OperUserTplComponent extends AppComponentBase implements OnInit {
   orgNodes: Array<OrgTreeNodeDto>;
   orgCheckedKeys: Array<string>;
   tplCheckedKeys: Array<string>;
-  tplTableData;
+  tplTableData: Array<TbData>;
+  isTplAllChecked: boolean;
   tplSpecCheckedKeys: Array<string>;
-  tplSpecTableData;
+  tplSpecTableData: Array<TbData>;
+  isSpecAllChecked: boolean;
+  selectOrgName: string;
+  selectTplName: string;
+  selectOrgCode;
+  selectTplId;
+
+  @ViewChild('orgTree') orgTree: NzTreeComponent;
 
   constructor(private _orgService: OrgServiceProxy,
     private injector: Injector,
@@ -24,12 +34,15 @@ export class OperUserTplComponent extends AppComponentBase implements OnInit {
   }
 
   ngOnInit() {
+    this.loadAllOrg();
+    this.orgCheckedKeys = new Array<string>();
   }
 
   loadAllOrg() {
     this._orgService.getOrgTree()
       .subscribe((res: OrgTreeNodeDto[]) => {
         this.orgNodes = res;
+        this.getSelectedOrg();
       });
   }
 
@@ -39,28 +52,181 @@ export class OperUserTplComponent extends AppComponentBase implements OnInit {
     });
   }
 
-  loadTplIdByOrgId(orgId: number) {
-    this._tplService.getTplsByOrgId(orgId).subscribe(res => {
-      this.tplTableData = res;
+  loadTplIdByOrgId(orgCode: string) {
+    this._tplService.getTplsByOrgCodeStrick(orgCode).subscribe(res => {
+      let tmpArray = new Array<TbData>();
+      if (res.length > 0) {
+        res.forEach((item, index) => {
+          let tmpRow = new TbData();
+          tmpRow.id = item.id;
+          tmpRow.name = item.tplName;
+          tmpRow.isChecked = true;
+          tmpArray.push(tmpRow);
+        });
+        this.getSelectedTplIds(orgCode, tmpArray);
+      } else {
+        this.tplTableData = tmpArray;
+      }
     })
   }
 
-  getSelectedTplIds(orgId: number) {
-    this._uTplService.getUserTplIdsByOrgId(orgId).subscribe(res => {
-      this.tplCheckedKeys = res;
+  getSelectedTplIds(orgCode: string, tmpArray: Array<TbData>) {
+    this._uTplService.getUserTplIdsByOrgCode(orgCode).subscribe(res => {
+      this.isTplAllChecked = true;
+      if (res.length > 0) {
+        tmpArray.forEach((item, index) => {
+          if (res.indexOf(item.id.toString()) < 0) {
+            item.isChecked = false;
+            this.isTplAllChecked = false;
+          }
+        });
+      }
+      this.tplTableData = tmpArray;
+      console.log(tmpArray);
     });
   }
 
   loadSpecIdsByTplId(tplId: number) {
-    this._tplService.getTplSpecimensByTplId(orgId).subscribe(res => {
-      this.tplSpecTableData = res;
+    this._tplService.getTplSpecimensByTplId(tplId).subscribe(res => {
+      let tmpArray = new Array<TbData>();
+      if (res.length > 0) {
+        res.forEach((item, index) => {
+          let tmpRow = new TbData();
+          tmpRow.id = item.id;
+          tmpRow.name = item.specName;
+          tmpRow.isChecked = true;
+          tmpArray.push(tmpRow);
+        });
+        this.getSelectedTplSpecIds(tplId, tmpArray);
+      } else {
+        this.tplSpecTableData = tmpArray;
+      }
     })
   }
 
-  getSelectedTplSpecIds(tplId: number) {
+  getSelectedTplSpecIds(tplId: number, tmpArray: Array<TbData>) {
     this._uTplService.getUserTplSpecIds(tplId).subscribe(res => {
-      this.tplSpecTableData = res;
+      this.isSpecAllChecked = true;
+      if (res.length > 0) {
+        tmpArray.forEach((item, index) => {
+          if (res.indexOf(item.id.toString()) < 0) {
+            item.isChecked = false;
+            this.isTplAllChecked = false;
+          }
+        });
+      }
+      this.tplSpecTableData = tmpArray;
     });
   }
 
+  refreshStatus(data: TbData, type: number): void {
+    var isAllChecked: boolean = true;
+    if (type == 1) { //模板
+      for (let item of this.tplTableData) {
+        isAllChecked = isAllChecked && item.isChecked;
+      };
+      this.isTplAllChecked = isAllChecked;
+    }
+    if (type == 2) { //样品
+      for (let item of this.tplSpecTableData) {
+        isAllChecked = isAllChecked && item.isChecked;
+      };
+      this.isSpecAllChecked = isAllChecked;
+    }
+  }
+
+  checkAll(value: boolean, type: number): void {
+    if (type == 1) {
+      this.tplTableData.forEach(data => data.isChecked = value);
+    } else {
+      this.tplSpecTableData.forEach(data => data.isChecked = value);
+    }
+
+  }
+
+  orgClickEvent($event) {
+    console.log($event);
+    this.selectOrgName = $event.node.title;
+    this.selectOrgCode = $event.node.key;
+    this.orgTree.nzSelectedKeys = [this.selectOrgCode];
+    this.loadTplIdByOrgId($event.node.key);
+  }
+
+  tplClick(item: TbData) {
+    this.selectTplId = item.id;
+    this.selectTplName = item.name;
+    this.loadSpecIdsByTplId(item.id);
+  }
+
+  saveOrg() {
+    var checkedOrgNodes: Array<NzTreeNode> = this.orgTree.getCheckedNodeList();
+    var orgList = new Array<string>();
+    for (let item of checkedOrgNodes) {
+      this.getNodes(item, orgList);
+    }
+    var orgStr = "";
+    for (let item of orgList) {
+      orgStr += item + ",";
+    }
+    this._uTplService.postAddOrUpdateUserOrgs(orgStr).subscribe((res: HtmlDataOperRetDto) => {
+      this.message.info(res.message);
+    });
+  }
+
+  getNodes(orgNode: NzTreeNode, orgList: Array<string>) {
+    orgList.push(orgNode.key);
+    if (orgNode.children.length > 0) {
+      for (let item of orgNode.children) {
+        this.getNodes(item, orgList);
+      }
+    }
+  }
+
+  saveTpl() {
+    if (this.tplTableData.length <= 0) {
+      this.message.info("当前没有模板！");
+      return;
+    }
+    if (this.isTplAllChecked) {
+      this._uTplService.postAddOrUpdateOrgTpls(this.selectOrgCode, "-1") // -1表示全选
+        .subscribe((res: HtmlDataOperRetDto) => {
+          this.message.info(res.message);
+        });
+    } else {
+      var tplIds = "";
+      for (let item of this.tplTableData) {
+        if (item.isChecked) {
+          tplIds += item.id.toString() + ",";
+        }
+      }
+      this._uTplService.postAddOrUpdateOrgTpls(this.selectOrgCode, tplIds)
+        .subscribe((res: HtmlDataOperRetDto) => {
+          this.message.info(res.message);
+        });
+    }
+  }
+
+  saveSpec() {
+    if (this.tplSpecTableData.length <= 0) {
+      this.message.info("当前没有样品！");
+      return;
+    }
+    if (this.isSpecAllChecked) {
+      this._uTplService.postAddOrUpdateTplSpecByTplId(this.selectTplId, "-1") // -1表示全选
+        .subscribe((res: HtmlDataOperRetDto) => {
+          this.message.info(res.message);
+        });
+    } else {
+      var tplSpecIds = "";
+      for (let item of this.tplSpecTableData) {
+        if (item.isChecked) {
+          tplSpecIds += item.id.toString() + ",";
+        }
+      }
+      this._uTplService.postAddOrUpdateTplSpecByTplId(this.selectTplId, tplSpecIds)
+        .subscribe((res: HtmlDataOperRetDto) => {
+          this.message.info(res.message);
+        });
+    }
+  }
 }

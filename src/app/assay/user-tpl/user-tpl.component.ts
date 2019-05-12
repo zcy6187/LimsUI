@@ -2,6 +2,7 @@ import { Component, OnInit, Injector } from '@angular/core';
 import { EditVUserTplDto, Assay_UserTplServiceProxy, OrgTreeNodeDto, OrgServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/component-base';
 import { EditUserTplComponent } from './edit-user-tpl/edit-user-tpl.component';
+import { OperUserTplComponent } from './oper-user-tpl/oper-user-tpl.component';
 
 @Component({
   selector: 'app-user-tpl',
@@ -40,7 +41,7 @@ export class UserTplComponent extends AppComponentBase implements OnInit {
   }
 
   edit(item: EditVUserTplDto) {
-    this.modalHelper.open(EditUserTplComponent, { userTplList: item.tplList, listOfOrg: this.listOfOrg, editVUserTpl: item, userSpecimenList: item.specimenList }, 'lg', {
+    this.modalHelper.open(OperUserTplComponent, null, 'lg', {
       nzMask: true,
     })
       .subscribe(

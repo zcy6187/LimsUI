@@ -4,33 +4,56 @@
   </h3>
   <div nz-row>
     <div nz-col nzSpan="8">
-      <nz-tree [nzData]="orgNodes" nzCheckable nzMultiple [nzCheckedKeys]="defaultCheckedKeys"
-        [nzExpandedKeys]="defaultExpandedKeys" [nzSelectedKeys]="defaultSelectedKeys" (nzClick)="nzEvent($event)"
-        (nzExpandChange)="nzEvent($event)" (nzCheckBoxChange)="nzEvent($event)">
-      </nz-tree>
+      <nz-card nzTitle="组织" style="height:500px;overflow:auto;">
+        <div>
+          <nz-tree #orgTree [nzData]="orgNodes" nzCheckable nzMultiple [nzCheckedKeys]="orgCheckedKeys"
+            (nzClick)="orgClickEvent($event)" nzShowLine>
+          </nz-tree>
+        </div>
+      </nz-card>
+      <button nz-button (click)="saveOrg()">保存</button>
     </div>
-    <div nz-col nzSpan="12">
-      <nz-table #tplTable nzShowSizeChanger [nzData]="listOfTplData"
-        (nzCurrentPageDataChange)="currentPageDataChange($event)">
-        <thead>
-          <tr>
-            <th nzShowCheckbox nzShowRowSelection [nzSelections]="listOfSelectedTpl" [(nzChecked)]="isAllTplChecked"
-              [nzIndeterminate]="isIndeterminate" (nzCheckedChange)="checkAll($event)"></th>
-            <th>编号</th>
-            <th>模板名称</th>
-            <th>组织</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of tplTable.data">
-            <td nzShowCheckbox [(nzChecked)]="mapOfCheckedId[data.id]" (nzCheckedChange)="refreshStatus()"></td>
-            <td>{{ data.name }}</td>
-            <td>{{ data.age }}</td>
-            <td>{{ data.address }}</td>
-          </tr>
-        </tbody>
-      </nz-table>
+    <div nz-col nzSpan="8">
+      <nz-card [nzTitle]="selectOrgName" style="height:500px;overflow:auto;">
+        <nz-table #tplTable nzShowSizeChanger [nzData]="tplTableData" nzPageSize="15">
+          <thead>
+            <tr>
+              <th nzShowCheckbox [(nzChecked)]="isTplAllChecked" (nzCheckedChange)="checkAllTpl($event,1)"></th>
+              <th>ID</th>
+              <th>模板名称</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of tplTable.data" (click)="tplClick(item)">
+              <td nzShowCheckbox [(nzChecked)]="item.isChecked" (nzCheckedChange)="refreshStatus(item,1)"></td>
+              <td>{{ item.id }}</td>
+              <td>{{ item.name }}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-card>
+      <button nz-button (click)="saveTpl()">保存</button>
     </div>
-    <div nz-col></div>
+    <div nz-col nzSpan="8">
+      <nz-card [nzTitle]="selectTplName" style="height:500px;overflow:auto;">
+        <nz-table #specTable [nzShowPagination]=true nzPagesize=15 [nzData]="tplSpecTableData">
+          <thead>
+            <tr>
+              <th nzShowCheckbox [(nzChecked)]="isSpecAllChecked" (nzCheckedChange)="checkAllSpec($event,2)"></th>
+              <th>ID</th>
+              <th>名称</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of specTable.data">
+              <td nzShowCheckbox [(nzChecked)]="item.isChecked" (nzCheckedChange)="refreshStatus(item,2)"></td>
+              <td>{{item.id}}</td>
+              <td>{{item.name}}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-card>
+      <button nz-button (click)="saveSpec()">保存</button>
+    </div>
   </div>
 </div>

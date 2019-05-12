@@ -169,6 +169,7 @@ import { ConstComponent } from './process/const/const.component';
     CreateAssayUserComponent,
     EditAssayUserComponent,
     FormulaEditComponent,
+    OperUserTplComponent
   ],
 })
 export class AppModule { }

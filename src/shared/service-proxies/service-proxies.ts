@@ -3946,6 +3946,64 @@ export class Assay_TplServiceProxy {
     }
 
     /**
+     * @param inputCode (optional) 
+     * @return Success
+     */
+    getTplsByOrgCodeStrick(inputCode: string | null | undefined): Observable<EditTplDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_Tpl/GetTplsByOrgCodeStrick?";
+        if (inputCode !== undefined)
+            url_ += "inputCode=" + encodeURIComponent("" + inputCode) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTplsByOrgCodeStrick(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTplsByOrgCodeStrick(<any>response_);
+                } catch (e) {
+                    return <Observable<EditTplDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<EditTplDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetTplsByOrgCodeStrick(response: HttpResponseBase): Observable<EditTplDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(EditTplDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<EditTplDto[]>(<any>null);
+    }
+
+    /**
      * @param orgId (optional) 
      * @return Success
      */
@@ -5195,8 +5253,8 @@ export class Assay_UserTplServiceProxy {
      * @param input (optional) 
      * @return Success
      */
-    addOrUpdateUserOrg(input: UserDataDto | null | undefined): Observable<HtmlDataOperRetDto> {
-        let url_ = this.baseUrl + "/api/services/app/Assay_UserTpl/AddOrUpdateUserOrg";
+    postAddOrUpdateUserOrg(input: UserDataDto | null | undefined): Observable<HtmlDataOperRetDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_UserTpl/PostAddOrUpdateUserOrg";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
@@ -5212,11 +5270,11 @@ export class Assay_UserTplServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAddOrUpdateUserOrg(response_);
+            return this.processPostAddOrUpdateUserOrg(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processAddOrUpdateUserOrg(<any>response_);
+                    return this.processPostAddOrUpdateUserOrg(<any>response_);
                 } catch (e) {
                     return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
                 }
@@ -5225,7 +5283,7 @@ export class Assay_UserTplServiceProxy {
         }));
     }
 
-    protected processAddOrUpdateUserOrg(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+    protected processPostAddOrUpdateUserOrg(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -5251,8 +5309,8 @@ export class Assay_UserTplServiceProxy {
      * @param specItem (optional) 
      * @return Success
      */
-    addOrUpdateSingleTplSpec(specItem: TplSpecDto | null | undefined): Observable<HtmlDataOperRetDto> {
-        let url_ = this.baseUrl + "/api/services/app/Assay_UserTpl/AddOrUpdateSingleTplSpec";
+    postAddOrUpdateSingleTplSpec(specItem: TplSpecDto | null | undefined): Observable<HtmlDataOperRetDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_UserTpl/PostAddOrUpdateSingleTplSpec";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(specItem);
@@ -5268,11 +5326,11 @@ export class Assay_UserTplServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAddOrUpdateSingleTplSpec(response_);
+            return this.processPostAddOrUpdateSingleTplSpec(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processAddOrUpdateSingleTplSpec(<any>response_);
+                    return this.processPostAddOrUpdateSingleTplSpec(<any>response_);
                 } catch (e) {
                     return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
                 }
@@ -5281,7 +5339,7 @@ export class Assay_UserTplServiceProxy {
         }));
     }
 
-    protected processAddOrUpdateSingleTplSpec(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+    protected processPostAddOrUpdateSingleTplSpec(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -5308,8 +5366,8 @@ export class Assay_UserTplServiceProxy {
      * @param specIds (optional) 
      * @return Success
      */
-    addOrUpdateTplSpecByTplId(tplId: number | null | undefined, specIds: string | null | undefined): Observable<HtmlDataOperRetDto> {
-        let url_ = this.baseUrl + "/api/services/app/Assay_UserTpl/AddOrUpdateTplSpecByTplId?";
+    postAddOrUpdateTplSpecByTplId(tplId: number | null | undefined, specIds: string | null | undefined): Observable<HtmlDataOperRetDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_UserTpl/PostAddOrUpdateTplSpecByTplId?";
         if (tplId !== undefined)
             url_ += "tplId=" + encodeURIComponent("" + tplId) + "&"; 
         if (specIds !== undefined)
@@ -5325,11 +5383,11 @@ export class Assay_UserTplServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAddOrUpdateTplSpecByTplId(response_);
+            return this.processPostAddOrUpdateTplSpecByTplId(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processAddOrUpdateTplSpecByTplId(<any>response_);
+                    return this.processPostAddOrUpdateTplSpecByTplId(<any>response_);
                 } catch (e) {
                     return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
                 }
@@ -5338,7 +5396,7 @@ export class Assay_UserTplServiceProxy {
         }));
     }
 
-    protected processAddOrUpdateTplSpecByTplId(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+    protected processPostAddOrUpdateTplSpecByTplId(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -5364,8 +5422,8 @@ export class Assay_UserTplServiceProxy {
      * @param orgIds (optional) 
      * @return Success
      */
-    addOrUpdateUserOrgs(orgIds: string | null | undefined): Observable<HtmlDataOperRetDto> {
-        let url_ = this.baseUrl + "/api/services/app/Assay_UserTpl/AddOrUpdateUserOrgs?";
+    postAddOrUpdateUserOrgs(orgIds: string | null | undefined): Observable<HtmlDataOperRetDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_UserTpl/PostAddOrUpdateUserOrgs?";
         if (orgIds !== undefined)
             url_ += "orgIds=" + encodeURIComponent("" + orgIds) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
@@ -5379,11 +5437,11 @@ export class Assay_UserTplServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAddOrUpdateUserOrgs(response_);
+            return this.processPostAddOrUpdateUserOrgs(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processAddOrUpdateUserOrgs(<any>response_);
+                    return this.processPostAddOrUpdateUserOrgs(<any>response_);
                 } catch (e) {
                     return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
                 }
@@ -5392,7 +5450,7 @@ export class Assay_UserTplServiceProxy {
         }));
     }
 
-    protected processAddOrUpdateUserOrgs(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+    protected processPostAddOrUpdateUserOrgs(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -5419,8 +5477,8 @@ export class Assay_UserTplServiceProxy {
      * @param tplIds (optional) 
      * @return Success
      */
-    addOrUpdateOrgTpls(orgId: number | null | undefined, tplIds: string | null | undefined): Observable<HtmlDataOperRetDto> {
-        let url_ = this.baseUrl + "/api/services/app/Assay_UserTpl/AddOrUpdateOrgTpls?";
+    postAddOrUpdateOrgTpls(orgId: string | null | undefined, tplIds: string | null | undefined): Observable<HtmlDataOperRetDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_UserTpl/PostAddOrUpdateOrgTpls?";
         if (orgId !== undefined)
             url_ += "orgId=" + encodeURIComponent("" + orgId) + "&"; 
         if (tplIds !== undefined)
@@ -5436,11 +5494,11 @@ export class Assay_UserTplServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAddOrUpdateOrgTpls(response_);
+            return this.processPostAddOrUpdateOrgTpls(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processAddOrUpdateOrgTpls(<any>response_);
+                    return this.processPostAddOrUpdateOrgTpls(<any>response_);
                 } catch (e) {
                     return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
                 }
@@ -5449,7 +5507,7 @@ export class Assay_UserTplServiceProxy {
         }));
     }
 
-    protected processAddOrUpdateOrgTpls(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+    protected processPostAddOrUpdateOrgTpls(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -5504,6 +5562,64 @@ export class Assay_UserTplServiceProxy {
     }
 
     protected processGetUserTplIdsByOrgId(response: HttpResponseBase): Observable<string[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(item);
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string[]>(<any>null);
+    }
+
+    /**
+     * @param orgCode (optional) 
+     * @return Success
+     */
+    getUserTplIdsByOrgCode(orgCode: string | null | undefined): Observable<string[]> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_UserTpl/GetUserTplIdsByOrgCode?";
+        if (orgCode !== undefined)
+            url_ += "orgCode=" + encodeURIComponent("" + orgCode) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUserTplIdsByOrgCode(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUserTplIdsByOrgCode(<any>response_);
+                } catch (e) {
+                    return <Observable<string[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetUserTplIdsByOrgCode(response: HttpResponseBase): Observable<string[]> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
