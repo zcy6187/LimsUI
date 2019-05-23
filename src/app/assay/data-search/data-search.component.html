@@ -62,7 +62,7 @@
 <nz-card>
   <ng-container *ngIf='tbHead'>
     <nz-table #tplTk nzShowSizeChanger [nzData]="tbBody" [nzLoading]="isTableLoading" [nzShowPagination]=false
-      [nzSize]='default' [nzWidthConfig]="widthConfig" [nzScroll]="scrollStyle" [nzBordered]=true>
+      nzSize='small' [nzWidthConfig]="widthConfig" [nzScroll]="scrollStyle" [nzBordered]=true>
       <thead (nzSortChange)="sort($event)" nzSingleSort="true">
         <tr>
           <th nzShowSort nzSortKey='signTime' nzLeft="0px" rowspan="2">采样时间</th>

@@ -65,7 +65,7 @@
 </form>
 <ng-container *ngFor='let tbItem of searchData;let tNum=index'>
   <nz-table [nzData]="tbItem.tableData" [nzShowPagination]="false" [nzTitle]="tbItem.tableTitle" [nzBordered]=true
-    [nzScroll]="tbSizeArray[tNum]" [nzSize]="small">
+    [nzScroll]="tbSizeArray[tNum]" nzSize="small">
     <thead>
       <tr>
         <th nzWidth="160px" nzLeft="0px">签到时间</th>

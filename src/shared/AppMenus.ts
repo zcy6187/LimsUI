@@ -128,6 +128,21 @@ export class AppMenus {
             ]
         },
         {
+            text: "检测中心",
+            i18n: "",
+            acl: "Pages.DetectCenter",
+            icon: { type: "icon", value: "home" },
+            children: [
+                {
+                    text: "Excel数据录入",
+                    i18n: "",
+                    acl: "Pages.DetectCenter.ExcelImport",
+                    icon: { type: "icon", value: "info-circle" },
+                    link: "/app/excelOper",
+                }
+            ]
+        },
+        {
             text: "过程管理",
             i18n: "",
             acl: "Pages.Process",
@@ -139,6 +154,13 @@ export class AppMenus {
                     acl: "Pages.Process.Formula",
                     icon: { type: "icon", value: "info-circle" },
                     link: "/app/formula",
+                },
+                {
+                    text: "常数管理",
+                    i18n: "",
+                    acl: "Pages.Process.Const",
+                    icon: { type: "icon", value: "info-circle" },
+                    link: "/app/const",
                 }
             ]
         },

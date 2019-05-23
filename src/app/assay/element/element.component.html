@@ -1,6 +1,3 @@
-<page-header title="元素管理"></page-header>
-
-
 <nz-card [nzExtra]="extraTpl">
 
   <ng-template #extraTpl>
@@ -20,8 +17,8 @@
 
 
   <nz-table #ajaxTable nzShowSizeChanger [nzData]="dataList" [nzTotal]="totalItems" [(nzPageIndex)]="pageNumber"
-    [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading" (nzPageIndexChange)="refresh()" (nzPageSizeChange)="refresh()"
-    [nzFrontPagination]="false" nzBordered>
+    [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading" (nzPageIndexChange)="refresh()"
+    (nzPageSizeChange)="refresh()" [nzFrontPagination]="false" nzBordered>
     <thead>
       <tr>
         <th>ID</th>

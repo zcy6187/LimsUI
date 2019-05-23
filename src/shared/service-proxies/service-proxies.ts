@@ -2261,6 +2261,230 @@ export class Assay_FormulaServiceProxy {
         }
         return _observableOf<AssayFormulaPram[]>(<any>null);
     }
+
+    /**
+     * @param input (optional) 
+     * @return Success
+     */
+    deleteConstById(input: number | null | undefined): Observable<HtmlDataOperRetDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_Formula/DeleteConstById?";
+        if (input !== undefined)
+            url_ += "input=" + encodeURIComponent("" + input) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteConstById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteConstById(<any>response_);
+                } catch (e) {
+                    return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<HtmlDataOperRetDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteConstById(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? HtmlDataOperRetDto.fromJS(resultData200) : new HtmlDataOperRetDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<HtmlDataOperRetDto>(<any>null);
+    }
+
+    /**
+     * @param input (optional) 
+     * @return Success
+     */
+    addConst(input: CreateConstDto | null | undefined): Observable<HtmlDataOperRetDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_Formula/AddConst";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddConst(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddConst(<any>response_);
+                } catch (e) {
+                    return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<HtmlDataOperRetDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddConst(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? HtmlDataOperRetDto.fromJS(resultData200) : new HtmlDataOperRetDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<HtmlDataOperRetDto>(<any>null);
+    }
+
+    /**
+     * @param input (optional) 
+     * @param inputId (optional) 
+     * @return Success
+     */
+    editConst(input: CreateConstDto | null | undefined, inputId: number | null | undefined): Observable<HtmlDataOperRetDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_Formula/EditConst?";
+        if (inputId !== undefined)
+            url_ += "inputId=" + encodeURIComponent("" + inputId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processEditConst(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processEditConst(<any>response_);
+                } catch (e) {
+                    return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<HtmlDataOperRetDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processEditConst(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? HtmlDataOperRetDto.fromJS(resultData200) : new HtmlDataOperRetDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<HtmlDataOperRetDto>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getAllConst(): Observable<CreateConstDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_Formula/GetAllConst";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllConst(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllConst(<any>response_);
+                } catch (e) {
+                    return <Observable<CreateConstDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CreateConstDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllConst(response: HttpResponseBase): Observable<CreateConstDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(CreateConstDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CreateConstDto[]>(<any>null);
+    }
 }
 
 @Injectable()
@@ -5691,6 +5915,145 @@ export class ConfigurationServiceProxy {
     }
 
     protected processChangeUiTheme(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+}
+
+@Injectable()
+export class DetectServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param file (optional) 
+     * @return Success
+     */
+    uploadFile(file: any | null | undefined): Observable<HtmlDataOperRetDto> {
+        let url_ = this.baseUrl + "/api/services/app/Detect/UploadFile?";
+        if (file !== undefined)
+            url_ += "File=" + encodeURIComponent("" + file) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUploadFile(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUploadFile(<any>response_);
+                } catch (e) {
+                    return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<HtmlDataOperRetDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUploadFile(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? HtmlDataOperRetDto.fromJS(resultData200) : new HtmlDataOperRetDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<HtmlDataOperRetDto>(<any>null);
+    }
+}
+
+@Injectable()
+export class ApiServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param image (optional) 
+     * @param fileName (optional) 
+     * @param name (optional) 
+     * @return Success
+     */
+    file(image: any[] | null | undefined, fileName: string | null | undefined, name: string | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/File?";
+        if (image !== undefined)
+            image && image.forEach((item, index) => { 
+                for (let attr in item)
+        			if (item.hasOwnProperty(attr)) {
+        				url_ += "image[" + index + "]." + attr + "=" + encodeURIComponent("" + (<any>item)[attr]) + "&";
+        			}
+            });
+        if (fileName !== undefined)
+            url_ += "fileName=" + encodeURIComponent("" + fileName) + "&"; 
+        if (name !== undefined)
+            url_ += "name=" + encodeURIComponent("" + name) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processFile(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processFile(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processFile(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -9847,6 +10210,65 @@ export interface IAssayFormulaPram {
     id: number | undefined;
 }
 
+export class CreateConstDto implements ICreateConstDto {
+    id: number | undefined;
+    constVal: number | undefined;
+    cType: string | undefined;
+    intro: string | undefined;
+    operatorId: number | undefined;
+
+    constructor(data?: ICreateConstDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.constVal = data["constVal"];
+            this.cType = data["cType"];
+            this.intro = data["intro"];
+            this.operatorId = data["operatorId"];
+        }
+    }
+
+    static fromJS(data: any): CreateConstDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateConstDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["constVal"] = this.constVal;
+        data["cType"] = this.cType;
+        data["intro"] = this.intro;
+        data["operatorId"] = this.operatorId;
+        return data; 
+    }
+
+    clone(): CreateConstDto {
+        const json = this.toJSON();
+        let result = new CreateConstDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateConstDto {
+    id: number | undefined;
+    constVal: number | undefined;
+    cType: string | undefined;
+    intro: string | undefined;
+    operatorId: number | undefined;
+}
+
 export class CreateSelfTplDto implements ICreateSelfTplDto {
     id: number | undefined;
     tplName: string | undefined;
@@ -11642,6 +12064,81 @@ export class ChangeUiThemeInput implements IChangeUiThemeInput {
 
 export interface IChangeUiThemeInput {
     theme: string;
+}
+
+export class IFormFile implements IIFormFile {
+    contentType: string | undefined;
+    contentDisposition: string | undefined;
+    headers: { [key: string] : string[]; } | undefined;
+    length: number | undefined;
+    name: string | undefined;
+    fileName: string | undefined;
+
+    constructor(data?: IIFormFile) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.contentType = data["contentType"];
+            this.contentDisposition = data["contentDisposition"];
+            if (data["headers"]) {
+                this.headers = {};
+                for (let key in data["headers"]) {
+                    if (data["headers"].hasOwnProperty(key))
+                        this.headers[key] = data["headers"][key] !== undefined ? data["headers"][key] : [];
+                }
+            }
+            this.length = data["length"];
+            this.name = data["name"];
+            this.fileName = data["fileName"];
+        }
+    }
+
+    static fromJS(data: any): IFormFile {
+        data = typeof data === 'object' ? data : {};
+        let result = new IFormFile();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["contentType"] = this.contentType;
+        data["contentDisposition"] = this.contentDisposition;
+        if (this.headers) {
+            data["headers"] = {};
+            for (let key in this.headers) {
+                if (this.headers.hasOwnProperty(key))
+                    data["headers"][key] = this.headers[key];
+            }
+        }
+        data["length"] = this.length;
+        data["name"] = this.name;
+        data["fileName"] = this.fileName;
+        return data; 
+    }
+
+    clone(): IFormFile {
+        const json = this.toJSON();
+        let result = new IFormFile();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IIFormFile {
+    contentType: string | undefined;
+    contentDisposition: string | undefined;
+    headers: { [key: string] : string[]; } | undefined;
+    length: number | undefined;
+    name: string | undefined;
+    fileName: string | undefined;
 }
 
 export class OrgDto implements IOrgDto {

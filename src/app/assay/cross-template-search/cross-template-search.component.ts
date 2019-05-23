@@ -71,7 +71,7 @@ export class CrossTemplateSearchComponent extends AppComponentBase implements On
   }
 
   ngOnInit() {
-    this._orgService.getOrgTreeByZtCode()
+    this._orgService.getOrgTreeByTplQx()
       .subscribe((res: OrgTreeNodeDto[]) => {
         this.orgTree = res;
         console.log(res);
@@ -145,7 +145,7 @@ export class CrossTemplateSearchComponent extends AppComponentBase implements On
 
   orgChange(item) {
     if (item) {
-      this._searchService.getTemplateHtmlSelectDtosByOrgCode(item)
+      this._searchService.getTemplateHtmlSelectDtosByOrgCodeAndTplQx(item)
         .subscribe((res: HtmlSelectDto[]) => {
           if (res.length > 0) {
             this.listOfTemplate = res;
@@ -160,7 +160,7 @@ export class CrossTemplateSearchComponent extends AppComponentBase implements On
 
   tplChange(item) {
     if (item) {
-      this._searchService.getSpecimenHtmlSelectByTemplateId(item, false)
+      this._searchService.getSpecimenHtmlSelectByTemplateIdAndChargeSpecimen(item, false)
         .subscribe((res: HtmlSelectDto[]) => {
           if (res.length > 0) {
             let ff: HtmlSelectDto = new HtmlSelectDto();

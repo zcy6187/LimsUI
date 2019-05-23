@@ -67,7 +67,8 @@ import { CrossTemplateSearchComponent } from './assay/cross-template-search/cros
 import { EquationComponent } from './process/equation/equation.component';
 import { FormulaEditComponent } from './process/equation/edit/formulaEdit.component';
 import { ConstComponent } from './process/const/const.component';
-// import { EquipmentComponent } from './process/equipment/equipment.component';
+import { ExceloperComponent } from './assay/detectcenter/exceloper/exceloper.component';
+import { ConsteditComponent } from './process/const/edit/constedit/constedit.component';
 
 @NgModule({
   imports: [
@@ -138,7 +139,8 @@ import { ConstComponent } from './process/const/const.component';
     EquationComponent,
     FormulaEditComponent,
     ConstComponent,
-    // EquipmentComponent,
+    ExceloperComponent,
+    ConsteditComponent,
   ],
   entryComponents: [
     CreateTenantComponent,
@@ -169,7 +171,8 @@ import { ConstComponent } from './process/const/const.component';
     CreateAssayUserComponent,
     EditAssayUserComponent,
     FormulaEditComponent,
-    OperUserTplComponent
+    OperUserTplComponent,
+    ConsteditComponent,
   ],
 })
 export class AppModule { }

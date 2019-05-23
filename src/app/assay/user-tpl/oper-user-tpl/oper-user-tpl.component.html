@@ -18,7 +18,7 @@
         <nz-table #tplTable nzShowSizeChanger [nzData]="tplTableData" nzPageSize="15">
           <thead>
             <tr>
-              <th nzShowCheckbox [(nzChecked)]="isTplAllChecked" (nzCheckedChange)="checkAllTpl($event,1)"></th>
+              <th nzShowCheckbox [(nzChecked)]="isTplAllChecked" (nzCheckedChange)="checkAll($event,1)"></th>
               <th>ID</th>
               <th>模板名称</th>
             </tr>
@@ -39,7 +39,7 @@
         <nz-table #specTable [nzShowPagination]=true nzPagesize=15 [nzData]="tplSpecTableData">
           <thead>
             <tr>
-              <th nzShowCheckbox [(nzChecked)]="isSpecAllChecked" (nzCheckedChange)="checkAllSpec($event,2)"></th>
+              <th nzShowCheckbox [(nzChecked)]="isSpecAllChecked" (nzCheckedChange)="checkAll($event,2)"></th>
               <th>ID</th>
               <th>名称</th>
             </tr>

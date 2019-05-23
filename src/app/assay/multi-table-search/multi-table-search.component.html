@@ -70,7 +70,7 @@
 </form>
 <ng-container *ngFor='let tbItem of searchData;let tNum=index'>
   <nz-table [nzData]="tbItem.tableData" [nzShowPagination]="false" [nzTitle]="tbItem.tableTitle" [nzBordered]=true
-    [nzScroll]="tbSizeArray[tNum]" [nzSize]="small" [nzFooter]="tbFooter[tNum]">
+    [nzScroll]="tbSizeArray[tNum]" nzSize="small" [nzFooter]="tbFooter[tNum]">
     <thead (nzSortChange)="sort($event)" nzSingleSort="true">
       <tr>
         <th nzShowSort nzSortKey='signTime' nzWidth="160px" nzLeft="0px" [hidden]=!colVisible[0]>签到时间</th>

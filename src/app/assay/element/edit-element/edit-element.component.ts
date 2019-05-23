@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Injector } from '@angular/core';
 import { ModalComponentBase } from '@shared/component-base/modal-component-base';
 import { ElementDto, Assay_ElementServiceProxy } from '@shared/service-proxies/service-proxies';
-import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-element',

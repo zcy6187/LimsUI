@@ -1,37 +1,35 @@
 <div class="padding-bottom-45">
 
   <h3>
-    <span>{{l('element.add')}}</span>
+    <span>{{comptitle}}</span>
   </h3>
-
 
   <form nz-form #validateForm="ngForm" (ngSubmit)="save()">
 
-    <!-- 元素名称 -->
+    <!-- 常数值 -->
     <nz-form-item>
-      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">元素名称</nz-form-label>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>常数值</nz-form-label>
       <nz-form-control [nzSm]="14" [nzXs]="24">
-        <input nz-input name="name" #name="ngModel" [(ngModel)]="element.name" [placeholder]="l('element.name')"
-          required />
+        <input nz-input name="constVal" #constVal="ngModel" [(ngModel)]="editItem.constVal" required>
       </nz-form-control>
-      <nz-form-explain *ngIf="name.control.dirty&&name.control.errors">
-        <ng-container *ngIf="name.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+      <nz-form-explain *ngIf="constVal.control.dirty&&constVal.control.errors">
+        <ng-container *ngIf="constVal.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
       </nz-form-explain>
     </nz-form-item>
 
-    <!-- 元素编码 -->
+    <!-- 类型 -->
     <nz-form-item>
-      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="email">元素名称</nz-form-label>
+      <nz-form-label [nzSm]="6" [nzXs]="24">类型</nz-form-label>
       <nz-form-control [nzSm]="14" [nzXs]="24">
-        <input nz-input name="displayName" #displayName="ngModel" [(ngModel)]="element.code" [placeholder]="l('element.code')">
+        <input nz-input name="cType" #cType="ngModel" [(ngModel)]="editItem.cType">
       </nz-form-control>
     </nz-form-item>
 
     <!-- 说明 -->
     <nz-form-item>
-      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="email">备注</nz-form-label>
+      <nz-form-label [nzSm]="6" [nzXs]="24">说明</nz-form-label>
       <nz-form-control [nzSm]="14" [nzXs]="24">
-        <input nz-input name="description" [(ngModel)]="element.description" [placeholder]="l('description')">
+        <input nz-input name="intro" #intro="ngModel" [(ngModel)]="editItem.intro" placeholder="说明">
       </nz-form-control>
     </nz-form-item>
 

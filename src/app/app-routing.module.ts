@@ -30,7 +30,8 @@ import { XySignDataInputComponent } from './assay/xy-sign-data-input/xy-sign-dat
 import { UsrDataSearchComponent } from './assay/usr-data-search/usr-data-search.component';
 import { CrossTemplateSearchComponent } from './assay/cross-template-search/cross-template-search.component';
 import { EquationComponent } from './process/equation/equation.component';
-
+import { ExceloperComponent } from './assay/detectcenter/exceloper/exceloper.component';
+import { ConstComponent } from './process/const/const.component';
 
 const routes: Routes = [
   {
@@ -81,7 +82,7 @@ const routes: Routes = [
       {
         path: 'unit',
         component: UnitComponent,
-        // canActivate: [AppRouteGuard],
+        canActivate: [AppRouteGuard],
       },
       {
         path: 'organization',
@@ -106,54 +107,77 @@ const routes: Routes = [
       {
         path: 'dataInput',
         component: DataInputComponent,
+        canActivate: [AppRouteGuard],
       },
       {
         path: 'dataSearch',
         component: DataSearchComponent,
+        canActivate: [AppRouteGuard],
       },
       {
         path: 'usrdataSearch',
         component: UsrDataSearchComponent,
+        canActivate: [AppRouteGuard],
       },
       {
         path: 'list',
         component: ListComponent,
+        canActivate: [AppRouteGuard],
       },
       {
         path: 'assayUser',
         component: AssayUserComponent,
+        canActivate: [AppRouteGuard],
       },
       {
         path: 'signDataInput',
         component: SignDataInputComponent,
+        canActivate: [AppRouteGuard],
       },
       {
         path: 'ztCode',
         component: ZtcodeComponent,
+        canActivate: [AppRouteGuard],
       },
       {
         path: 'userMultiTable',
         component: MultiTableSearchComponent,
+        canActivate: [AppRouteGuard],
       },
       {
         path: 'ztMultiTable',
         component: ZtMultiTableSearchComponent,
+        canActivate: [AppRouteGuard],
       },
       {
         path: 'statisticCompany',
-        component: StatisticExcelerComponent
+        component: StatisticExcelerComponent,
+        canActivate: [AppRouteGuard],
       },
       {
         path: 'xySignDataInput',
-        component: XySignDataInputComponent
+        component: XySignDataInputComponent,
+        canActivate: [AppRouteGuard],
       },
       {
         path: 'selfTplSearch',
-        component: CrossTemplateSearchComponent
+        component: CrossTemplateSearchComponent,
+        canActivate: [AppRouteGuard],
       },
       {
         path: 'formula',
-        component: EquationComponent
+        component: EquationComponent,
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: 'const',
+        component: ConstComponent,
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: 'excelOper',
+        component: ExceloperComponent,
+        canActivate: [AppRouteGuard],
       }
     ],
   },

@@ -102,10 +102,12 @@ export class UsrDataSearchComponent extends AppComponentBase implements OnInit {
       this._searchService.getSpecimenHtmlSelectByTemplateIdAndChargeSpecimen(item, false)
         .subscribe((res: HtmlSelectDto[]) => {
           if (res.length > 0) {
-            let ff: HtmlSelectDto = new HtmlSelectDto();
-            ff.key = "-1";
-            ff.value = "全部";
-            res.unshift(ff);
+            if (res.length > 1) {
+              let ff: HtmlSelectDto = new HtmlSelectDto();
+              ff.key = "-1";
+              ff.value = "全部";
+              res.unshift(ff);
+            }
             this.listOfSpec = res;
             let specArray = new Array<any>();
             specArray.push(res[0].key);

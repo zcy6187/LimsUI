@@ -262,7 +262,6 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
     catch{
       return false;
     }
-
   }
 
   // 动态生成表单
@@ -347,10 +346,9 @@ export class SignDataInputComponent extends PagedListingComponentBase<Attendance
         }
         // 刷新数据
         this.getDataFromService(true);
-        this.submitBtnStatus = false;
       });
+    this.submitBtnStatus = false;
     // this.writeFormValToHistory(valObj);
-
   }
 
   showElement(valObj) {

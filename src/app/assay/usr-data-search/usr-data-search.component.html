@@ -16,7 +16,7 @@
         <nz-form-label nzFor="no">化验模板</nz-form-label>
         <nz-form-control>
           <nz-select style="width: 180px;" [(ngModel)]="templateId" nzAllowClear nzPlaceHolder="选择" name='templateId'
-            (ngModelChange)='tplChange($event)'>
+            (ngModelChange)='tplChange($event)' nzShowSearch="true">
             <nz-option *ngFor="let option of listOfTemplate" [nzLabel]="option.value" [nzValue]="option.key">
             </nz-option>
           </nz-select>
@@ -28,7 +28,7 @@
         <nz-form-label nzFor="no">样品</nz-form-label>
         <nz-form-control>
           <nz-select style="width: 420px;" [(ngModel)]="specId" nzAllowClear nzPlaceHolder="选择" name='specId'
-            nzMode="tags">
+            nzMode="tags" nzShowSearch="true">
             <nz-option *ngFor="let option of listOfSpec" [nzLabel]="option.value" [nzValue]="option.key">
             </nz-option>
           </nz-select>
@@ -62,7 +62,7 @@
 <nz-card>
   <ng-container *ngIf='tbHead'>
     <nz-table #tplTk nzShowSizeChanger [nzData]="tbBody" [nzLoading]="isTableLoading" [nzShowPagination]=false
-      [nzSize]='default' [nzWidthConfig]="widthConfig" [nzScroll]="scrollStyle" [nzBordered]=true>
+      nzSize='small' [nzWidthConfig]="widthConfig" [nzScroll]="scrollStyle" [nzBordered]=true>
       <thead (nzSortChange)="sort($event)" nzSingleSort="true">
         <tr>
           <th nzShowSort nzSortKey='signTime' nzLeft="0px" rowspan="2">采样时间</th>
