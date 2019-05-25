@@ -17,6 +17,16 @@
         <ng-container *ngIf="name.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
       </nz-form-explain>
     </nz-form-item>
+    <!-- 帐套 -->
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>帐套</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <nz-select [(ngModel)]="ztCode" nzAllowClear nzPlaceHolder="选择帐套" name='ztCode' nzShowSearch="true">
+          <nz-option *ngFor="let option of listOfZtCode" [nzLabel]="option.value" [nzValue]="option.key">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
     <!-- 功能按钮 -->
     <div class="custom-modal-footer">
       <div class="custom-modal-footter-group">

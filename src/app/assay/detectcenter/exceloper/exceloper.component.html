@@ -11,11 +11,11 @@
         </nz-form-control>
       </nz-form-item>
     </nz-col>
-    <nz-col nzMd="4" nzSm="24">
+    <nz-col nzMd="8" nzSm="24">
       <nz-form-item>
         <nz-form-label nzFor="no">化验模板</nz-form-label>
         <nz-form-control>
-          <nz-select style="width: 180px;" nzAllowClear nzPlaceHolder="选择" name='templateId' [(ngModel)]="templateId"
+          <nz-select nzAllowClear nzPlaceHolder="选择" name='templateId' [(ngModel)]="templateId" nzShowSearch
             (ngModelChange)='tplChange($event)'>
             <nz-option *ngFor="let option of listOfTemplate" [nzLabel]="option.value" [nzValue]="option.key">
             </nz-option>
@@ -23,12 +23,11 @@
         </nz-form-control>
       </nz-form-item>
     </nz-col>
-    <nz-col nzMd="10" nzSm="24">
+    <nz-col nzMd="8" nzSm="24">
       <nz-form-item>
         <nz-form-label nzFor="no">样品</nz-form-label>
         <nz-form-control>
-          <nz-select style="width: 420px;" nzAllowClear nzPlaceHolder="选择" name='specId' [(ngModel)]="specId"
-            nzMode="tags">
+          <nz-select nzAllowClear nzPlaceHolder="选择" name='specId' [(ngModel)]="specId" nzShowSearch="true">
             <nz-option *ngFor="let option of listOfSpec" [nzLabel]="option.value" [nzValue]="option.key">
             </nz-option>
           </nz-select>
@@ -53,7 +52,7 @@
     </nz-col>
     <nz-col nzMd="4" nzSm="24">
       <nz-form-item>
-        <button nz-button type="button" [nzType]="'primary'">导出excel模板</button>
+        <button nz-button type="button" [nzType]="'primary'" (click)="btnDownload()">导出excel模板</button>
       </nz-form-item>
     </nz-col>
     <nz-col nzMd="4" nzSm="24">

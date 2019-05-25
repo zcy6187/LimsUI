@@ -41,7 +41,7 @@ export class UserTplComponent extends AppComponentBase implements OnInit {
   }
 
   edit(item: EditVUserTplDto) {
-    this.modalHelper.open(OperUserTplComponent, null, 'lg', {
+    this.modalHelper.open(OperUserTplComponent, { 'userItem': item }, 'lg', {
       nzMask: true,
     })
       .subscribe(

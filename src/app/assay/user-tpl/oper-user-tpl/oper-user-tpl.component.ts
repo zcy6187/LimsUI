@@ -1,6 +1,6 @@
-import { Component, OnInit, Injector, ViewChild } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild, Input } from '@angular/core';
 import { AppComponentBase } from '@shared/component-base';
-import { OrgServiceProxy, OrgTreeNodeDto, Assay_UserTplServiceProxy, Assay_TplServiceProxy, HtmlDataOperRetDto } from '@shared/service-proxies/service-proxies';
+import { OrgServiceProxy, OrgTreeNodeDto, Assay_UserTplServiceProxy, Assay_TplServiceProxy, HtmlDataOperRetDto, UserLoginInfoDto, EditVUserTplDto } from '@shared/service-proxies/service-proxies';
 import { TbData } from '../tb-data';
 import { NzTreeComponent, NzTreeNode } from 'ng-zorro-antd';
 
@@ -23,6 +23,9 @@ export class OperUserTplComponent extends AppComponentBase implements OnInit {
   selectTplName: string;
   selectOrgCode;
   selectTplId;
+
+  @Input()
+  userItem: EditVUserTplDto;
 
   @ViewChild('orgTree') orgTree: NzTreeComponent;
 
@@ -47,7 +50,7 @@ export class OperUserTplComponent extends AppComponentBase implements OnInit {
   }
 
   getSelectedOrg() {
-    this._uTplService.getUserOrgIds().subscribe(res => {
+    this._uTplService.getUserOrgIdsByUserId(this.userItem.id).subscribe(res => {
       this.orgCheckedKeys = res;
     });
   }
@@ -71,7 +74,7 @@ export class OperUserTplComponent extends AppComponentBase implements OnInit {
   }
 
   getSelectedTplIds(orgCode: string, tmpArray: Array<TbData>) {
-    this._uTplService.getUserTplIdsByOrgCode(orgCode).subscribe(res => {
+    this._uTplService.getUserTplIdsByOrgCodeAndUserId(orgCode, this.userItem.id).subscribe(res => {
       this.isTplAllChecked = true;
       if (res.length > 0) {
         tmpArray.forEach((item, index) => {
@@ -105,7 +108,7 @@ export class OperUserTplComponent extends AppComponentBase implements OnInit {
   }
 
   getSelectedTplSpecIds(tplId: number, tmpArray: Array<TbData>) {
-    this._uTplService.getUserTplSpecIds(tplId).subscribe(res => {
+    this._uTplService.getUserTplSpecIdsByUserId(tplId, this.userItem.id).subscribe(res => {
       this.isSpecAllChecked = true;
       if (res.length > 0) {
         tmpArray.forEach((item, index) => {
@@ -168,7 +171,7 @@ export class OperUserTplComponent extends AppComponentBase implements OnInit {
     for (let item of orgList) {
       orgStr += item + ",";
     }
-    this._uTplService.postAddOrUpdateUserOrgs(orgStr).subscribe((res: HtmlDataOperRetDto) => {
+    this._uTplService.postAddOrUpdateUserOrgsByUserId(orgStr, this.userItem.id).subscribe((res: HtmlDataOperRetDto) => {
       this.message.info(res.message);
     });
   }
@@ -188,7 +191,7 @@ export class OperUserTplComponent extends AppComponentBase implements OnInit {
       return;
     }
     if (this.isTplAllChecked) {
-      this._uTplService.postAddOrUpdateOrgTpls(this.selectOrgCode, "-1") // -1表示全选
+      this._uTplService.postAddOrUpdateOrgTplsByUserId(this.selectOrgCode, "-1", this.userItem.id) // -1表示全选
         .subscribe((res: HtmlDataOperRetDto) => {
           this.message.info(res.message);
         });
@@ -199,7 +202,7 @@ export class OperUserTplComponent extends AppComponentBase implements OnInit {
           tplIds += item.id.toString() + ",";
         }
       }
-      this._uTplService.postAddOrUpdateOrgTpls(this.selectOrgCode, tplIds)
+      this._uTplService.postAddOrUpdateOrgTplsByUserId(this.selectOrgCode, tplIds, this.userItem.id)
         .subscribe((res: HtmlDataOperRetDto) => {
           this.message.info(res.message);
         });
@@ -212,7 +215,7 @@ export class OperUserTplComponent extends AppComponentBase implements OnInit {
       return;
     }
     if (this.isSpecAllChecked) {
-      this._uTplService.postAddOrUpdateTplSpecByTplId(this.selectTplId, "-1") // -1表示全选
+      this._uTplService.postAddOrUpdateTplSpecByTplIdAndUserId(this.selectTplId, "-1", this.userItem.id) // -1表示全选
         .subscribe((res: HtmlDataOperRetDto) => {
           this.message.info(res.message);
         });
@@ -223,7 +226,7 @@ export class OperUserTplComponent extends AppComponentBase implements OnInit {
           tplSpecIds += item.id.toString() + ",";
         }
       }
-      this._uTplService.postAddOrUpdateTplSpecByTplId(this.selectTplId, tplSpecIds)
+      this._uTplService.postAddOrUpdateTplSpecByTplIdAndUserId(this.selectTplId, tplSpecIds, this.userItem.id)
         .subscribe((res: HtmlDataOperRetDto) => {
           this.message.info(res.message);
         });

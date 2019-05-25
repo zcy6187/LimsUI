@@ -14,7 +14,7 @@ export class ExceloperComponent extends AppComponentBase implements OnInit {
   orgTree: OrgTreeNodeDto[];
   orgCode: string;
   templateId: string;
-  specId: any[];
+  specId: number;
   timeArray: Date[];
   listOfTemplate: HtmlSelectDto[];
   listOfSpec: HtmlSelectDto[];
@@ -22,6 +22,7 @@ export class ExceloperComponent extends AppComponentBase implements OnInit {
 
   constructor(private _searchService: Assay_DataSearchServiceProxy,
     private _orgService: OrgServiceProxy,
+    private _detectService: DetectServiceProxy,
     private injector: Injector,
     private msg: NzMessageService,
     private modalService: NzModalService,
@@ -30,7 +31,7 @@ export class ExceloperComponent extends AppComponentBase implements OnInit {
   }
 
   ngOnInit() {
-    this._orgService.getOrgTreeByZtCode()
+    this._orgService.getOrgTreeByTplQx()
       .subscribe((res: OrgTreeNodeDto[]) => {
         this.orgTree = res;
       });
@@ -90,14 +91,12 @@ export class ExceloperComponent extends AppComponentBase implements OnInit {
       this._searchService.getSpecimenHtmlSelectByTemplateId(item, false)
         .subscribe((res: HtmlSelectDto[]) => {
           if (res.length > 0) {
-            let ff: HtmlSelectDto = new HtmlSelectDto();
-            ff.key = "-1";
-            ff.value = "全部";
-            res.unshift(ff);
+            // let ff: HtmlSelectDto = new HtmlSelectDto();
+            // ff.key = "-1";
+            // ff.value = "全部";
+            // res.unshift(ff);
             this.listOfSpec = res;
-            let specArray = new Array<any>();
-            specArray.push(res[0].key);
-            this.specId = specArray;
+            this.specId = Number.parseInt(res.keys[0]);
           } else {
             this.msg.warning("该化验模板下没有样品信息！");
           }
@@ -105,5 +104,24 @@ export class ExceloperComponent extends AppComponentBase implements OnInit {
     }
   }
 
+  btnDownload() {
+    if (this.specId > 0) {
+      this._detectService.downLoadExcelBySpecId(this.specId).subscribe(res => {
+        this.msg.info(res);
+      });
+    } else {
+      this.msg.warning("请选择样品");
+    }
+  }
+
+  openExcel(fileName: string) {
+    let url = "http://local:2155/api/excel?fileName=" + fileName;
+    this.http.get(url, {
+      responseType: "blob",
+      headers: { 'Accept': 'application/vnd.ms-excel' }
+    }).subscribe(blob => {
+      saveAs(blob, fileName);
+    });
+  }
 
 }
