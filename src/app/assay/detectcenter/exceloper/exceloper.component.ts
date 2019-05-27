@@ -1,8 +1,10 @@
 import { Component, OnInit, Injector, ViewChild, TemplateRef } from '@angular/core';
 import { AppComponentBase } from '@shared/component-base';
-import { OrgServiceProxy, OrgTreeNodeDto, HtmlSelectDto, DetectServiceProxy, Assay_DataSearchServiceProxy } from '@shared/service-proxies/service-proxies';
-import { NzMessageService, NzModalService } from 'ng-zorro-antd';
-import { HttpClient } from '@angular/common/http';
+import { OrgServiceProxy, OrgTreeNodeDto, HtmlSelectDto, DetectServiceProxy, Assay_DataSearchServiceProxy, ImportRetInfoDto } from '@shared/service-proxies/service-proxies';
+import { NzMessageService, NzModalService, UploadXHRArgs, UploadFile } from 'ng-zorro-antd';
+import { HttpClient, HttpEvent, HttpEventType, HttpRequest, HttpResponse, HttpHeaderResponse } from '@angular/common/http';
+import { AppConsts } from '@shared/AppConsts';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-exceloper',
@@ -19,6 +21,9 @@ export class ExceloperComponent extends AppComponentBase implements OnInit {
   listOfTemplate: HtmlSelectDto[];
   listOfSpec: HtmlSelectDto[];
   tbBody: Array<Array<string>>;
+  uploadUrl: string;
+  fileList: UploadFile[] = [];
+  msgId: string; // 存储当前消息框的句柄
 
   constructor(private _searchService: Assay_DataSearchServiceProxy,
     private _orgService: OrgServiceProxy,
@@ -39,36 +44,8 @@ export class ExceloperComponent extends AppComponentBase implements OnInit {
     this.timeArray.push(new Date());
     this.timeArray.push(new Date());
     this.fileType = "xls/xlsx";
-  }
-
-  btnSearch() {
-    // if (this.templateId) {
-    //   const tplId = Number(this.templateId);
-    //   if (!this.timeArray || this.timeArray.length < 2) {
-    //     this.msg.info('请选择查询时间段！');
-    //     return;
-    //   }
-    //   this._searchService.getDataInfoByTemplateIdAndSpecId(tplId, this.specId, this.timeArray[0], this.timeArray[1])
-    //     .subscribe((res: DataSearchTableDto) => {
-    //       if (!res) {
-    //         this.msg.warning("找不到该模板");
-    //       } else {
-    //         this.tbHead = res.tableHead;
-    //         this.tbBody = res.tableData;
-    //         let widthArray = new Array<string>();
-    //         widthArray.push("180px");
-    //         // widthArray.push("100px");
-    //         for (let i = 0; i < this.tbHead.elements.length; i++) {
-    //           widthArray.push("120px")
-    //         };
-    //         this.widthConfig = widthArray;
-    //         let width = (120 * this.widthConfig.length + 180) + "px";  //设置总宽度
-    //         this.scrollStyle = { x: width, y: "600px" };
-    //       }
-    //     });
-    // } else {
-    //   this.msg.warning('请先选择化验模板！');
-    // }
+    this.uploadUrl = AppConsts.excelBaseUrl + "File/PostFile";
+    console.log(this.uploadUrl);
   }
 
   orgChange(item) {
@@ -107,7 +84,7 @@ export class ExceloperComponent extends AppComponentBase implements OnInit {
   btnDownload() {
     if (this.specId > 0) {
       this._detectService.downLoadExcelBySpecId(this.specId).subscribe(res => {
-        this.msg.info(res);
+        this.openExcel(res);
       });
     } else {
       this.msg.warning("请选择样品");
@@ -115,7 +92,7 @@ export class ExceloperComponent extends AppComponentBase implements OnInit {
   }
 
   openExcel(fileName: string) {
-    let url = "http://local:2155/api/excel?fileName=" + fileName;
+    let url = AppConsts.uploadApiUrl + "api/excel?fileName=" + fileName;
     this.http.get(url, {
       responseType: "blob",
       headers: { 'Accept': 'application/vnd.ms-excel' }
@@ -124,4 +101,39 @@ export class ExceloperComponent extends AppComponentBase implements OnInit {
     });
   }
 
+  afterUpload(fileName: string) {
+    this._detectService.uploadFile(fileName).subscribe((res: ImportRetInfoDto) => {
+
+    });
+  }
+
+  customReq = (item: UploadXHRArgs) => {
+    // 构建一个 FormData 对象，用于存储文件或其他参数
+    const formData = new FormData();
+    // tslint:disable-next-line:no-any
+    formData.append('file', item.file as any);
+    const req = new HttpRequest('POST', this.uploadUrl, formData, {
+      reportProgress: true,
+      withCredentials: false
+    });
+    // 始终返回一个 `Subscription` 对象，nz-upload 会在适当时机自动取消订阅
+    return this.http.request(req).subscribe(
+      (event: HttpEvent<{}>) => {
+        if (event instanceof HttpResponse) {
+          const res = (<HttpResponse<string>>event).body;
+          const resObj = res.indexOf("fail") > 0;
+          console.log(resObj);
+          if (!resObj) {
+            this.msgId = this.msg.loading('正在解析数据', { nzDuration: 0 }).messageId;
+          } else {
+            this.msg.warning("上传失败");
+          }
+        }
+      },
+      err => {
+        // 处理失败
+        item.onError!(err, item.file!);
+      }
+    );
+  };
 }

@@ -4,6 +4,7 @@ import { AppComponentBase } from '@shared/component-base';
 import { NzMessageService, NzModalRef, NzModalService } from 'ng-zorro-antd';
 import { HttpClient } from '@angular/common/http';
 import { saveAs } from 'file-saver';
+import { AppConsts } from '@shared/AppConsts';
 
 @Component({
   selector: 'app-zt-multi-table-search',
@@ -156,7 +157,7 @@ export class ZtMultiTableSearchComponent extends AppComponentBase implements OnI
   }
 
   openExcel(fileName: string) {
-    let url = "http://131.107.2.64:2155/api/excel?fileName=" + fileName;
+    let url = AppConsts.uploadApiUrl + "api/excel?fileName=" + fileName;
     this.http.get(url, {
       responseType: "blob",
       headers: { 'Accept': 'application/vnd.ms-excel' }

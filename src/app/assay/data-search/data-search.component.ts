@@ -3,6 +3,7 @@ import { Assay_DataSearchServiceProxy, OrgServiceProxy, OrgTreeNodeDto, HtmlSele
 import { AppComponentBase } from '@shared/component-base';
 import { NzMessageService, NzModalRef, NzModalService } from 'ng-zorro-antd';
 import { HttpClient } from '@angular/common/http';
+import { AppConsts } from '@shared/AppConsts';
 
 @Component({
   selector: 'app-data-search',
@@ -221,7 +222,7 @@ export class DataSearchComponent extends AppComponentBase implements OnInit {
   }
 
   openExcel(fileName: string) {
-    let url = "http://131.107.2.64:2155/api/excel?fileName=" + fileName;
+    let url = AppConsts.uploadApiUrl + "api/excel?fileName=" + fileName;
     this.http.get(url, {
       responseType: "blob",
       headers: { 'Accept': 'application/vnd.ms-excel' }

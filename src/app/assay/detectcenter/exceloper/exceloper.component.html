@@ -57,10 +57,11 @@
     </nz-col>
     <nz-col nzMd="4" nzSm="24">
       <nz-form-item>
-        <nz-upload nzAction="http://localhost:21021/api/services/app/Detect/UploadFile" [nzFileType]="fileType">
+        <nz-upload [nzCustomRequest]="customReq">
           <button nz-button><i nz-icon nzType="upload"></i><span>上传excel文件</span></button>
         </nz-upload>
       </nz-form-item>
     </nz-col>
   </nz-row>
+  <button nzType='primary'>测试</button>
 </form>

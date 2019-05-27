@@ -6361,13 +6361,13 @@ export class DetectServiceProxy {
     }
 
     /**
-     * @param file (optional) 
+     * @param fileName (optional) 
      * @return Success
      */
-    uploadFile(file: any | null | undefined): Observable<HtmlDataOperRetDto> {
+    uploadFile(fileName: string | null | undefined): Observable<ImportRetInfoDto> {
         let url_ = this.baseUrl + "/api/services/app/Detect/UploadFile?";
-        if (file !== undefined)
-            url_ += "File=" + encodeURIComponent("" + file) + "&"; 
+        if (fileName !== undefined)
+            url_ += "fileName=" + encodeURIComponent("" + fileName) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -6385,14 +6385,14 @@ export class DetectServiceProxy {
                 try {
                     return this.processUploadFile(<any>response_);
                 } catch (e) {
-                    return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
+                    return <Observable<ImportRetInfoDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<HtmlDataOperRetDto>><any>_observableThrow(response_);
+                return <Observable<ImportRetInfoDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processUploadFile(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+    protected processUploadFile(response: HttpResponseBase): Observable<ImportRetInfoDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -6403,7 +6403,7 @@ export class DetectServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? HtmlDataOperRetDto.fromJS(resultData200) : new HtmlDataOperRetDto();
+            result200 = resultData200 ? ImportRetInfoDto.fromJS(resultData200) : new ImportRetInfoDto();
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -6411,7 +6411,7 @@ export class DetectServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<HtmlDataOperRetDto>(<any>null);
+        return _observableOf<ImportRetInfoDto>(<any>null);
     }
 
     /**
@@ -6466,79 +6466,6 @@ export class DetectServiceProxy {
             }));
         }
         return _observableOf<string>(<any>null);
-    }
-}
-
-@Injectable()
-export class ApiServiceProxy {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "";
-    }
-
-    /**
-     * @param image (optional) 
-     * @param fileName (optional) 
-     * @param name (optional) 
-     * @return Success
-     */
-    file(image: any[] | null | undefined, fileName: string | null | undefined, name: string | null | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/File?";
-        if (image !== undefined)
-            image && image.forEach((item, index) => { 
-                for (let attr in item)
-        			if (item.hasOwnProperty(attr)) {
-        				url_ += "image[" + index + "]." + attr + "=" + encodeURIComponent("" + (<any>item)[attr]) + "&";
-        			}
-            });
-        if (fileName !== undefined)
-            url_ += "fileName=" + encodeURIComponent("" + fileName) + "&"; 
-        if (name !== undefined)
-            url_ += "name=" + encodeURIComponent("" + name) + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processFile(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processFile(<any>response_);
-                } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<void>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processFile(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<void>(<any>null);
     }
 }
 
@@ -12543,15 +12470,14 @@ export interface IChangeUiThemeInput {
     theme: string;
 }
 
-export class IFormFile implements IIFormFile {
-    contentType: string | undefined;
-    contentDisposition: string | undefined;
-    headers: { [key: string] : string[]; } | undefined;
-    length: number | undefined;
-    name: string | undefined;
-    fileName: string | undefined;
+export class ImportRetInfoDto implements IImportRetInfoDto {
+    code: number | undefined;
+    message: string | undefined;
+    expList: string[] | undefined;
+    dataList: string[][] | undefined;
+    dataTitle: string[] | undefined;
 
-    constructor(data?: IIFormFile) {
+    constructor(data?: IImportRetInfoDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -12562,60 +12488,69 @@ export class IFormFile implements IIFormFile {
 
     init(data?: any) {
         if (data) {
-            this.contentType = data["contentType"];
-            this.contentDisposition = data["contentDisposition"];
-            if (data["headers"]) {
-                this.headers = {};
-                for (let key in data["headers"]) {
-                    if (data["headers"].hasOwnProperty(key))
-                        this.headers[key] = data["headers"][key] !== undefined ? data["headers"][key] : [];
-                }
+            this.code = data["code"];
+            this.message = data["message"];
+            if (data["expList"] && data["expList"].constructor === Array) {
+                this.expList = [];
+                for (let item of data["expList"])
+                    this.expList.push(item);
             }
-            this.length = data["length"];
-            this.name = data["name"];
-            this.fileName = data["fileName"];
+            if (data["dataList"] && data["dataList"].constructor === Array) {
+                this.dataList = [];
+                for (let item of data["dataList"])
+                    this.dataList.push(item);
+            }
+            if (data["dataTitle"] && data["dataTitle"].constructor === Array) {
+                this.dataTitle = [];
+                for (let item of data["dataTitle"])
+                    this.dataTitle.push(item);
+            }
         }
     }
 
-    static fromJS(data: any): IFormFile {
+    static fromJS(data: any): ImportRetInfoDto {
         data = typeof data === 'object' ? data : {};
-        let result = new IFormFile();
+        let result = new ImportRetInfoDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["contentType"] = this.contentType;
-        data["contentDisposition"] = this.contentDisposition;
-        if (this.headers) {
-            data["headers"] = {};
-            for (let key in this.headers) {
-                if (this.headers.hasOwnProperty(key))
-                    data["headers"][key] = this.headers[key];
-            }
+        data["code"] = this.code;
+        data["message"] = this.message;
+        if (this.expList && this.expList.constructor === Array) {
+            data["expList"] = [];
+            for (let item of this.expList)
+                data["expList"].push(item);
         }
-        data["length"] = this.length;
-        data["name"] = this.name;
-        data["fileName"] = this.fileName;
+        if (this.dataList && this.dataList.constructor === Array) {
+            data["dataList"] = [];
+            for (let item of this.dataList)
+                data["dataList"].push(item);
+        }
+        if (this.dataTitle && this.dataTitle.constructor === Array) {
+            data["dataTitle"] = [];
+            for (let item of this.dataTitle)
+                data["dataTitle"].push(item);
+        }
         return data; 
     }
 
-    clone(): IFormFile {
+    clone(): ImportRetInfoDto {
         const json = this.toJSON();
-        let result = new IFormFile();
+        let result = new ImportRetInfoDto();
         result.init(json);
         return result;
     }
 }
 
-export interface IIFormFile {
-    contentType: string | undefined;
-    contentDisposition: string | undefined;
-    headers: { [key: string] : string[]; } | undefined;
-    length: number | undefined;
-    name: string | undefined;
-    fileName: string | undefined;
+export interface IImportRetInfoDto {
+    code: number | undefined;
+    message: string | undefined;
+    expList: string[] | undefined;
+    dataList: string[][] | undefined;
+    dataTitle: string[] | undefined;
 }
 
 export class OrgDto implements IOrgDto {
