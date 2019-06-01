@@ -46,7 +46,7 @@
         </nz-form-control>
       </nz-form-item>
     </nz-col>
-    <nz-col nzMd="6" nzSm="24">
+    <nz-col nzMd="4" nzSm="24">
       <nz-form-item>
         <button nz-button type="submit" [nzType]="'primary'" (click)="btnSearch()">查询</button>
       </nz-form-item>
@@ -64,7 +64,7 @@
   </nz-row>
 </form>
 <ng-container *ngFor='let tbItem of searchData;let tNum=index'>
-  <nz-table [nzData]="tbItem.tableData" [nzShowPagination]="false" [nzTitle]="tbItem.tableTitle" [nzBordered]=true
+  <nz-table [nzData]="tbItem.tableData" [nzShowPagination]="false" [nzTitle]="tbItem.tableTitle" [nzBordered]="true"
     [nzScroll]="tbSizeArray[tNum]" nzSize="small">
     <thead>
       <tr>

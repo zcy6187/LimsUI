@@ -38,7 +38,7 @@
   <nz-row>
     <nz-col nzMd="8" nzSm="24">
       <nz-form-item>
-        <nz-form-label nzFor="no">送样时间段</nz-form-label>
+        <nz-form-label nzFor="no">签到时间</nz-form-label>
         <nz-form-control>
           <nz-range-picker nzFormat="yyyy-MM-dd" [(ngModel)]='timeArray' name='timeArray' nz-local='zh'>
           </nz-range-picker>
@@ -69,23 +69,3 @@
     </nz-col>
   </nz-row>
 </form>
-<nz-table #dataTable [nzData]="tableData" *ngIf="isShowTable">
-  <thead>
-    <tr>
-      <th *ngFor="let item of tableTitle">{{item}}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let row of dataTable.data">
-      <td *ngFor="let item of row">{{item}}</td>
-    </tr>
-  </tbody>
-</nz-table>
-<div *ngIf="isShowList">
-  <h3 [ngStyle]="{ 'margin-bottom.px': 16 }">异常信息</h3>
-  <nz-list [nzDataSource]="listData" nzBordered [nzRenderItem]="item">
-    <ng-template #item let-item>
-      <nz-list-item [nzContent]="item"></nz-list-item>
-    </ng-template>
-  </nz-list>
-</div>

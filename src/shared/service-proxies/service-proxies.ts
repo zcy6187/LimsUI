@@ -6362,12 +6362,15 @@ export class DetectServiceProxy {
 
     /**
      * @param fileName (optional) 
+     * @param isImport (optional) 
      * @return Success
      */
-    uploadFile(fileName: string | null | undefined): Observable<ImportRetInfoDto> {
+    uploadFile(fileName: string | null | undefined, isImport: boolean | null | undefined): Observable<ImportRetInfoDto> {
         let url_ = this.baseUrl + "/api/services/app/Detect/UploadFile?";
         if (fileName !== undefined)
             url_ += "fileName=" + encodeURIComponent("" + fileName) + "&"; 
+        if (isImport !== undefined)
+            url_ += "isImport=" + encodeURIComponent("" + isImport) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -12476,6 +12479,7 @@ export class ImportRetInfoDto implements IImportRetInfoDto {
     expList: string[] | undefined;
     dataList: string[][] | undefined;
     dataTitle: string[] | undefined;
+    uploadFileName: string | undefined;
 
     constructor(data?: IImportRetInfoDto) {
         if (data) {
@@ -12505,6 +12509,7 @@ export class ImportRetInfoDto implements IImportRetInfoDto {
                 for (let item of data["dataTitle"])
                     this.dataTitle.push(item);
             }
+            this.uploadFileName = data["uploadFileName"];
         }
     }
 
@@ -12534,6 +12539,7 @@ export class ImportRetInfoDto implements IImportRetInfoDto {
             for (let item of this.dataTitle)
                 data["dataTitle"].push(item);
         }
+        data["uploadFileName"] = this.uploadFileName;
         return data; 
     }
 
@@ -12551,6 +12557,7 @@ export interface IImportRetInfoDto {
     expList: string[] | undefined;
     dataList: string[][] | undefined;
     dataTitle: string[] | undefined;
+    uploadFileName: string | undefined;
 }
 
 export class OrgDto implements IOrgDto {

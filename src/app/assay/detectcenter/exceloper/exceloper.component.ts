@@ -5,6 +5,7 @@ import { NzMessageService, NzModalService, UploadXHRArgs, UploadFile } from 'ng-
 import { HttpClient, HttpEvent, HttpEventType, HttpRequest, HttpResponse, HttpHeaderResponse } from '@angular/common/http';
 import { AppConsts } from '@shared/AppConsts';
 import { filter } from 'rxjs/operators';
+import { restoreBindingIndex } from '@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'app-exceloper',
@@ -20,10 +21,16 @@ export class ExceloperComponent extends AppComponentBase implements OnInit {
   timeArray: Date[];
   listOfTemplate: HtmlSelectDto[];
   listOfSpec: HtmlSelectDto[];
-  tbBody: Array<Array<string>>;
   uploadUrl: string;
   fileList: UploadFile[] = [];
   msgId: string; // 存储当前消息框的句柄
+  tableTitle: Array<string>;
+  tableData: Array<Array<string>>;
+  listData: Array<string>;
+  isShowList: boolean = false;
+  isShowTable: boolean = false;
+  resolveExcelName: string;
+
 
   constructor(private _searchService: Assay_DataSearchServiceProxy,
     private _orgService: OrgServiceProxy,
@@ -68,10 +75,6 @@ export class ExceloperComponent extends AppComponentBase implements OnInit {
       this._searchService.getSpecimenHtmlSelectByTemplateId(item, false)
         .subscribe((res: HtmlSelectDto[]) => {
           if (res.length > 0) {
-            // let ff: HtmlSelectDto = new HtmlSelectDto();
-            // ff.key = "-1";
-            // ff.value = "全部";
-            // res.unshift(ff);
             this.listOfSpec = res;
             this.specId = Number.parseInt(res.keys[0]);
           } else {
@@ -92,7 +95,7 @@ export class ExceloperComponent extends AppComponentBase implements OnInit {
   }
 
   openExcel(fileName: string) {
-    let url = AppConsts.uploadApiUrl + "api/excel?fileName=" + fileName;
+    let url = AppConsts.excelBaseUrl + "api/excel?fileName=" + fileName;
     this.http.get(url, {
       responseType: "blob",
       headers: { 'Accept': 'application/vnd.ms-excel' }
@@ -102,12 +105,26 @@ export class ExceloperComponent extends AppComponentBase implements OnInit {
   }
 
   afterUpload(fileName: string) {
-    this._detectService.uploadFile(fileName).subscribe((res: ImportRetInfoDto) => {
-
+    this._detectService.uploadFile(fileName, true).subscribe((res: ImportRetInfoDto) => {
+      this.msg.remove(this.msgId);
+      this.msg.info(res.message);
+      if (res.expList != null && res.expList.length > 0) {
+        this.isShowList = true;
+        this.isShowTable = false;
+        this.listData = res.expList;
+        this.resolveExcelName = res.uploadFileName;
+      }
+      if (res.dataList != null && res.dataList.length > 0) {
+        this.isShowTable = true;
+        this.isShowList = false;
+        this.tableData = res.dataList;
+        this.tableTitle = res.dataTitle;
+      }
     });
   }
 
   customReq = (item: UploadXHRArgs) => {
+    this.msgId = this.msg.loading('正在上传文件！', { nzDuration: 0 }).messageId;
     // 构建一个 FormData 对象，用于存储文件或其他参数
     const formData = new FormData();
     // tslint:disable-next-line:no-any
@@ -120,12 +137,14 @@ export class ExceloperComponent extends AppComponentBase implements OnInit {
     return this.http.request(req).subscribe(
       (event: HttpEvent<{}>) => {
         if (event instanceof HttpResponse) {
-          const res = (<HttpResponse<string>>event).body;
-          const resObj = res.indexOf("fail") > 0;
-          console.log(resObj);
-          if (!resObj) {
-            this.msgId = this.msg.loading('正在解析数据', { nzDuration: 0 }).messageId;
+          const res = (<HttpResponse<any>>event).body;
+          const fileName = res.ret;
+          if (fileName != "fail") {
+            this.msg.remove(this.msgId);
+            this.msgId = this.msg.loading('上传成功，正在解析数据！', { nzDuration: 0 }).messageId;
+            this.afterUpload(fileName);
           } else {
+            this.msg.remove(this.msgId);
             this.msg.warning("上传失败");
           }
         }
@@ -136,4 +155,10 @@ export class ExceloperComponent extends AppComponentBase implements OnInit {
       }
     );
   };
+
+  btnDownloadResolveExcel() {
+    if (this.resolveExcelName != null) {
+      this.openExcel(this.resolveExcelName);
+    }
+  }
 }

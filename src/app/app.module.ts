@@ -69,6 +69,7 @@ import { FormulaEditComponent } from './process/equation/edit/formulaEdit.compon
 import { ConstComponent } from './process/const/const.component';
 import { ExceloperComponent } from './assay/detectcenter/exceloper/exceloper.component';
 import { ConsteditComponent } from './process/const/edit/constedit/constedit.component';
+import { DuplicateeditorComponent } from './assay/detectcenter/duplicateeditor/duplicateeditor.component';
 
 @NgModule({
   imports: [
@@ -141,6 +142,7 @@ import { ConsteditComponent } from './process/const/edit/constedit/constedit.com
     ConstComponent,
     ExceloperComponent,
     ConsteditComponent,
+    DuplicateeditorComponent,
   ],
   entryComponents: [
     CreateTenantComponent,

@@ -22,10 +22,8 @@ export class ZtMultiTableSearchComponent extends AppComponentBase implements OnI
   orgCode;
   tbSizeArray: Array<object>;
   tbFooter: Array<string>;
-
   avgFooter: Array<Array<string>>;
   rowFooter: Array<Array<string>>;
-
   tplModal: NzModalRef;
   chartData: any[];
   element;
@@ -157,7 +155,7 @@ export class ZtMultiTableSearchComponent extends AppComponentBase implements OnI
   }
 
   openExcel(fileName: string) {
-    let url = AppConsts.uploadApiUrl + "api/excel?fileName=" + fileName;
+    let url = AppConsts.excelBaseUrl + "api/excel?fileName=" + fileName;
     this.http.get(url, {
       responseType: "blob",
       headers: { 'Accept': 'application/vnd.ms-excel' }

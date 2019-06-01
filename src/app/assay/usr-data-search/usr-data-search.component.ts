@@ -223,7 +223,7 @@ export class UsrDataSearchComponent extends AppComponentBase implements OnInit {
   }
 
   openExcel(fileName: string) {
-    let url = AppConsts.uploadApiUrl + "api/excel?fileName=" + fileName;
+    let url = AppConsts.excelBaseUrl + "api/excel?fileName=" + fileName;
     this.http.get(url, {
       responseType: "blob",
       headers: { 'Accept': 'application/vnd.ms-excel' }
