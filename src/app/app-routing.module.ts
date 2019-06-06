@@ -32,6 +32,8 @@ import { CrossTemplateSearchComponent } from './assay/cross-template-search/cros
 import { EquationComponent } from './process/equation/equation.component';
 import { ExceloperComponent } from './assay/detectcenter/exceloper/exceloper.component';
 import { ConstComponent } from './process/const/const.component';
+import { DuplicateeditorComponent } from './assay/detectcenter/duplicateeditor/duplicateeditor.component';
+import { ModificationsearchComponent } from './assay/detectcenter/modificationsearch/modificationsearch.component';
 
 const routes: Routes = [
   {
@@ -177,6 +179,16 @@ const routes: Routes = [
       {
         path: 'excelOper',
         component: ExceloperComponent,
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: 'duplicationSearch',
+        component: DuplicateeditorComponent,
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: 'modificationSearch',
+        component: ModificationsearchComponent,
         canActivate: [AppRouteGuard],
       }
     ],

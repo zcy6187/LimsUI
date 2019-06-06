@@ -69,21 +69,32 @@
         <button nz-button type="button" [nzType]="'primary'" (click)="btnDownload()">导出excel</button>
       </nz-form-item>
     </nz-col>
+    <nz-col nzMd="2" nzSm="24">
+      <label>当前数据条数：{{rowCount}}</label>
+    </nz-col>
   </nz-row>
 </form>
-<nz-table #mainTable [nzData]="tableData" nzBordered nzShowPagination>
+<nz-table #mainTable [nzData]="tableData" nzBordered>
   <thead>
     <tr>
+      <th></th>
       <th *ngFor="let title of tableTitle">
         {{title}}
       </th>
+      <th>操作</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let rowList of mainTable.data">
-      <td *ngFor="let rowItem of rowList">
-        {{rowItem}}
-      </td>
-    </tr>
+    <ng-container *ngFor="let row of mainTable.data">
+      <tr>
+        <td nzShowExpand [(nzExpand)]="mapOfExpandData[row.duplicateId]"></td>
+        <td *ngFor="let rowItem of row.rowList">{{rowItem}}</td>
+        <td><a (click)="editor(row.duplicateId)">编辑</a></td>
+      </tr>
+      <tr [nzExpand]="mapOfExpandData[row.duplicateId]">
+        <td></td>
+        <td [colSpan]="titleLength">{{row.duplicationInfoStr}}</td>
+      </tr>
+    </ng-container>
   </tbody>
 </nz-table>

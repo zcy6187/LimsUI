@@ -139,6 +139,20 @@ export class AppMenus {
                     acl: "Pages.DetectCenter.ExcelImport",
                     icon: { type: "icon", value: "info-circle" },
                     link: "/app/excelOper",
+                },
+                {
+                    text: "平行样查询",
+                    i18n: "",
+                    acl: "Pages.DetectCenter.DuplicationSearch",
+                    icon: { type: "icon", value: "info-circle" },
+                    link: "/app/duplicationSearch",
+                },
+                {
+                    text: "修正样查询",
+                    i18n: "",
+                    acl: "Pages.DetectCenter.ModificationSearch",
+                    icon: { type: "icon", value: "info-circle" },
+                    link: "/app/modificationSearch",
                 }
             ]
         },

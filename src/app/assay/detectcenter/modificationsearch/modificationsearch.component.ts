@@ -1,14 +1,15 @@
 import { Component, OnInit, Injector } from '@angular/core';
-import { OrgTreeNodeDto, OrgServiceProxy, HtmlSelectDto, DetectServiceProxy, Assay_DataSearchServiceProxy, TableInfoDto } from '@shared/service-proxies/service-proxies';
+import { OrgTreeNodeDto, OrgServiceProxy, HtmlSelectDto, DetectServiceProxy, Assay_DataSearchServiceProxy, TableInfoDto, ModifyTableInfoDto, ModifyRowInfoDto } from '@shared/service-proxies/service-proxies';
 import { NzMessageService } from 'ng-zorro-antd';
 import { AppComponentBase } from '@shared/component-base';
+import { DuplicationeditorComponent } from './duplicationeditor/duplicationeditor.component';
 
 @Component({
-  selector: 'app-duplicateeditor',
-  templateUrl: './duplicateeditor.component.html',
+  selector: 'app-modificationsearch',
+  templateUrl: './modificationsearch.component.html',
   styles: []
 })
-export class DuplicateeditorComponent extends AppComponentBase implements OnInit {
+export class ModificationsearchComponent extends AppComponentBase implements OnInit {
   searchId: string;
   timeArray: Date[];
   orgTree: Array<OrgTreeNodeDto>;
@@ -17,8 +18,11 @@ export class DuplicateeditorComponent extends AppComponentBase implements OnInit
   templateId: string;
   specId: string;
   dateType: string = "print";
-  tableData: Array<Array<string>>;
+  tableData: Array<ModifyRowInfoDto>;
   tableTitle: Array<string>;
+  titleLength;
+  mapOfExpandData: { [key: string]: boolean } = {};
+  rowCount;
 
   constructor(private _orgService: OrgServiceProxy,
     private _searchService: Assay_DataSearchServiceProxy,
@@ -78,11 +82,20 @@ export class DuplicateeditorComponent extends AppComponentBase implements OnInit
       this.message.warn("请先选择样品！");
       return;
     }
-    this._detectService.searchDuplicateItems(Number(this.specId), this.timeArray[0], this.timeArray[1], this.searchId, dateSearchType)
-      .subscribe((res: TableInfoDto) => {
-        this.tableData = res.dataList;
+    this._detectService.searchDuplicateModificationItems(Number(this.specId), this.timeArray[0], this.timeArray[1], this.searchId, dateSearchType)
+      .subscribe((res: ModifyTableInfoDto) => {
+        this.tableData = res.rowList;
         this.tableTitle = res.titleList;
+        this.titleLength = res.titleList.length;
+        this.rowCount = res.rowList.length + 1;
       });
+  }
+
+  editor(dupId: number) {
+    this.modalHelper
+      .open(DuplicationeditorComponent, { 'dupId': dupId }, 'lg', {
+        nzMask: true,
+      }).subscribe(() => { console.log("ok") });
   }
 
 }
