@@ -11,7 +11,7 @@
         </nz-form-control>
       </nz-form-item>
     </nz-col>
-    <nz-col nzMd="8" nzSm="24">
+    <nz-col nzMd="6" nzSm="24">
       <nz-form-item>
         <nz-form-label nzFor="no">化验模板</nz-form-label>
         <nz-form-control>
@@ -23,7 +23,7 @@
         </nz-form-control>
       </nz-form-item>
     </nz-col>
-    <nz-col nzMd="8" nzSm="24">
+    <nz-col nzMd="6" nzSm="24">
       <nz-form-item>
         <nz-form-label nzFor="no">样品</nz-form-label>
         <nz-form-control>
@@ -32,6 +32,11 @@
             </nz-option>
           </nz-select>
         </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzMd="4" nzSm="24">
+      <nz-form-item>
+        <button nz-button type="button" [nzType]="'primary'" (click)="updateModify()">生成修正值</button>
       </nz-form-item>
     </nz-col>
   </nz-row>

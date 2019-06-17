@@ -30,6 +30,7 @@ export class ExceloperComponent extends AppComponentBase implements OnInit {
   isShowList: boolean = false;
   isShowTable: boolean = false;
   resolveExcelName: string;
+  uploadType: string;
 
 
   constructor(private _searchService: Assay_DataSearchServiceProxy,
@@ -52,6 +53,7 @@ export class ExceloperComponent extends AppComponentBase implements OnInit {
     this.timeArray.push(new Date());
     this.fileType = "xls/xlsx";
     this.uploadUrl = AppConsts.excelBaseUrl + "File/PostFile";
+    this.uploadType = "0";
     console.log(this.uploadUrl);
   }
 
@@ -105,7 +107,7 @@ export class ExceloperComponent extends AppComponentBase implements OnInit {
   }
 
   afterUpload(fileName: string) {
-    this._detectService.uploadFile(fileName, true).subscribe((res: ImportRetInfoDto) => {
+    this._detectService.uploadFile(fileName, true, Number(this.uploadType)).subscribe((res: ImportRetInfoDto) => {
       this.msg.remove(this.msgId);
       this.msg.info(res.message);
       if (res.expList != null && res.expList.length > 0) {

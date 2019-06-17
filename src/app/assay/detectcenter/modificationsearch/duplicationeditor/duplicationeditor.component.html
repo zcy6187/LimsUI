@@ -3,36 +3,48 @@
     <span>编辑</span>
   </h3>
   <div nz-row>
-    <div nz-col [nzSpan]="tableSpan">
-      <nz-table nzBordered="true" nzSize="small" [nzData]="tbData">
-        <tr>
+    <div nz-col [nzSpan]="tableSpan" *ngIf="isShowTable">
+      <nz-table #mainTable nzBordered="true" nzSize="small" [nzData]="tbData">
+        <tr *ngFor="let rowItem of mainTable.data">
           <td>
-            <label>Pb:</label>
-            <input type="text">
-            <button type="button">保存</button>
+            <label>{{rowItem.eleName}}: </label>
+            <input type="text" [(ngModel)]="rowItem.eleValue" value="{{rowItem.eleValue}}">
+            <button type="button" (click)="saveDuplicate(rowItem.eleId)">保存</button>
           </td>
           <td>
-            <label>;lkasdjf;klasdjfk;lasj
+            <label>
+              {{rowItem.duplicationStr}}
             </label>
-            <button nz-button nzType="primary" (click)="showEditor()">编辑</button>
+            <button nz-button nzType="primary" (click)="showEditor(rowItem.eleId)">编辑</button>
           </td>
         </tr>
       </nz-table>
     </div>
     <div nz-col [nzSpan]="editSpan" *ngIf="isShowEdit">
-      <div nz-form>
-        <nz-form-item *ngFor="let formItem of formModel">
-          <nz-form-label [nzSpan]="6">{{formItem.eleId}}</nz-form-label>
-          <nz-form-control [nzSpan]="14">
-            <input nz-input [(ngModel)]="formItem.eleValue" value="{{formItem.eleValue}}">
+      <form nz-form [formGroup]="profileForm">
+        <nz-form-item *ngFor="let formItem of formModel;" [formGroupName]="formItem.formId">
+          <nz-form-label [nzSpan]="4">{{formItem.ctlName}}</nz-form-label>
+          <nz-form-control [nzSpan]="10">
+            <input type="text" style="display:none" formControlName="dupId">
+            <input nz-input formControlName="eleValue">
+          </nz-form-control>
+          <nz-form-control [nzSpan]="10">
+            <nz-select style="width:200px" nzShowSearch formControlName="operValue">
+              <nz-option nzLabel="请选择" nzValue="0">
+              </nz-option>
+              <nz-option *ngFor="let option of listOfOper" [nzLabel]="option.value" [nzValue]="option.key">
+              </nz-option>
+            </nz-select>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <button nz-button nzType="primary" (click)="showInfo()">保存</button>
-          <button nz-button nzType="default" (click)="addElement()">新增</button>
-          <button nz-button nzType="default" (click)="closeEditor()">关闭编辑框</button>
+          <nz-form-control [nzXs]="{span:14,offset:5}" [nzSm]="{span:14,offset:5}">
+            <button nz-button nzType="primary" (click)="saveElements()" [disabled]="!isSaveValid">保存</button>
+            <button nz-button nzType="default" (click)="addElement()">新增</button>
+            <button nz-button nzType="default" (click)="closeEditor()">关闭编辑框</button>
+          </nz-form-control>
         </nz-form-item>
-      </div>
+      </form>
     </div>
   </div>
 </div>

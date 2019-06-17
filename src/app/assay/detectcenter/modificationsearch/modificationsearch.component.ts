@@ -1,5 +1,5 @@
 import { Component, OnInit, Injector } from '@angular/core';
-import { OrgTreeNodeDto, OrgServiceProxy, HtmlSelectDto, DetectServiceProxy, Assay_DataSearchServiceProxy, TableInfoDto, ModifyTableInfoDto, ModifyRowInfoDto } from '@shared/service-proxies/service-proxies';
+import { OrgTreeNodeDto, OrgServiceProxy, HtmlSelectDto, DetectServiceProxy, Assay_DataSearchServiceProxy, TableInfoDto, ModifyTableInfoDto, ModifyRowInfoDto, HtmlDataOperRetDto } from '@shared/service-proxies/service-proxies';
 import { NzMessageService } from 'ng-zorro-antd';
 import { AppComponentBase } from '@shared/component-base';
 import { DuplicationeditorComponent } from './duplicationeditor/duplicationeditor.component';
@@ -17,7 +17,7 @@ export class ModificationsearchComponent extends AppComponentBase implements OnI
   listOfSpec: HtmlSelectDto[];
   templateId: string;
   specId: string;
-  dateType: string = "print";
+  dateType: string = "import";
   tableData: Array<ModifyRowInfoDto>;
   tableTitle: Array<string>;
   titleLength;
@@ -87,7 +87,7 @@ export class ModificationsearchComponent extends AppComponentBase implements OnI
         this.tableData = res.rowList;
         this.tableTitle = res.titleList;
         this.titleLength = res.titleList.length;
-        this.rowCount = res.rowList.length + 1;
+        this.rowCount = res.rowList.length;
       });
   }
 
@@ -96,6 +96,26 @@ export class ModificationsearchComponent extends AppComponentBase implements OnI
       .open(DuplicationeditorComponent, { 'dupId': dupId }, 'lg', {
         nzMask: true,
       }).subscribe(() => { console.log("ok") });
+  }
+
+  updateModify() {
+    let dateSearchType = 1;
+    if (this.dateType == "print") {
+      dateSearchType = 0;
+    }
+    if (!this.specId) {
+      this.message.warn("请先选择样品！");
+      return;
+    }
+
+    this._detectService.patchUpdateModificationItems(Number(this.specId), this.timeArray[0], this.timeArray[1], this.searchId, dateSearchType)
+      .subscribe((res: HtmlDataOperRetDto) => {
+        if (res.code > 0) {
+          this.message.info(res.message);
+        } else {
+          this.message.warn(res.message);
+        }
+      });
   }
 
 }

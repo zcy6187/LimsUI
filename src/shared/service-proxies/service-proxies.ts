@@ -5024,6 +5024,64 @@ export class Assay_UserServiceProxy {
     }
 
     /**
+     * @param orgCode (optional) 
+     * @return Success
+     */
+    getHtmlSelectAssayUsersByOrgCode(orgCode: string | null | undefined): Observable<HtmlSelectDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_User/GetHtmlSelectAssayUsersByOrgCode?";
+        if (orgCode !== undefined)
+            url_ += "orgCode=" + encodeURIComponent("" + orgCode) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetHtmlSelectAssayUsersByOrgCode(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetHtmlSelectAssayUsersByOrgCode(<any>response_);
+                } catch (e) {
+                    return <Observable<HtmlSelectDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<HtmlSelectDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetHtmlSelectAssayUsersByOrgCode(response: HttpResponseBase): Observable<HtmlSelectDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(HtmlSelectDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<HtmlSelectDto[]>(<any>null);
+    }
+
+    /**
      * @param searchTxt (optional) 
      * @return Success
      */
@@ -6363,14 +6421,17 @@ export class DetectServiceProxy {
     /**
      * @param fileName (optional) 
      * @param isImport (optional) 
+     * @param type (optional) 
      * @return Success
      */
-    uploadFile(fileName: string | null | undefined, isImport: boolean | null | undefined): Observable<ImportRetInfoDto> {
+    uploadFile(fileName: string | null | undefined, isImport: boolean | null | undefined, type: number | null | undefined): Observable<ImportRetInfoDto> {
         let url_ = this.baseUrl + "/api/services/app/Detect/UploadFile?";
         if (fileName !== undefined)
             url_ += "fileName=" + encodeURIComponent("" + fileName) + "&"; 
         if (isImport !== undefined)
             url_ += "isImport=" + encodeURIComponent("" + isImport) + "&"; 
+        if (type !== undefined)
+            url_ += "type=" + encodeURIComponent("" + type) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -6604,6 +6665,72 @@ export class DetectServiceProxy {
     }
 
     /**
+     * @param tplSpecId (optional) 
+     * @param beginTime (optional) 
+     * @param endTime (optional) 
+     * @param searchId (optional) 
+     * @param dateType (optional) 
+     * @return Success
+     */
+    patchUpdateModificationItems(tplSpecId: number | null | undefined, beginTime: Date | null | undefined, endTime: Date | null | undefined, searchId: string | null | undefined, dateType: number | null | undefined): Observable<HtmlDataOperRetDto> {
+        let url_ = this.baseUrl + "/api/services/app/Detect/PatchUpdateModificationItems?";
+        if (tplSpecId !== undefined)
+            url_ += "tplSpecId=" + encodeURIComponent("" + tplSpecId) + "&"; 
+        if (beginTime !== undefined)
+            url_ += "beginTime=" + encodeURIComponent(beginTime ? "" + beginTime.toJSON() : "") + "&"; 
+        if (endTime !== undefined)
+            url_ += "endTime=" + encodeURIComponent(endTime ? "" + endTime.toJSON() : "") + "&"; 
+        if (searchId !== undefined)
+            url_ += "searchId=" + encodeURIComponent("" + searchId) + "&"; 
+        if (dateType !== undefined)
+            url_ += "dateType=" + encodeURIComponent("" + dateType) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPatchUpdateModificationItems(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPatchUpdateModificationItems(<any>response_);
+                } catch (e) {
+                    return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<HtmlDataOperRetDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processPatchUpdateModificationItems(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? HtmlDataOperRetDto.fromJS(resultData200) : new HtmlDataOperRetDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<HtmlDataOperRetDto>(<any>null);
+    }
+
+    /**
      * @param dupId (optional) 
      * @return Success
      */
@@ -6659,6 +6786,245 @@ export class DetectServiceProxy {
             }));
         }
         return _observableOf<ModifyEditInfoDto[]>(<any>null);
+    }
+
+    /**
+     * @param dupId (optional) 
+     * @return Success
+     */
+    getDuplicationEleInfo(dupId: number | null | undefined): Observable<DuplicationEleInfoDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Detect/GetDuplicationEleInfo?";
+        if (dupId !== undefined)
+            url_ += "dupId=" + encodeURIComponent("" + dupId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDuplicationEleInfo(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDuplicationEleInfo(<any>response_);
+                } catch (e) {
+                    return <Observable<DuplicationEleInfoDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DuplicationEleInfoDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDuplicationEleInfo(response: HttpResponseBase): Observable<DuplicationEleInfoDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(DuplicationEleInfoDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DuplicationEleInfoDto[]>(<any>null);
+    }
+
+    /**
+     * @param dupId (optional) 
+     * @param eleId (optional) 
+     * @return Success
+     */
+    getDuplicationEleInfoByEleId(dupId: number | null | undefined, eleId: number | null | undefined): Observable<DuplicationEleInfoDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Detect/GetDuplicationEleInfoByEleId?";
+        if (dupId !== undefined)
+            url_ += "dupId=" + encodeURIComponent("" + dupId) + "&"; 
+        if (eleId !== undefined)
+            url_ += "eleId=" + encodeURIComponent("" + eleId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDuplicationEleInfoByEleId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDuplicationEleInfoByEleId(<any>response_);
+                } catch (e) {
+                    return <Observable<DuplicationEleInfoDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DuplicationEleInfoDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDuplicationEleInfoByEleId(response: HttpResponseBase): Observable<DuplicationEleInfoDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(DuplicationEleInfoDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DuplicationEleInfoDto[]>(<any>null);
+    }
+
+    /**
+     * @param dupId (optional) 
+     * @param eleId (optional) 
+     * @param eleValue (optional) 
+     * @return Success
+     */
+    addOrUpdateDuplicationModifyInfo(dupId: number | null | undefined, eleId: number | null | undefined, eleValue: string | null | undefined): Observable<HtmlDataOperRetDto> {
+        let url_ = this.baseUrl + "/api/services/app/Detect/AddOrUpdateDuplicationModifyInfo?";
+        if (dupId !== undefined)
+            url_ += "dupId=" + encodeURIComponent("" + dupId) + "&"; 
+        if (eleId !== undefined)
+            url_ += "eleId=" + encodeURIComponent("" + eleId) + "&"; 
+        if (eleValue !== undefined)
+            url_ += "eleValue=" + encodeURIComponent("" + eleValue) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddOrUpdateDuplicationModifyInfo(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddOrUpdateDuplicationModifyInfo(<any>response_);
+                } catch (e) {
+                    return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<HtmlDataOperRetDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddOrUpdateDuplicationModifyInfo(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? HtmlDataOperRetDto.fromJS(resultData200) : new HtmlDataOperRetDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<HtmlDataOperRetDto>(<any>null);
+    }
+
+    /**
+     * @param dupId (optional) 
+     * @param eleId (optional) 
+     * @param formObj (optional) 
+     * @return Success
+     */
+    addOrUpdateDuplicationParallelInfo(dupId: number | null | undefined, eleId: number | null | undefined, formObj: string | null | undefined): Observable<HtmlDataOperRetDto> {
+        let url_ = this.baseUrl + "/api/services/app/Detect/AddOrUpdateDuplicationParallelInfo?";
+        if (dupId !== undefined)
+            url_ += "dupId=" + encodeURIComponent("" + dupId) + "&"; 
+        if (eleId !== undefined)
+            url_ += "eleId=" + encodeURIComponent("" + eleId) + "&"; 
+        if (formObj !== undefined)
+            url_ += "formObj=" + encodeURIComponent("" + formObj) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddOrUpdateDuplicationParallelInfo(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddOrUpdateDuplicationParallelInfo(<any>response_);
+                } catch (e) {
+                    return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<HtmlDataOperRetDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddOrUpdateDuplicationParallelInfo(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? HtmlDataOperRetDto.fromJS(resultData200) : new HtmlDataOperRetDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<HtmlDataOperRetDto>(<any>null);
     }
 }
 
@@ -13010,7 +13376,7 @@ export class ModifyEditInfoDto implements IModifyEditInfoDto {
     eleId: number | undefined;
     eleName: string | undefined;
     duplicationStr: string | undefined;
-    eleValue: number | undefined;
+    eleValue: string | undefined;
 
     constructor(data?: IModifyEditInfoDto) {
         if (data) {
@@ -13058,7 +13424,66 @@ export interface IModifyEditInfoDto {
     eleId: number | undefined;
     eleName: string | undefined;
     duplicationStr: string | undefined;
-    eleValue: number | undefined;
+    eleValue: string | undefined;
+}
+
+export class DuplicationEleInfoDto implements IDuplicationEleInfoDto {
+    dupId: number | undefined;
+    eleId: number | undefined;
+    eleName: string | undefined;
+    eleValue: string | undefined;
+    operId: number | undefined;
+
+    constructor(data?: IDuplicationEleInfoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.dupId = data["dupId"];
+            this.eleId = data["eleId"];
+            this.eleName = data["eleName"];
+            this.eleValue = data["eleValue"];
+            this.operId = data["operId"];
+        }
+    }
+
+    static fromJS(data: any): DuplicationEleInfoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DuplicationEleInfoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["dupId"] = this.dupId;
+        data["eleId"] = this.eleId;
+        data["eleName"] = this.eleName;
+        data["eleValue"] = this.eleValue;
+        data["operId"] = this.operId;
+        return data; 
+    }
+
+    clone(): DuplicationEleInfoDto {
+        const json = this.toJSON();
+        let result = new DuplicationEleInfoDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IDuplicationEleInfoDto {
+    dupId: number | undefined;
+    eleId: number | undefined;
+    eleName: string | undefined;
+    eleValue: string | undefined;
+    operId: number | undefined;
 }
 
 export class OrgDto implements IOrgDto {

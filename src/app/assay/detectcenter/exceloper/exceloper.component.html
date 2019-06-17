@@ -45,18 +45,22 @@
         </nz-form-control>
       </nz-form-item>
     </nz-col>
-    <nz-col nzMd="3" nzSm="24">
+    <nz-col nzMd="2" nzSm="24">
       <nz-form-item>
         <button nz-button type="submit" [nzType]="'primary'" (click)="btnSearch()">查询</button>
       </nz-form-item>
     </nz-col>
-    <nz-col nzMd="3" nzSm="24">
+    <nz-col nzMd="2" nzSm="24">
       <nz-form-item>
         <button nz-button type="button" [nzType]="'primary'" (click)="btnDownload()">导出excel模板</button>
       </nz-form-item>
     </nz-col>
-    <nz-col nzMd="3" nzSm="24">
+    <nz-col nzMd="6" nzSm="24">
       <nz-form-item>
+        <nz-radio-group name="uploadType" [(ngModel)]="uploadType">
+          <label nz-radio nzValue="0">检测中心</label>
+          <label nz-radio nzValue="1">锌业/股份</label>
+        </nz-radio-group>
         <nz-upload [nzCustomRequest]="customReq" [nzShowUploadList]="false">
           <button nz-button><i nz-icon nzType="upload"></i><span>上传excel文件</span></button>
         </nz-upload>
