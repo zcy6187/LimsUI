@@ -2150,6 +2150,60 @@ export class Assay_FormulaServiceProxy {
      * @param input (optional) 
      * @return Success
      */
+    setDefaultFormulaById(input: number | null | undefined): Observable<HtmlDataOperRetDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_Formula/SetDefaultFormulaById?";
+        if (input !== undefined)
+            url_ += "input=" + encodeURIComponent("" + input) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSetDefaultFormulaById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSetDefaultFormulaById(<any>response_);
+                } catch (e) {
+                    return <Observable<HtmlDataOperRetDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<HtmlDataOperRetDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processSetDefaultFormulaById(response: HttpResponseBase): Observable<HtmlDataOperRetDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? HtmlDataOperRetDto.fromJS(resultData200) : new HtmlDataOperRetDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<HtmlDataOperRetDto>(<any>null);
+    }
+
+    /**
+     * @param input (optional) 
+     * @return Success
+     */
     getFormulaByEleId(input: number | null | undefined): Observable<AssayEleFormula[]> {
         let url_ = this.baseUrl + "/api/services/app/Assay_Formula/GetFormulaByEleId?";
         if (input !== undefined)
@@ -2484,6 +2538,118 @@ export class Assay_FormulaServiceProxy {
             }));
         }
         return _observableOf<CreateConstDto[]>(<any>null);
+    }
+
+    /**
+     * @param elementId (optional) 
+     * @return Success
+     */
+    getConstByEleId(elementId: number | null | undefined): Observable<CreateConstDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_Formula/GetConstByEleId?";
+        if (elementId !== undefined)
+            url_ += "elementId=" + encodeURIComponent("" + elementId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetConstByEleId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetConstByEleId(<any>response_);
+                } catch (e) {
+                    return <Observable<CreateConstDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CreateConstDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetConstByEleId(response: HttpResponseBase): Observable<CreateConstDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(CreateConstDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CreateConstDto[]>(<any>null);
+    }
+
+    /**
+     * @param constId (optional) 
+     * @return Success
+     */
+    getConstByConstId(constId: number | null | undefined): Observable<CreateConstDto> {
+        let url_ = this.baseUrl + "/api/services/app/Assay_Formula/GetConstByConstId?";
+        if (constId !== undefined)
+            url_ += "constId=" + encodeURIComponent("" + constId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetConstByConstId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetConstByConstId(<any>response_);
+                } catch (e) {
+                    return <Observable<CreateConstDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CreateConstDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetConstByConstId(response: HttpResponseBase): Observable<CreateConstDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? CreateConstDto.fromJS(resultData200) : new CreateConstDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CreateConstDto>(<any>null);
     }
 }
 
@@ -6530,6 +6696,72 @@ export class DetectServiceProxy {
             }));
         }
         return _observableOf<string>(<any>null);
+    }
+
+    /**
+     * @param tplSpecId (optional) 
+     * @param beginTime (optional) 
+     * @param endTime (optional) 
+     * @param searchId (optional) 
+     * @param dateType (optional) 
+     * @return Success
+     */
+    downloadModificationItemsByInfo(tplSpecId: number | null | undefined, beginTime: Date | null | undefined, endTime: Date | null | undefined, searchId: string | null | undefined, dateType: number | null | undefined): Observable<ModifyTableInfoDto> {
+        let url_ = this.baseUrl + "/api/services/app/Detect/DownloadModificationItemsByInfo?";
+        if (tplSpecId !== undefined)
+            url_ += "tplSpecId=" + encodeURIComponent("" + tplSpecId) + "&"; 
+        if (beginTime !== undefined)
+            url_ += "beginTime=" + encodeURIComponent(beginTime ? "" + beginTime.toJSON() : "") + "&"; 
+        if (endTime !== undefined)
+            url_ += "endTime=" + encodeURIComponent(endTime ? "" + endTime.toJSON() : "") + "&"; 
+        if (searchId !== undefined)
+            url_ += "searchId=" + encodeURIComponent("" + searchId) + "&"; 
+        if (dateType !== undefined)
+            url_ += "dateType=" + encodeURIComponent("" + dateType) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDownloadModificationItemsByInfo(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDownloadModificationItemsByInfo(<any>response_);
+                } catch (e) {
+                    return <Observable<ModifyTableInfoDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ModifyTableInfoDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDownloadModificationItemsByInfo(response: HttpResponseBase): Observable<ModifyTableInfoDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ModifyTableInfoDto.fromJS(resultData200) : new ModifyTableInfoDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ModifyTableInfoDto>(<any>null);
     }
 
     /**
@@ -11047,6 +11279,7 @@ export class AssayEleFormula implements IAssayEleFormula {
     intro: string | undefined;
     lastModifyTime: Date | undefined;
     operatorId: number | undefined;
+    flag: number | undefined;
     id: number | undefined;
 
     constructor(data?: IAssayEleFormula) {
@@ -11067,6 +11300,7 @@ export class AssayEleFormula implements IAssayEleFormula {
             this.intro = data["intro"];
             this.lastModifyTime = data["lastModifyTime"] ? new Date(data["lastModifyTime"].toString()) : <any>undefined;
             this.operatorId = data["operatorId"];
+            this.flag = data["flag"];
             this.id = data["id"];
         }
     }
@@ -11087,6 +11321,7 @@ export class AssayEleFormula implements IAssayEleFormula {
         data["intro"] = this.intro;
         data["lastModifyTime"] = this.lastModifyTime ? this.lastModifyTime.toISOString() : <any>undefined;
         data["operatorId"] = this.operatorId;
+        data["flag"] = this.flag;
         data["id"] = this.id;
         return data; 
     }
@@ -11107,6 +11342,7 @@ export interface IAssayEleFormula {
     intro: string | undefined;
     lastModifyTime: Date | undefined;
     operatorId: number | undefined;
+    flag: number | undefined;
     id: number | undefined;
 }
 
@@ -11168,7 +11404,7 @@ export interface IAssayFormulaPram {
 export class CreateConstDto implements ICreateConstDto {
     id: number | undefined;
     constVal: number | undefined;
-    cType: string | undefined;
+    elementId: number | undefined;
     intro: string | undefined;
     operatorId: number | undefined;
 
@@ -11185,7 +11421,7 @@ export class CreateConstDto implements ICreateConstDto {
         if (data) {
             this.id = data["id"];
             this.constVal = data["constVal"];
-            this.cType = data["cType"];
+            this.elementId = data["elementId"];
             this.intro = data["intro"];
             this.operatorId = data["operatorId"];
         }
@@ -11202,7 +11438,7 @@ export class CreateConstDto implements ICreateConstDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["constVal"] = this.constVal;
-        data["cType"] = this.cType;
+        data["elementId"] = this.elementId;
         data["intro"] = this.intro;
         data["operatorId"] = this.operatorId;
         return data; 
@@ -11219,7 +11455,7 @@ export class CreateConstDto implements ICreateConstDto {
 export interface ICreateConstDto {
     id: number | undefined;
     constVal: number | undefined;
-    cType: string | undefined;
+    elementId: number | undefined;
     intro: string | undefined;
     operatorId: number | undefined;
 }
@@ -13116,6 +13352,128 @@ export interface IImportRetInfoDto {
     uploadFileName: string | undefined;
 }
 
+export class ModifyTableInfoDto implements IModifyTableInfoDto {
+    titleList: string[] | undefined;
+    rowList: ModifyRowInfoDto[] | undefined;
+
+    constructor(data?: IModifyTableInfoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (data["titleList"] && data["titleList"].constructor === Array) {
+                this.titleList = [];
+                for (let item of data["titleList"])
+                    this.titleList.push(item);
+            }
+            if (data["rowList"] && data["rowList"].constructor === Array) {
+                this.rowList = [];
+                for (let item of data["rowList"])
+                    this.rowList.push(ModifyRowInfoDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ModifyTableInfoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ModifyTableInfoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.titleList && this.titleList.constructor === Array) {
+            data["titleList"] = [];
+            for (let item of this.titleList)
+                data["titleList"].push(item);
+        }
+        if (this.rowList && this.rowList.constructor === Array) {
+            data["rowList"] = [];
+            for (let item of this.rowList)
+                data["rowList"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): ModifyTableInfoDto {
+        const json = this.toJSON();
+        let result = new ModifyTableInfoDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IModifyTableInfoDto {
+    titleList: string[] | undefined;
+    rowList: ModifyRowInfoDto[] | undefined;
+}
+
+export class ModifyRowInfoDto implements IModifyRowInfoDto {
+    duplicateId: number | undefined;
+    rowList: string[] | undefined;
+    duplicationInfoStr: string | undefined;
+
+    constructor(data?: IModifyRowInfoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.duplicateId = data["duplicateId"];
+            if (data["rowList"] && data["rowList"].constructor === Array) {
+                this.rowList = [];
+                for (let item of data["rowList"])
+                    this.rowList.push(item);
+            }
+            this.duplicationInfoStr = data["duplicationInfoStr"];
+        }
+    }
+
+    static fromJS(data: any): ModifyRowInfoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ModifyRowInfoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["duplicateId"] = this.duplicateId;
+        if (this.rowList && this.rowList.constructor === Array) {
+            data["rowList"] = [];
+            for (let item of this.rowList)
+                data["rowList"].push(item);
+        }
+        data["duplicationInfoStr"] = this.duplicationInfoStr;
+        return data; 
+    }
+
+    clone(): ModifyRowInfoDto {
+        const json = this.toJSON();
+        let result = new ModifyRowInfoDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IModifyRowInfoDto {
+    duplicateId: number | undefined;
+    rowList: string[] | undefined;
+    duplicationInfoStr: string | undefined;
+}
+
 export class TableInfoDto implements ITableInfoDto {
     titleList: string[] | undefined;
     titleInfo: ElementTitleInfo[] | undefined;
@@ -13248,128 +13606,6 @@ export interface IElementTitleInfo {
     eleCount: number | undefined;
     operCount: number | undefined;
     columnCount: number | undefined;
-}
-
-export class ModifyTableInfoDto implements IModifyTableInfoDto {
-    titleList: string[] | undefined;
-    rowList: ModifyRowInfoDto[] | undefined;
-
-    constructor(data?: IModifyTableInfoDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            if (data["titleList"] && data["titleList"].constructor === Array) {
-                this.titleList = [];
-                for (let item of data["titleList"])
-                    this.titleList.push(item);
-            }
-            if (data["rowList"] && data["rowList"].constructor === Array) {
-                this.rowList = [];
-                for (let item of data["rowList"])
-                    this.rowList.push(ModifyRowInfoDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): ModifyTableInfoDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ModifyTableInfoDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (this.titleList && this.titleList.constructor === Array) {
-            data["titleList"] = [];
-            for (let item of this.titleList)
-                data["titleList"].push(item);
-        }
-        if (this.rowList && this.rowList.constructor === Array) {
-            data["rowList"] = [];
-            for (let item of this.rowList)
-                data["rowList"].push(item.toJSON());
-        }
-        return data; 
-    }
-
-    clone(): ModifyTableInfoDto {
-        const json = this.toJSON();
-        let result = new ModifyTableInfoDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IModifyTableInfoDto {
-    titleList: string[] | undefined;
-    rowList: ModifyRowInfoDto[] | undefined;
-}
-
-export class ModifyRowInfoDto implements IModifyRowInfoDto {
-    duplicateId: number | undefined;
-    rowList: string[] | undefined;
-    duplicationInfoStr: string | undefined;
-
-    constructor(data?: IModifyRowInfoDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.duplicateId = data["duplicateId"];
-            if (data["rowList"] && data["rowList"].constructor === Array) {
-                this.rowList = [];
-                for (let item of data["rowList"])
-                    this.rowList.push(item);
-            }
-            this.duplicationInfoStr = data["duplicationInfoStr"];
-        }
-    }
-
-    static fromJS(data: any): ModifyRowInfoDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ModifyRowInfoDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["duplicateId"] = this.duplicateId;
-        if (this.rowList && this.rowList.constructor === Array) {
-            data["rowList"] = [];
-            for (let item of this.rowList)
-                data["rowList"].push(item);
-        }
-        data["duplicationInfoStr"] = this.duplicationInfoStr;
-        return data; 
-    }
-
-    clone(): ModifyRowInfoDto {
-        const json = this.toJSON();
-        let result = new ModifyRowInfoDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IModifyRowInfoDto {
-    duplicateId: number | undefined;
-    rowList: string[] | undefined;
-    duplicationInfoStr: string | undefined;
 }
 
 export class ModifyEditInfoDto implements IModifyEditInfoDto {

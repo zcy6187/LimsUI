@@ -61,11 +61,19 @@ export class FormulaEditComponent extends ModalComponentBase implements OnInit {
     for (let item of this.formulaList) {
       if (item.id == eve) {
         this.curFormula = item;
-        this.formStatus = "修改公式！"
+        this.formStatus = "编辑公式！"
         this.isFormHidden = false;
+        this.showPrams(eve);
         break;
       }
     }
+  }
+
+  setDefault(inputId) {
+    this._formulaService.setDefaultFormulaById(inputId).subscribe(res => {
+      this.message.info(res.message);
+      this.getFormulasByEleId();
+    });
   }
 
   delete(eve) {

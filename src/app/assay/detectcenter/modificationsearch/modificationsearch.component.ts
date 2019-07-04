@@ -23,6 +23,7 @@ export class ModificationsearchComponent extends AppComponentBase implements OnI
   titleLength;
   mapOfExpandData: { [key: string]: boolean } = {};
   rowCount;
+  orgCode: string;
 
   constructor(private _orgService: OrgServiceProxy,
     private _searchService: Assay_DataSearchServiceProxy,

@@ -66,12 +66,12 @@ import { ChartsComponent } from './assay/charts/charts.component';
 import { CrossTemplateSearchComponent } from './assay/cross-template-search/cross-template-search.component';
 import { EquationComponent } from './process/equation/equation.component';
 import { FormulaEditComponent } from './process/equation/edit/formulaEdit.component';
-import { ConstComponent } from './process/const/const.component';
 import { ExceloperComponent } from './assay/detectcenter/exceloper/exceloper.component';
-import { ConsteditComponent } from './process/const/edit/constedit/constedit.component';
 import { DuplicateeditorComponent } from './assay/detectcenter/duplicateeditor/duplicateeditor.component';
 import { ModificationsearchComponent } from './assay/detectcenter/modificationsearch/modificationsearch.component';
 import { DuplicationeditorComponent } from './assay/detectcenter/modificationsearch/duplicationeditor/duplicationeditor.component';
+import { MainbarsearchComponent } from './assay/detectcenter/mainbarsearch/mainbarsearch.component';
+import { ConstEditorComponent } from './process/equation/const-editor/const-editor.component';
 
 @NgModule({
   imports: [
@@ -141,12 +141,12 @@ import { DuplicationeditorComponent } from './assay/detectcenter/modificationsea
     CrossTemplateSearchComponent,
     EquationComponent,
     FormulaEditComponent,
-    ConstComponent,
     ExceloperComponent,
-    ConsteditComponent,
     DuplicateeditorComponent,
     ModificationsearchComponent,
     DuplicationeditorComponent,
+    MainbarsearchComponent,
+    ConstEditorComponent,
   ],
   entryComponents: [
     CreateTenantComponent,
@@ -178,8 +178,8 @@ import { DuplicationeditorComponent } from './assay/detectcenter/modificationsea
     EditAssayUserComponent,
     FormulaEditComponent,
     OperUserTplComponent,
-    ConsteditComponent,
     DuplicationeditorComponent,
+    ConstEditorComponent,
   ],
 })
 export class AppModule { }

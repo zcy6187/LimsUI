@@ -1,0 +1,75 @@
+<div class="padding-bottom-45">
+  <div nz-row>
+    <div nz-col nzSpan="3">
+      <h3>
+        <span>编辑常数</span>
+      </h3>
+    </div>
+    <div nz-col nzSpan="3">
+      <button nz-button nzType="primary" (click)="addConst()">新增常数</button>
+    </div>
+  </div>
+  <div nz-row>
+    <div nz-col nzSpan="12" *ngIf="constList">
+      <h3>常数：</h3>
+      <nz-table #constTable [nzData]="constList" nzBordered nzShowPagination='false'>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>值</th>
+            <th>说明</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of constTable.data;">
+            <td>{{item.id}}</td>
+            <td>{{item.constVal}}</td>
+            <td>{{item.intro}}</td>
+            <td>
+              <a (click)="editConst(item.id)">编辑</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a (click)="deleteConst(item.id)">删除</a>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+    <div nz-col nzSpan="12">
+      <div *ngIf="isShowForm">
+        <h3>
+          <span>{{comptitle}}</span>
+        </h3>
+        <form nz-form>
+          <!-- 常数值 -->
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>常数值</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+              <input nz-input name="constVal" #constVal="ngModel" [(ngModel)]="editItem.constVal" required>
+            </nz-form-control>
+          </nz-form-item>
+          <!-- 说明 -->
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24">说明</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+              <input nz-input name="intro" #intro="ngModel" [(ngModel)]="editItem.intro" placeholder="说明">
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-control [nzOffset]="7" [nzSm]="8" [nzXs]="24">
+              <button nz-button type="button" (click)="close()">
+                {{l("Cancel")}}
+              </button>
+            </nz-form-control>
+            <nz-form-control [nzSm]="8" [nzXs]="24">
+              <button nz-button [nzType]="'primary'" type="submit" (click)="save()">
+                {{l("Save")}}
+              </button>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

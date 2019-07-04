@@ -35,7 +35,10 @@
         <td>{{item.code}}</td>
         <td>{{item.description}}</td>
         <td>
-          <a (click)="edit(item)">编辑</a>
+          <a (click)="editEquation(item)">公式</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a (click)="editConst(item)">常数</a>
+          <nz-divider nzType="vertical"></nz-divider>
         </td>
       </tr>
     </tbody>

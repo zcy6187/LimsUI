@@ -31,7 +31,6 @@ import { UsrDataSearchComponent } from './assay/usr-data-search/usr-data-search.
 import { CrossTemplateSearchComponent } from './assay/cross-template-search/cross-template-search.component';
 import { EquationComponent } from './process/equation/equation.component';
 import { ExceloperComponent } from './assay/detectcenter/exceloper/exceloper.component';
-import { ConstComponent } from './process/const/const.component';
 import { DuplicateeditorComponent } from './assay/detectcenter/duplicateeditor/duplicateeditor.component';
 import { ModificationsearchComponent } from './assay/detectcenter/modificationsearch/modificationsearch.component';
 
@@ -169,11 +168,6 @@ const routes: Routes = [
       {
         path: 'formula',
         component: EquationComponent,
-        canActivate: [AppRouteGuard],
-      },
-      {
-        path: 'const',
-        component: ConstComponent,
         canActivate: [AppRouteGuard],
       },
       {

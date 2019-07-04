@@ -12,6 +12,7 @@ export class AppConsts {
 
   static appBaseUrl: string;
   static uploadApiUrl = '/api/File/Upload';
+  // static excelBaseUrl = "http://131.107.2.64:2155/";
   static excelBaseUrl = "http://localhost:2155/";
 
   static readonly userManagement = {

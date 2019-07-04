@@ -19,6 +19,7 @@ export class DuplicateeditorComponent extends AppComponentBase implements OnInit
   dateType: string = "print";
   tableData: Array<Array<string>>;
   tableTitle: Array<string>;
+  orgCode: string;
 
   constructor(private _orgService: OrgServiceProxy,
     private _searchService: Assay_DataSearchServiceProxy,

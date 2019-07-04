@@ -9,6 +9,7 @@ import {
   ElementDto,
 } from '@shared/service-proxies/service-proxies';
 import { FormulaEditComponent } from './edit/formulaEdit.component';
+import { ConstEditorComponent } from './const-editor/const-editor.component';
 
 @Component({
   selector: 'app-equation',
@@ -44,14 +45,21 @@ export class EquationComponent extends PagedListingComponentBase<ElementDto>  {
   }
 
   // 编辑元素
-  edit(item: ElementDto): void {
+  editEquation(item: ElementDto): void {
     this.modalHelper
       .open(FormulaEditComponent, { eleId: item.id }, 'lg', {
         nzMask: true,
       })
-      .subscribe(isSave => {
-        this.refresh();
-      });
+      .subscribe();
+  }
+
+  // 编辑常数
+  editConst(item: ElementDto): void {
+    this.modalHelper
+      .open(ConstEditorComponent, { curElementId: item.id }, 'lg', {
+        nzMask: true,
+      })
+      .subscribe();
   }
 }
 
